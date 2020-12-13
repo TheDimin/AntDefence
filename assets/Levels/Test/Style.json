@@ -1,0 +1,86 @@
+{
+    "map": [
+        {
+            "asset": "Tiles/tile_0028.png",
+            "canBuild" : true,
+            "scale" : 4
+        },
+        {
+            "asset": "Tiles/tile_0139.png",
+            "canWalk" : true,
+            "scale" : 4
+        },
+        {
+            "asset": "Tiles/tile_0115.png",
+            "canWalk" : true,
+            "scale" : 4
+        },
+        {
+            "asset": "Tiles/tile_0112.png",
+            "canWalk" : true,
+            "scale" : 4
+        },
+        {
+            "asset": "Tiles/tile_0031.png",
+            "canWalk" : true,
+            "scale" : 4
+        },
+        {
+            "asset": "Tiles/tile_0084.png",
+            "canWalk" : true,
+            "scale" : 4
+        },
+        {
+            "asset": "Tiles/tile_0085.png",
+            "canWalk" : true,
+            "scale" : 4
+        },
+        {
+            "asset": "Tiles/tile_0111.png",
+            "canWalk" : true,
+            "scale" : 4
+        }
+
+    ],
+    "Towers": [
+        {
+            "id": 1,
+            "DisplayName": "STFU",
+            "price": 10,
+            "sprites" : "/path",
+            "sound": "/path",
+            "stats": [ -1 ],
+            "upgrades": [
+                {
+                    "ID": -1,
+                    "Price" : 10,
+                    "DisplayName" : "Undefined",
+                    "Stats":[
+                        {
+                            "id":-1,
+                            "amount": 10
+                        }
+                    ],
+                    
+                    "unLockedBy" :[],
+                    "LockedBy" : []
+                }
+            ]
+        }
+    ],
+    "Stats": [
+        {
+            "id": -1,
+            "DisplayName": "Undefined",
+            "Image": "/path"
+        }
+    ],
+    "Mobs": [
+        {
+            "id": -1,
+            "DisplayName": "Undefined",
+            "Image": "/path",
+            "Sound": "/path"
+        }
+    ]
+}
