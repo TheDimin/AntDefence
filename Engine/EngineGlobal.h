@@ -1,6 +1,6 @@
 #pragma once
-#include "surface.h"
-#include "Engine/TypeInfo/Reflections.h"
+#include "../surface.h"
+#include "TypeInfo/Reflections.h"
 
 /*
 #define JSON_Reflected(ClassName)								\

@@ -319,7 +319,7 @@ int main(int argc, char** argv)
 #ifdef FULLSCREEN
 	window = SDL_CreateWindow(TemplateVersion, 100, 100, ScreenWidth, ScreenHeight, SDL_WINDOW_FULLSCREEN);
 #else
-	window = SDL_CreateWindow(TemplateVersion, 100, 100, ScreenWidth, ScreenHeight, SDL_WINDOW_SHOWN );
+	window = SDL_CreateWindow(TemplateVersion, 100, 100, ScreenWidth, ScreenHeight, SDL_WINDOW_SHOWN);
 #endif
 	surface = new Surface(ScreenWidth, ScreenHeight);
 	surface->Clear(0);
@@ -388,7 +388,8 @@ int main(int argc, char** argv)
 				game->KeyUp(event.key.keysym.scancode);
 				break;
 			case SDL_MOUSEMOTION:
-				game->MouseMove(event.motion.xrel, event.motion.yrel);
+
+				game->MouseMove(event.motion.x, event.motion.y, event.motion.xrel, event.motion.yrel);
 				break;
 			case SDL_MOUSEBUTTONUP:
 				game->MouseUp(event.button.button);

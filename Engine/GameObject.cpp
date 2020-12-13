@@ -1,7 +1,7 @@
 #include "GameObject.h"
 #include <iostream>
 #include <string>
-#include "../EngineGlobal.h"
+#include "EngineGlobal.h"
 
 BEGIN_REFLECT(GameObject)
 PROPERTY_REFLECT(Name, std::string)

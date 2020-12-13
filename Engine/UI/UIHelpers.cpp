@@ -1,6 +1,4 @@
 #include "UIHelpers.h"
-
-#include "template.h"
 #include "UIElement.h"
 
 
@@ -27,7 +25,7 @@ void IMouseEvent::OnMouseDown()
 
 void IText::SetText(std::string* textPTR)
 {
-	this->Text = textPTR;
+	Text = textPTR;
 }
 
 std::string* IText::GetText()

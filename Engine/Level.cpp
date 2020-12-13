@@ -6,22 +6,22 @@
 
 void Level::OnLevelLoaded()
 {
+	CreateUI(uiContainer.get());
 	for (auto& obj : objects)
 	{
 		obj->OnLoad();
 	}
 }
 
-std::string Level::GetLevelName()
+std::string Level::GetLevelName() const
 {
 	return name;
 }
 
-std::string lol = "SUB RETARD";
 void Level::CreateUI(UiContainer* UI)
 {
-	UI->Button(90, 35, 80, 20, &lol);
-	//UIHelpers::Button(10, 10, 5, 5, &lol);
+	UI->Button(90, 35, 80, 20, &temp);
+	UI->Button(290, 35, 80, 20, &LOL);
 }
 
 Level* Level::Load(std::string LevelName)
@@ -53,7 +53,8 @@ Level* Level::Load(std::string LevelName)
 
 	j.get_to(*level);
 
-	level->CreateUI(level->uiContainer.get());
+	level->OnLevelLoaded();
+
 
 	return level;
 }
@@ -66,7 +67,7 @@ void from_json(const nlohmann::json& nlohmann_json_j, Level& lvl)
 	size_t yAmount = nlohmann_json_j.at("map").size();
 	size_t xAmount = nlohmann_json_j.at("map")[0].size();
 
-	int w =static_cast<int>( 1.0f / static_cast<float>(xAmount) * static_cast<float>(surface->GetWidth())); //(xAmount / ((float)mapSprite->asset->GetWidth() * mapSprite->scale) * 0.8f);
+	int w = static_cast<int>(1.0f / static_cast<float>(xAmount) * static_cast<float>(surface->GetWidth())); //(xAmount / ((float)mapSprite->asset->GetWidth() * mapSprite->scale) * 0.8f);
 	auto h = static_cast<int>(1.0f / static_cast<float>(yAmount) * static_cast<float>(surface->GetHeight()));
 
 	int y = 0;

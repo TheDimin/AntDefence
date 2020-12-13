@@ -1,6 +1,6 @@
 #pragma once
-#include "EngineGlobal.h"
-#include "surface.h"
+#include "json_fwd.hpp"
+#include "../surface.h"
 
 struct  MapSprite
 {

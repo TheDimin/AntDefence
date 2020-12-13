@@ -1,6 +1,5 @@
 #include "EngineGlobal.h"
-
-#include "template.h"
+#include "../template.h"
 
 
 //#include "game.h"

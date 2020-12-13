@@ -1,8 +1,6 @@
 #pragma once
 #include <vcruntime_typeinfo.h>
-
-#include "template.h"
-
+#include "../template.h"
 class StateBase;
 
 using namespace Tmpl8;

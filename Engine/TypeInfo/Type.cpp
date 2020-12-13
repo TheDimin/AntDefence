@@ -1,8 +1,5 @@
-#include "Engine/TypeInfo/Type.h"
-
-#include <xlocmon>
-
-#include "EngineGlobal.h"
+#include "Type.h"
+#include "Reflections.h"
 
 namespace Reflect
 {

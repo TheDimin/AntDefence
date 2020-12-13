@@ -1,6 +1,6 @@
 #pragma once
-#include "EngineGlobal.h"
 #include "UIElement.h"
+
 
 class UiContainer : public ITickable
 {

@@ -14,6 +14,7 @@ protected:
 	virtual bool IsOverlapping(int x, int y) = 0;
 
 private:
+	friend class Game;
 	bool OnMouseMove(int x, int y);
 	void OnMouseDown();
 };

@@ -1,9 +1,8 @@
 #include "game.h"
-#include <cstdio> //printf
 #include <iostream>
+#include <SDL_mouse.h>
+
 #include "surface.h"
-#include "UIContainer.h"
-#include "UIElement.h"
 
 using namespace Tmpl8;
 
@@ -15,10 +14,10 @@ void Game::Init()
 {
 	//Load default level
 	LoadedLevel = std::unique_ptr<Level>(Level::Load("Test"));
-	LoadedLevel->OnLevelLoaded();
+	//
 	LoadedLevel->objects.insert(LoadedLevel->objects.begin(), std::make_unique<GameObject>());
 	std::cout << LoadedLevel->mapStyle->sprites[0]->asset << std::endl;
-	LoadedLevel->CreateUI(LoadedLevel->uiContainer.get());
+	//LoadedLevel->CreateUI(LoadedLevel->uiContainer.get());
 	//std::cout << "FoundType: " << Reflect::Reflections::Get()->FindType("GameObject")->GetName() << std::endl;
 }
 
@@ -46,7 +45,7 @@ void Game::Tick(float deltaTime)
 
 	LoadedLevel->uiContainer->Tick(); // we can do some tricks to only update ui x times a second
 
-	LoadedLevel->uiContainer->surface->CopyTo(screen,0,EngineGlobal::GetHeight()*0.8f);
+	LoadedLevel->uiContainer->surface->CopyTo(screen, 0, EngineGlobal::GetHeight() * 0.8f);
 
 	for (IRenderable* IRender : Renderables)
 	{
@@ -81,4 +80,21 @@ void Game::Tick(float deltaTime)
 	//rotatingGun.SetFrame(frame);
 	//rotatingGun.Draw(screen, 100, 100);
 	//if (++frame == 36) frame = 0;
+}
+
+void Game::MouseDown(int button)
+{
+	for (auto& element : LoadedLevel->uiContainer->Elements)
+	{
+		element.get()->OnMouseDown();
+	}
+}
+
+void Game::MouseMove(int x, int y, int Ax, int Ay)
+{
+	LoadedLevel->LOL = ("X: " + std::to_string(x)) + (" Y: " + std::to_string(y));
+	for (auto& element : LoadedLevel->uiContainer->Elements)
+	{
+		element.get()->OnMouseMove(x, y);
+	}
 }

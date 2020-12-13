@@ -3,6 +3,9 @@
 
 class UIButton : public UIElement, public IText
 {
+public:
+	StyleInfo styleInfo = StyleInfo();
+	
 protected:
 	void Render(class Tmpl8::Surface* surface) override;
 	void OnBeginHover() override;

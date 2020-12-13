@@ -8,3 +8,13 @@ dlls_x86/
 Debug/
 
 Release/
+
+tmpl_2019-08.vcxproj.user
+
+tmpl_2019-08_x86_debug.exe
+
+tmpl_2019-08_x86_debug.pdb
+
+tmpl_2019-08.vcxproj
+
+tmpl_2019-08.vcxproj.filters
