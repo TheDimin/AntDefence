@@ -42,14 +42,15 @@
         }
 
     ],
-    "Towers": [
+    "towers": [
         {
             "id": 1,
-            "DisplayName": "STFU",
+            "displayName": "Slime",
             "price": 10,
-            "sprites" : "/path",
-            "sound": "/path",
-            "stats": [ -1 ],
+            "asset" : "test.png",
+            "stats": [  
+                {"id" :1,"amount":15}
+            ],
             "upgrades": [
                 {
                     "ID": -1,
@@ -66,21 +67,67 @@
                     "LockedBy" : []
                 }
             ]
+        },{
+            "id": 2,
+            "displayName": "Poggers",
+            "price": 50,
+            "asset" : "Tiles/tile_0243.png",
+            "stats": [ {"id" :1,"amount":15} ],
+            "upgrades": [
+                {
+                    "ID": -1,
+                    "Price" : 10,
+                    "DisplayName" : "Undefined",
+                    "Stats":[
+                        {
+                            "id":-1,
+                            "amount": 50
+                        }
+                    ],
+                    
+                    "unLockedBy" :[],
+                    "LockedBy" : []
+                }
+            ]
         }
     ],
-    "Stats": [
+    "stats": [
         {
-            "id": -1,
-            "DisplayName": "Undefined",
-            "Image": "/path"
+            "id": 0,
+            "displayName": "Health",
+            "asset": "test.png"
+        },
+        {
+            "id": 1,
+            "displayName": "Normal",
+            "asset": "test.png"
         }
     ],
-    "Mobs": [
+    "mobs": [
         {
-            "id": -1,
-            "DisplayName": "Undefined",
-            "Image": "/path",
-            "Sound": "/path"
+            "id": 0,
+            "moneyOnKill" : 10,
+            "speed" : 1.0,
+            "displayName": "Undefined",
+            "asset": "test.png",
+            "stats":[
+                {"id" :0,"amount":15}
+            ]
         }
+    ],
+    "waves": [
+    {
+        "delay" : 0,
+        "mobs":[
+            { "id": 0, "amount" : 10 }
+        ],
+        "moneyOnComplete": 10    
+    },{
+        "delay" : 0,
+        "mobs":[
+            { "id": 0, "amount" : 100 }
+        ],
+        "moneyOnComplete": 10    
+    }
     ]
 }

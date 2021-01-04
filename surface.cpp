@@ -96,6 +96,18 @@ namespace Tmpl8 {
 		Print(a_String, x, y1, color);
 	}
 
+	void Surface::Centre(char* a_String, int x, int y1, Pixel color)
+	{
+		x -= (int)strlen(a_String) * 6 / 2;
+		Print(a_String, x, y1, color);
+	}
+
+	void Surface::Centre(char* a_String, int x, int y1, int Scale, Pixel color)
+	{
+		x -= (int)strlen(a_String) * 6 / 2;
+		Print(a_String, x, y1 - 4, Scale, color);
+	}
+
 	void Surface::Print(char* a_String, int x1, int y1, Pixel color)
 	{
 		if (!fontInitialized)
@@ -107,12 +119,44 @@ namespace Tmpl8 {
 		for (int i = 0; i < (int)(strlen(a_String)); i++, t += 6)
 		{
 			long pos = 0;
-			if ((a_String[i] >= 'A') && (a_String[i] <= 'Z')) pos = s_Transl[(unsigned short)(a_String[i] - ('A' - 'a'))];
-			else pos = s_Transl[(unsigned short)a_String[i]];
+			if ((a_String[i] >= 'A') && (a_String[i] <= 'Z'))
+				pos = s_Transl[(unsigned short)(a_String[i] - ('A' - 'a'))];
+			else
+				pos = s_Transl[(unsigned short)a_String[i]];
+
 			Pixel* a = t;
 			char* c = (char*)s_Font[pos];
+
 			for (int v = 0; v < 5; v++, c++, a += m_Pitch)
-				for (int h = 0; h < 5; h++) if (*c++ == 'o') *(a + h) = color, * (a + h + m_Pitch) = 0;
+				for (int h = 0; h < 5; h++)
+					if (*c++ == 'o')
+						*(a + h) = color, * (a + h + m_Pitch) = 0;
+		}
+	}
+
+	void Surface::Print(char* a_String, int x1, int y1, int scale, Pixel color)
+	{
+		if (!fontInitialized)
+		{
+			InitCharset();
+			fontInitialized = true;
+		}
+		Pixel* t = m_Buffer + x1 + y1 * m_Pitch;
+		for (int i = 0; i < (int)(strlen(a_String)); i++, t += 6)
+		{
+			long pos = 0;
+			if ((a_String[i] >= 'A') && (a_String[i] <= 'Z'))
+				pos = s_Transl[(unsigned short)(a_String[i] - ('A' - 'a'))];
+			else
+				pos = s_Transl[(unsigned short)a_String[i]];
+
+			Pixel* a = t;
+			char* c = (char*)s_Font[pos];
+
+			for (int v = 0; v < 5; v++, c++, a += m_Pitch * scale)
+				for (int h = 0; h < 5; h++)
+					if (*c++ == 'o')
+						*(a + h) = color, * (a + h + m_Pitch) = 0;
 		}
 	}
 
@@ -426,6 +470,29 @@ namespace Tmpl8 {
 	void Sprite::DrawScaled(int a_X, int a_Y, int a_Width, int a_Height, Surface* a_Target)
 	{
 		if ((a_Width == 0) || (a_Height == 0)) return;
+		for (int x = 0; x < a_Width; x++) {
+			int fx = x + a_X;
+			if (fx < 0 || fx > a_Target->GetWidth())continue;
+
+			for (int y = 0; y < a_Height; y++)
+			{
+				int fy = y + a_Y;
+				if (fy < 0 || fy> a_Target->GetHeight()) continue;
+
+				int u = (int)((float)x * ((float)m_Width / (float)a_Width));
+				int v = (int)((float)y * ((float)m_Height / (float)a_Height));
+				Pixel color = GetBuffer()[u + v * m_Pitch];
+				if (a_Target->GetWidth() * a_Target->GetHeight() < fx + (fy * a_Target->GetPitch()))
+					continue;
+
+				if (color & 0xffffff) a_Target->GetBuffer()[fx + (fy * a_Target->GetPitch())] = color;
+			}
+		}
+	}
+
+	void Sprite::DrawScaled(int a_X, int a_Y, int a_Width, int a_Height, Pixel blendColor, Surface* a_Target)
+	{
+		if ((a_Width == 0) || (a_Height == 0)) return;
 		for (int x = 0; x < a_Width; x++)
 			for (int y = 0; y < a_Height; y++)
 			{
@@ -435,7 +502,7 @@ namespace Tmpl8 {
 				if (a_Target->GetWidth() * a_Target->GetHeight() < a_X + x + ((a_Y + y) * a_Target->GetPitch()))
 					continue;
 
-				if (color & 0xffffff) a_Target->GetBuffer()[a_X + x + ((a_Y + y) * a_Target->GetPitch())] = color;
+				if (color & 0xffffff) a_Target->GetBuffer()[a_X + x + ((a_Y + y) * a_Target->GetPitch())] = AddBlend(color, blendColor);
 			}
 	}
 

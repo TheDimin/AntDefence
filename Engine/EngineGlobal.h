@@ -76,8 +76,9 @@ class IRenderable
 {
 protected:
 	friend class Game;
+	friend class UiContainer;
+	friend class Level;
 	virtual void Render(Tmpl8::Surface* surface) = 0;
-	virtual bool Enabled() = 0;
 };
 
 class ITickable

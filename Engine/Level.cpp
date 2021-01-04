@@ -3,6 +3,8 @@
 #include <fstream>
 #include <iostream>
 
+#include "UI/UIButton.h"
+
 
 void Level::OnLevelLoaded()
 {
@@ -18,70 +20,58 @@ std::string Level::GetLevelName() const
 	return name;
 }
 
-void Level::CreateUI(UiContainer* UI)
+float Level::CalculateTileWidth()
 {
-	UI->Button(90, 35, 80, 20, &temp);
-	UI->Button(290, 35, 80, 20, &LOL);
+	return ceil(1.0f / static_cast<float>(TileWidthCount) * static_cast<float>(surface->GetWidth()));
 }
 
-Level* Level::Load(std::string LevelName)
+float Level::CalculateTileHeight()
 {
-	nlohmann::json j;
-	std::ifstream file;
-	Level* level = new Level();
-	level->name = LevelName;
-	level->surface = std::make_unique<Tmpl8::Surface>(EngineGlobal::GetWidth(), static_cast<int>(0.8f * EngineGlobal::GetHeight()));
-	level->uiContainer = std::make_unique<UiContainer>(nullptr, EngineGlobal::GetWidth(), static_cast<int>(0.2f * EngineGlobal::GetHeight()));
+	return  ceil(1.0f / static_cast<float>(TileHeightCount) * static_cast<float>(surface->GetHeight()));
+}
 
-	file.close(); j.clear();
+MapSprite* Level::GetMapSprite(int width, int height)
+{
+	if (maptiles.size() <= height) { assert("Level::GetMapSprites Height out of range"); return nullptr; }
+	if (maptiles[height].size() <= width) { assert("Level::GetMapSprites Width out of range"); return nullptr; }
 
-	file = std::ifstream("assets/Levels/" + LevelName + "/Style.json");
-	file >> j;
-	level->mapStyle = std::make_unique<Style>();
-	level->mapStyle->level = level;
-	j.get_to(level->mapStyle);
+	int tileStyle = maptiles[height][width];
 
-	file = std::ifstream("assets/Levels/" + LevelName + "/Level.json");
+	return mapStyle->map[tileStyle].get();
+}
 
-	if (!file.is_open())
-	{
-		std::cout << "Failed to load level : '" << LevelName << "'" << std::endl;
-		return level;
-	}
-
-	file >> j;
-
-	j.get_to(*level);
-
-	level->OnLevelLoaded();
-
-
-	return level;
+void Level::RegisterObject(GameObject* obj)
+{
+	objects.insert(end(objects), std::unique_ptr<GameObject>(obj));
 }
 
 void from_json(const nlohmann::json& nlohmann_json_j, Level& lvl)
 {
-	std::vector<std::unique_ptr<MapSprite>>* mapSprites = &lvl.mapStyle->sprites;
+	std::vector<std::unique_ptr<MapSprite>>* mapSprites = &lvl.mapStyle->map;
 	Tmpl8::Surface* surface = lvl.surface.get();
 
-	size_t yAmount = nlohmann_json_j.at("map").size();
-	size_t xAmount = nlohmann_json_j.at("map")[0].size();
+	//	TileWidthCount, TileHeightCount
+	lvl.TileHeightCount = (int)nlohmann_json_j.at("map").size();
+	lvl.TileWidthCount = (int)nlohmann_json_j.at("map")[0].size();
 
-	int w = static_cast<int>(1.0f / static_cast<float>(xAmount) * static_cast<float>(surface->GetWidth())); //(xAmount / ((float)mapSprite->asset->GetWidth() * mapSprite->scale) * 0.8f);
-	auto h = static_cast<int>(1.0f / static_cast<float>(yAmount) * static_cast<float>(surface->GetHeight()));
+	lvl.maptiles = std::vector<std::vector<int>>();
 
+	float width = lvl.CalculateTileWidth();
+	float height = lvl.CalculateTileHeight();
 	int y = 0;
 	for (auto& element : nlohmann_json_j.at("map").items()) {
 		int x = 0;
-
+		auto row = std::vector<int>();
 		for (auto& id : element.value().get<std::vector<int>>()) {
 			MapSprite* mapSprite = mapSprites->at(id).get();
+			row.insert(end(row), id);
 			//mapSprite->asset->Draw(surface, mapSprite->asset->GetHeight() * y * mapSprite->scale, mapSprite->asset->GetWidth() * x * mapSprite->scale);
 			 //(yAmount / ((float)mapSprite->asset->GetHeight() * mapSprite->scale) * 0.8f);
 
-			mapSprite->asset->DrawScaled(w * x, h * y, w, h, surface);
+			mapSprite->asset->DrawScaled((int)width * x, (int)height * y, (int)width, (int)height, surface);
 			x++;
 		}
+		lvl.maptiles.insert(end(lvl.maptiles), row);
 		y++;
 	}
 }

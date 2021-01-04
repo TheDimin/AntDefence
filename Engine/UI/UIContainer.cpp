@@ -1,6 +1,6 @@
-
 #include "UIContainer.h"
 #include "UiButton.h"
+#include "UIText.h"
 
 UiContainer::UiContainer(Game* game, int width, int height)
 {
@@ -24,7 +24,9 @@ UIButton* UiContainer::Button(int xPos, int yPos, int xScale, int yScale)
 	uiElement->Init(
 		Tmpl8::vec2(static_cast<float>(xPos), static_cast<float>(yPos)),
 		Tmpl8::vec2(static_cast<float>(xScale), static_cast<float>(yScale)),
-		Tmpl8::vec2(EngineGlobal::GetWidth() - surface->GetWidth(), EngineGlobal::GetHeight() - surface->GetHeight()));
+		Tmpl8::vec2((float)EngineGlobal::GetWidth() - surface->GetWidth(), (float)EngineGlobal::GetHeight() - surface->GetHeight())
+	);
+
 	Elements.insert(Elements.begin(), std::unique_ptr<UIElement>(uiElement));
 	return uiElement;
 }
@@ -35,5 +37,32 @@ UIButton* UiContainer::Button(int xPos, int yPos, int width, int height, std::st
 	button->styleInfo = StyleInfo();
 	button->SetText(textPtr);
 	return button;
+}
 
+UIText* UiContainer::Text(int xPos, int yPos, std::string* textPtr)
+{
+	UIText* uiElement = new UIText();
+	uiElement->SetText(textPtr);
+	uiElement->Init(
+		Tmpl8::vec2((float)xPos, static_cast<float>(yPos)),
+		Tmpl8::vec2(static_cast<float>(1), static_cast<float>(1)),
+		Tmpl8::vec2((float)EngineGlobal::GetWidth() - surface->GetWidth(), (float)EngineGlobal::GetHeight() - surface->GetHeight())
+	);
+	
+	Elements.insert(Elements.begin(), std::unique_ptr<UIElement>(uiElement));
+	return uiElement;
+}
+
+UIText* UiContainer::Text(int xPos, int yPos, std::string textPtr)
+{
+	UIText* uiElement = new UIText();
+	uiElement->SetText(textPtr);
+	uiElement->Init(
+		Tmpl8::vec2((float)xPos, static_cast<float>(yPos)),
+		Tmpl8::vec2(static_cast<float>(1), static_cast<float>(1)),
+		Tmpl8::vec2((float)EngineGlobal::GetWidth() - surface->GetWidth(), (float)EngineGlobal::GetHeight() - surface->GetHeight())
+	);
+
+	Elements.insert(Elements.begin(), std::unique_ptr<UIElement>(uiElement));
+	return uiElement;
 }
