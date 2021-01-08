@@ -54,8 +54,8 @@ void Mob::Tick(float deltaTime)
 		newloc = target;
 		SetLocation(target);
 		currentRouteIndex++;
-		if ((int)route->size() > currentRouteIndex) {
-			target = route->at(currentRouteIndex) * *GetSize();
+		if (route->size() > currentRouteIndex) {
+			target = route->at(currentRouteIndex) * size;
 			dir = Tmpl8::vec2::normalize(target - newloc);
 			return;
 		}

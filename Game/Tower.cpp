@@ -10,10 +10,10 @@ Tower::Tower(TowerData* towerData, Tmpl8::vec2 tile, Tmpl8::vec2 location, Tmpl8
 {
 }
 
-void Tower::SetLvl(Level* lvl)
+void Tower::SetLvl(Level* toSetLvl)
 {
-	this->lvl = lvl;
-	gLVL = dynamic_cast<GameLevel*>(lvl);
+	this->lvl = toSetLvl;
+	gLVL = dynamic_cast<GameLevel*>(toSetLvl);
 
 	towerFSM = std::make_unique<TowerFSM>(this, gLVL);
 

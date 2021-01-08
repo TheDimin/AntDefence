@@ -19,7 +19,7 @@ public:
 public:
 	MobData* mobData = nullptr;
 	std::vector<Tmpl8::vec2>* route;
-	int currentRouteIndex = 0;
+	uint currentRouteIndex = 0;
 	Tmpl8::vec2 dir;
 	Tmpl8::vec2 target;
 	int health = 0;

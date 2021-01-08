@@ -52,9 +52,10 @@ public:
 	//std::vector<std::unique_ptr<Component>> Components;
 protected:
 	Level* lvl = nullptr;
-
-private:
+	//DO NOT SET THESE , use the setter functions instead, thanks
+	Tmpl8::vec2 size;
 	Tmpl8::vec2 centerLocation;
 	Tmpl8::vec2 drawLocation;
-	Tmpl8::vec2 size;
+
+
 };
