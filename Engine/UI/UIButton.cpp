@@ -14,6 +14,13 @@ UIButton* UIButton::SetOnClick(std::function<void()> function)
 	return this;
 }
 
+UIButton* UIButton::SetIsHiddenLambda(std::function<bool()> function)
+{
+	this->IsHiddenLambda = function;
+	return this;
+}
+
+
 UIButton* UIButton::SetIsActiveLambda(std::function<bool()> function)
 {
 	this->IsActiveLambda = function;
@@ -22,6 +29,9 @@ UIButton* UIButton::SetIsActiveLambda(std::function<bool()> function)
 
 void UIButton::Render(Tmpl8::Surface* surface)
 {
+	if (IsHiddenLambda != nullptr && IsHiddenLambda())
+		return;
+
 	bool active = IsActive();
 	if (styleInfo.Image != nullptr)
 	{

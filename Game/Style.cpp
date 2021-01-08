@@ -16,7 +16,7 @@ void from_json(const nlohmann::json& json, MapSprite& mapSprite)
 	MapJsonData(scale, mapSprite);
 
 	const std::string filepath = filePath + json.at("asset").get<std::string>();
-	mapSprite.asset = new Tmpl8::Sprite(new Tmpl8::Surface(const_cast<char*>(filepath.c_str())), 1);
+	mapSprite.asset = std::make_unique<Tmpl8::Sprite>(new Tmpl8::Surface(const_cast<char*>(filepath.c_str())), 1);
 
 
 	if (json.contains("canBuild"))
@@ -31,7 +31,7 @@ void from_json(const nlohmann::json& json, ObjectStat& objectStat)
 	MapJsonData(id, objectStat);
 
 	const std::string filepath = filePath + json.at("asset").get<std::string>();
-	objectStat.asset = new Tmpl8::Sprite(new Tmpl8::Surface(const_cast<char*>(filepath.c_str())), 1);
+	objectStat.asset = std::make_unique<Tmpl8::Sprite>(new Tmpl8::Surface(const_cast<char*>(filepath.c_str())), 1);
 }
 
 void from_json(const nlohmann::json& json, StatInfo& mapSprite)
@@ -45,14 +45,14 @@ void from_json(const nlohmann::json& json, MobData& mapSprite)
 	MapJsonData(displayName, mapSprite);
 	MapJsonData(speed, mapSprite);
 	MapJsonData(moneyOnKill, mapSprite);
+	MapJsonData(damage, mapSprite);
 
 	const std::string filepath = filePath + json.at("asset").get<std::string>();
-	mapSprite.asset = new Tmpl8::Sprite(new Tmpl8::Surface(const_cast<char*>(filepath.c_str())), 1);
+	mapSprite.asset = std::make_unique<Tmpl8::Sprite>(new Tmpl8::Surface(const_cast<char*>(filepath.c_str())), 12);
 
 	for (auto& elem : json["stats"].items())
-	{
-		mapSprite.stats.insert(end(mapSprite.stats), StatInfo{ styleInstance->FindStat(elem.value()["id"]), elem.value()["amount"] });
-	}
+		mapSprite.stats.insert(end(mapSprite.stats), std::unique_ptr<StatInfo>(new StatInfo{ styleInstance->FindStat(elem.value()["id"]), elem.value()["amount"] }));
+
 }
 
 
@@ -61,14 +61,14 @@ void from_json(const nlohmann::json& json, TowerData& towerData)
 	MapJsonData(id, towerData);
 	MapJsonData(displayName, towerData);
 	MapJsonData(price, towerData);
+	MapJsonData(range, towerData);
 
 	const std::string filepath = filePath + json.at("asset").get<std::string>();
-	towerData.asset = new Tmpl8::Sprite(new Tmpl8::Surface(const_cast<char*>(filepath.c_str())), 1);
+	towerData.asset = std::make_unique<Tmpl8::Sprite>(new Tmpl8::Surface(const_cast<char*>(filepath.c_str())), 1);
 
 	for (auto& elem : json["stats"].items())
-	{
-		towerData.stats.insert(end(towerData.stats), StatInfo{ styleInstance->FindStat(elem.value()["id"]), elem.value()["amount"] });
-	}
+		towerData.stats.insert(end(towerData.stats), std::unique_ptr<StatInfo>(new StatInfo{ styleInstance->FindStat(elem.value()["id"]), elem.value()["amount"] }));
+
 	//TODO UPGRADES
 }
 
@@ -99,7 +99,17 @@ void from_json(const nlohmann::json& cjson, Style& style)
 
 	MapJsonData(waves, style);
 
-	printf("Mob TEST: %u", style.mobs[0].get()->stats[0].amount);
+	printf("Mob TEST: %u", style.mobs[0].get()->stats[0]->amount);
+}
+
+StatInfo* MobData::FindStat(int statID)
+{
+	return std::find_if(begin(stats), end(stats), [statID](std::unique_ptr<StatInfo>& stat) {return stat->stat->id == statID; })->get();
+}
+
+StatInfo* TowerData::FindStat(int statID)
+{
+	return std::find_if(begin(stats), end(stats), [statID](std::unique_ptr<StatInfo>& stat) {return stat->stat->id == statID; })->get();
 }
 
 ObjectStat* Style::FindStat(int id)

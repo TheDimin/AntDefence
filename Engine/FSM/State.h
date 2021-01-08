@@ -1,4 +1,6 @@
 #pragma once
+#include "FSM.h"
+#include "../EngineGlobal.h"
 
 namespace Tmpl8 {
 	class Surface;
@@ -7,15 +9,15 @@ namespace Tmpl8 {
 
 class Event;
 
-class State
+class State : ITickable, IRenderable
 {
 public:
 	virtual void OnStateEnter(Event* e) = 0;
-
 	virtual void OnStateExit(Event* newEvent) = 0;
-	virtual void Update(float deltaTime) = 0; //TODO: add deltaTime ?
 
+
+	virtual void Render(::Tmpl8::Surface* surface) override = 0;
+	void Tick(float deltaTime) override {};
 	virtual void OnMouseDown(Tmpl8::vec2& mousePos) = 0;
 	virtual void OnMouseMove(Tmpl8::vec2& mousePos) = 0;
-	virtual void Draw(Tmpl8::Surface* surface) = 0;
 };

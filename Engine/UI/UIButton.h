@@ -8,12 +8,15 @@ public:
 private:
 	std::function<void()> OnClickPtr = nullptr;
 	std::function<bool()> IsActiveLambda = nullptr;
+	std::function<bool()> IsHiddenLambda = nullptr;
 public:
 	UIButton* SetStyle(StyleInfo& styleInfo);
 	UIButton* SetOnClick(std::function<void()> function);
+	UIButton* SetIsHiddenLambda(std::function<bool()> function);
 	UIButton* SetIsActiveLambda(std::function<bool()> function);
-protected:
+public:
 	void Render(class Tmpl8::Surface* surface) override;
+protected:
 	void OnBeginHover() override;
 	void OnClick() override;
 	void OnEndHover() override;

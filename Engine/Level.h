@@ -1,42 +1,36 @@
 #pragma once
 #include <vector>
 #include "EngineGlobal.h"
-#include "GameObject.h"
 #include "../surface.h"
 #include "../Game/Style.h"
 #include "UI/UIContainer.h"
 
-class Level
+class Level :ITickable, IRenderable
 {
 public:
 	void OnLevelLoaded();
 
 public:
-	Level() = default;
+	Level();
 	virtual ~Level() = default;
 
 	friend void from_json(const nlohmann::json& nlohmann_json_j, Level& lvl);
 	std::string GetLevelName() const;
 
-	int TileWidthCount, TileHeightCount = -1;
+	int TileWidthCount, TileHeightCount = 0;
 	std::unique_ptr<Style> mapStyle = std::make_unique<Style>();
 
 	float CalculateTileWidth();
 	float CalculateTileHeight();
 	MapSprite* GetMapSprite(int width, int height);
 
-	virtual void RegisterObject(GameObject* obj);
+	virtual void RegisterObject(class GameObject* obj);
+	virtual void DeleteObject(class GameObject* obj);
 
-protected:
-	virtual void Draw(Surface* surface)
-	{
-		for (auto& element : objects)
-		{
-			element->Render(surface);
-		}
-	};
+public:
+	virtual void Render(Tmpl8::Surface* surface) override;
+	void Tick(float deltaTime) override;
 
-	virtual void Update(float deltaTime) {};
 	virtual void OnMouseMove(vec2 pos) {};
 	virtual void OnMouseDown(vec2 pos) {};
 

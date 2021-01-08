@@ -2,6 +2,9 @@
 
 #include <iostream>
 
+
+#include "../../surface.h"
+#include "../../template.h"
 #include "../../Engine/FSM/Event.h"
 
 void PlayingState::OnStateEnter(Event* e)
@@ -14,12 +17,12 @@ void PlayingState::OnStateExit(Event* newEvent)
 	std::cout << "[PlayingState]: OnExit" << std::endl;
 }
 
-void PlayingState::Update(float deltaTime)
+void PlayingState::Tick(float deltaTime)
 {
 	
 }
 
-void PlayingState::Draw(Tmpl8::Surface* surface)
+void PlayingState::Render(Tmpl8::Surface* surface)
 {
 }
 

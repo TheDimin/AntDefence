@@ -6,37 +6,37 @@
             "scale" : 4
         },
         {
-            "asset": "Tiles/tile_0139.png",
+            "asset": "Tiles/tile_0441.png",
             "canWalk" : true,
             "scale" : 4
         },
         {
-            "asset": "Tiles/tile_0115.png",
+            "asset": "Tiles/tile_0441.png",
             "canWalk" : true,
             "scale" : 4
         },
         {
-            "asset": "Tiles/tile_0112.png",
+            "asset": "Tiles/tile_0441.png",
             "canWalk" : true,
             "scale" : 4
         },
         {
-            "asset": "Tiles/tile_0031.png",
+            "asset": "Tiles/tile_0441.png",
             "canWalk" : true,
             "scale" : 4
         },
         {
-            "asset": "Tiles/tile_0084.png",
+            "asset": "Tiles/tile_0441.png",
             "canWalk" : true,
             "scale" : 4
         },
         {
-            "asset": "Tiles/tile_0085.png",
+            "asset": "Tiles/tile_0441.png",
             "canWalk" : true,
             "scale" : 4
         },
         {
-            "asset": "Tiles/tile_0111.png",
+            "asset": "Tiles/tile_0441.png",
             "canWalk" : true,
             "scale" : 4
         }
@@ -48,8 +48,10 @@
             "displayName": "Slime",
             "price": 10,
             "asset" : "test.png",
+            "range" : 1,
             "stats": [  
-                {"id" :1,"amount":15}
+                {"id" :1,"amount":5},
+                {"id" :2,"amount":5}
             ],
             "upgrades": [
                 {
@@ -72,7 +74,11 @@
             "displayName": "Poggers",
             "price": 50,
             "asset" : "Tiles/tile_0243.png",
-            "stats": [ {"id" :1,"amount":15} ],
+            "range" : 4,
+            "stats": [ 
+                {"id" :1,"amount":5},
+                {"id" :2,"amount":100}
+            ],
             "upgrades": [
                 {
                     "ID": -1,
@@ -99,19 +105,36 @@
         },
         {
             "id": 1,
-            "displayName": "Normal",
+            "displayName": "Damage",
             "asset": "test.png"
+        },
+        {
+            "id" :2,
+            "displayName" : "Cooldown",
+            "asset" : "test.png"
         }
     ],
     "mobs": [
         {
             "id": 0,
             "moneyOnKill" : 10,
-            "speed" : 1.0,
+            "speed" :20,
             "displayName": "Undefined",
-            "asset": "test.png",
+            "asset": "Ant.png",
+            "damage" : 10,
             "stats":[
                 {"id" :0,"amount":15}
+            ]
+        },
+        {
+            "id": 1,
+            "moneyOnKill" : 10,
+            "speed" :10,
+            "displayName": "Undefined",
+            "asset": "RedAnt.png",
+            "damage" : 4,
+            "stats":[
+                {"id" :0,"amount":35}
             ]
         }
     ],
@@ -125,6 +148,7 @@
     },{
         "delay" : 0,
         "mobs":[
+            { "id": 1, "amount" : 5 },
             { "id": 0, "amount" : 100 }
         ],
         "moneyOnComplete": 10    

@@ -2,7 +2,9 @@
 
 #include <iostream>
 
-#include "../Tower.h"
+
+#include "Mob.h"
+#include "Tower.h"
 #include "../Engine/FSM/Transition.h"
 #include "../Engine/UI/UIButton.h"
 #include "GameStates/GameFSM.h"
@@ -11,6 +13,9 @@
 #include "../Engine/FSM/FSM.h"
 #include "Events/PlaceBuildingEvent.h"
 #include "Events/StartBuildEvent.h"
+
+
+#define MapJsonData(valueName,source) json.at(#valueName).get_to(source.valueName);
 
 GameLevel::GameLevel()
 {
@@ -34,7 +39,8 @@ GameLevel::GameLevel()
 			GuardCastCheck(PlaceBuildingEvent, placeBuildingEvent);
 			TowerData* tData = placeBuildingEvent->towerData;
 			SpendMoney(tData->price);
-			RegisterObject(new Tower(tData, placeBuildingEvent->tile, placeBuildingEvent->location, vec2(CalculateTileWidth(), CalculateTileHeight())));
+			Tower* tower = new Tower(tData, placeBuildingEvent->tile, placeBuildingEvent->location, vec2(CalculateTileWidth(), CalculateTileHeight()));
+			RegisterObject(reinterpret_cast<GameObject*&>(tower));
 			return true;
 		});
 	auto* BuildToPlayWithFailedBuild = new GameTransition(buildingState, playingState, [buildTestGuard](Event* event)
@@ -52,11 +58,19 @@ GameLevel::GameLevel()
 void GameLevel::RegisterObject(GameObject* obj)
 {
 	Level::RegisterObject(obj);
-	Tower* tower = reinterpret_cast<Tower*>(obj);
+	Tower* tower = dynamic_cast<Tower*>(obj);
 	if (tower != nullptr)
 	{
-		PlacedTowers.insert(begin(PlacedTowers), std::pair<Tmpl8::vec2, GameObject*>(tower->tile, obj));
+		placedTowers.insert(begin(placedTowers), std::pair<Tmpl8::vec2, GameObject*>(tower->tile, obj));
+		return;
 	}
+
+	Mob* mob = dynamic_cast<Mob*>(obj);
+	if (mob != nullptr)
+	{
+		activeMobs.insert(begin(activeMobs), mob);
+	}
+
 }
 
 uint GameLevel::GetMoney() const
@@ -73,6 +87,21 @@ bool GameLevel::SpendMoney(uint amount)
 	return true;
 }
 
+void GameLevel::AddMoney(uint amount)
+{
+	Money += amount;
+	MoneyText = "Money: " + std::to_string(Money);
+}
+
+bool GameLevel::TakeDamage(int amount)
+{
+	if (amount > Health) return true;
+	Health -= amount;
+	HealthText = "Health: " + std::to_string(Health);
+
+	return false;
+}
+
 bool GameLevel::CanPlaceTower(float x, float y, TowerData* tower)
 {
 	auto* p = GetMapSprite((int)x, (int)y);
@@ -86,7 +115,7 @@ bool GameLevel::CanPlaceTower(float x, float y, TowerData* tower)
 	vec2 tVec2 = vec2(x, y);
 
 
-	for (auto element : PlacedTowers)
+	for (auto element : placedTowers)
 	{
 		if (element.first == tVec2) return false;
 	}
@@ -95,6 +124,63 @@ bool GameLevel::CanPlaceTower(float x, float y, TowerData* tower)
 
 	return true;
 }
+
+void GameLevel::StartNextWave()
+{
+	if (waveInstance != nullptr)
+	{
+		printf("Attempted to start wave while one is already active");
+		return;
+	}
+
+	activeMobs.clear();
+	waveIndex++;
+	waveInstance = mapStyle->GetWave(waveIndex);
+}
+
+void GameLevel::Tick(float deltaTime)
+{
+	Level::Tick(deltaTime);
+	gameState->Tick(deltaTime);
+
+	if (waveInstance != nullptr)
+	{
+		if (waveStep >= (int)waveInstance->waves.size())
+		{
+			if (activeMobCount > 0)return;
+			waveInstance = nullptr;
+			waveTimer = 0;
+			waveStep = 0;
+			return;
+		}
+
+
+		waveTimer -= deltaTime;
+		if (waveTimer > 0)
+			return;
+
+		//TODO SPAWN MOB
+		float w = CalculateTileWidth();
+		float h = CalculateTileHeight();
+
+		spawnedOfCurrentMobType++;
+		waveTimer = w / waveInstance->waves[waveStep].mob->speed * 100;
+
+		activeMobCount++;
+		Mob* mob = new Mob(waveInstance->waves[waveStep].mob, &route, vec2(w, h));
+		RegisterObject(reinterpret_cast<GameObject*&>(mob));
+
+		if (waveInstance->waves[waveStep].amount == spawnedOfCurrentMobType)
+		{
+			waveStep++;
+			spawnedOfCurrentMobType = 0;
+		}
+		//if (CompletedSubWave)
+	}
+
+}
+
+
 
 void GameLevel::CreateUI(UiContainer* UI)
 {
@@ -112,16 +198,119 @@ void GameLevel::CreateUI(UiContainer* UI)
 
 		TowerData* tower = mapStyle->towers[i].get();
 
-		style.Image = tower->asset;
+		style.Image = tower->asset.get();
 
 		UI->Button(45 + (90 * i), 60, 40, 40)
 			->SetStyle(style)
-			->SetOnClick([this, tower] { gameState->InvokeEvent(new StartBuildEvent(tower)); })
+			->SetOnClick([this, tower]
+				{
+					gameState->InvokeEvent(new StartBuildEvent(tower));
+				})
 			->SetIsActiveLambda([this, tower] { return Money >= static_cast<uint>(tower->price); });
 
-		UI->Text(45 + (90 * i), 120, tower->displayName);
-		UI->Text(45 + (90 * i), 140, "Cost: " + std::to_string(tower->price));
+				UI->Text(45 + (90 * i), 120, tower->displayName);
+				UI->Text(45 + (90 * i), 140, "Cost: " + std::to_string(tower->price));
+	}
+	UI->Button(EngineGlobal::GetWidth() - 80, UI->GetHeight() - 40, 50, 20)
+		->SetIsHiddenLambda([this]() {return waveInstance != nullptr; })
+		->SetOnClick([this]() {StartNextWave(); })
+		->SetText(&StartNextWaveText);
+
+	UI->Text(EngineGlobal::GetWidth() - 80, 20, &MoneyText);
+	UI->Text(EngineGlobal::GetWidth() - 80, 40, &HealthText);
+}
+
+void from_json(const nlohmann::json& json, GameLevel& lvl)
+{
+	json.get_to<Level>(lvl);
+	MapJsonData(Money, lvl);
+	lvl.MoneyText = "MONEY: " + std::to_string(lvl.Money);
+
+	auto startPos = json.at("startPos").get<std::vector<int>>();
+
+	auto mapPoints = json["map"].get<	std::vector<std::vector<int>>>();
+
+	vec2 CurrentLocation = vec2((float)startPos[0], (float)startPos[1]);
+
+	std::vector<vec2> route = std::vector<vec2>();
+
+	MapSprite* mapSprite = lvl.GetMapSprite(startPos[0], startPos[1]);
+	if (!mapSprite->canWalk)
+	{
+		assert("START POS IS NOT WALKABLE");
 	}
 
-	UI->Text(500, 20, &MoneyText);
+	route.insert(begin(route), CurrentLocation);
+
+	while (true)
+	{
+		bool FoundNextPos = false;
+		for (int x = -1; x < 2; x += 1)
+		{
+			int finalX = (int)CurrentLocation.x + x;
+			if (finalX < 0 && finalX < (int)mapPoints[0].size())
+				continue;
+
+			for (int y = -1; y < 2; y += 1)
+			{
+				if (x == 1 && y == 1)
+					continue;
+
+				//TODO some forloop math should allow us to not even try and waste a itteration on this corner check bs
+				if (x == -1 && y == -1)
+					continue;
+				if (x == 1 && y == -1)
+					continue;
+				if (x == -1 && y == 1)
+					continue;
+				if (x == 1 && y == 1)
+					continue;
+
+				int finalY = (int)CurrentLocation.y + y;
+				if (finalY < 0 && finalY < (int)mapPoints.size())
+					continue;
+
+				if (std::find_if(begin(route), end(route), [finalX, finalY](vec2 elem) {return elem.x == finalX && elem.y == finalY; }) != end(route))
+					continue;
+
+				MapSprite* mapSprite = lvl.GetMapSprite(finalX, finalY);
+				if (mapSprite != nullptr && mapSprite->canWalk)
+				{
+					CurrentLocation = vec2((float)finalX, (float)finalY);
+					route.insert(end(route), CurrentLocation);
+					FoundNextPos = true;
+					break;
+				}
+			}
+			if (FoundNextPos)
+				break;
+		}
+
+		if (!FoundNextPos)
+		{
+			//assume we reached the end
+			printf("end?");
+			break;
+		}
+
+	}
+	lvl.route = route;
+
+	//Path debug info
+		/*
+	float h = lvl.CalculateTileHeight();
+	float w = lvl.CalculateTileWidth();
+	vec2 start = route[0];
+
+	for (int i = 1; i < route.size(); ++i)
+	{
+		vec2 end = route[i];
+
+		lvl.surface->Line(start.x * w + w * 0.5f, start.y * h + h * 0.5f, end.x * w + w * 0.5f, end.y * h + h * 0.5f, 0xff00000);
+		start = end;
+	}
+	*/
 }
+
+
+#undef MapJsonData

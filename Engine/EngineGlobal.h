@@ -1,6 +1,6 @@
 #pragma once
 #include "../surface.h"
-#include "TypeInfo/Reflections.h"
+#include "json.hpp"
 
 /*
 #define JSON_Reflected(ClassName)								\
@@ -23,7 +23,7 @@ namespace nlohmann {
 	//https://github.com/nlohmann/json/issues/975
 	template <typename T>
 	struct adl_serializer<std::unique_ptr<T>> {
-		static void to_json(json& j, const std::unique_ptr<T>& opt) {
+		static void to_json(nlohmann::json& j, const std::unique_ptr<T>& opt) {
 			if (opt.get()) {
 				j = *opt.get();
 			}
@@ -31,7 +31,7 @@ namespace nlohmann {
 				j = nullptr;
 			}
 		}
-		static void from_json(const json& j, std::unique_ptr<T>& value) {
+		static void from_json(const nlohmann::json& j, std::unique_ptr<T>& value) {
 			if (j.is_null()) value = nullptr;
 			else if (value != nullptr)
 			{
@@ -45,9 +45,9 @@ namespace nlohmann {
 	};
 	template <>
 	struct adl_serializer<Tmpl8::Sprite> {
-		static void to_json(json& j, const Tmpl8::Sprite& opt) {
+		static void to_json(nlohmann::json& j, const Tmpl8::Sprite& opt) {
 		}
-		static void from_json(const json& j, Tmpl8::Sprite& value) {
+		static void from_json(const nlohmann::json& j, Tmpl8::Sprite& value) {
 			value = Tmpl8::Sprite(new Tmpl8::Surface(const_cast<char*>(j.get<std::string>().c_str())), 1);
 		}
 
@@ -72,19 +72,15 @@ private:
 };
 
 
+//Wish i could make these protected but cant fidn out how to make function be be caleld recursive (Friend relationship fails ?)
 class IRenderable
 {
-protected:
-	friend class Game;
-	friend class UiContainer;
-	friend class Level;
+public:
 	virtual void Render(Tmpl8::Surface* surface) = 0;
 };
 
 class ITickable
 {
 public:
-	virtual ~ITickable() = default;
-protected:
-	virtual void Tick() = 0;
+	virtual void Tick(float deltaTime) = 0;
 };

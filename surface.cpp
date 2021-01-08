@@ -4,6 +4,7 @@
 #include "surface.h"
 #include "template.h"
 #include <cassert>
+#include <cmath>
 #include <cstring>
 #include "FreeImage.h"
 
@@ -479,7 +480,7 @@ namespace Tmpl8 {
 				int fy = y + a_Y;
 				if (fy < 0 || fy> a_Target->GetHeight()) continue;
 
-				int u = (int)((float)x * ((float)m_Width / (float)a_Width));
+				int u = (int)((float)x * ((float)m_Width / (float)a_Width)) + (m_CurrentFrame * m_Width);
 				int v = (int)((float)y * ((float)m_Height / (float)a_Height));
 				Pixel color = GetBuffer()[u + v * m_Pitch];
 				if (a_Target->GetWidth() * a_Target->GetHeight() < fx + (fy * a_Target->GetPitch()))
@@ -490,20 +491,109 @@ namespace Tmpl8 {
 		}
 	}
 
+	void Sprite::BlendScaled(int a_X, int a_Y, int a_Width, int a_Height, Pixel bColor, Surface* a_Target)
+	{
+		if ((a_Width == 0) || (a_Height == 0)) return;
+		for (int x = 0; x < a_Width; x++) {
+			int fx = x + a_X;
+			if (fx < 0 || fx > a_Target->GetWidth())continue;
+
+			for (int y = 0; y < a_Height; y++)
+			{
+				int fy = y + a_Y;
+				if (fy < 0 || fy> a_Target->GetHeight()) continue;
+
+				int u = (int)((float)x * ((float)m_Width / (float)a_Width)) + (m_CurrentFrame * m_Width);
+				int v = (int)((float)y * ((float)m_Height / (float)a_Height));
+				Pixel color = GetBuffer()[u + v * m_Pitch];
+				if (a_Target->GetWidth() * a_Target->GetHeight() < fx + (fy * a_Target->GetPitch()))
+					continue;
+
+				Pixel SourceColor = a_Target->GetBuffer()[fx + (fy * a_Target->GetPitch())];
+
+				if (color & 0xffffff) a_Target->GetBuffer()[fx + (fy * a_Target->GetPitch())] = SubBlend(SourceColor, AddBlend(color, bColor));
+			}
+		}
+	}
+
 	void Sprite::DrawScaled(int a_X, int a_Y, int a_Width, int a_Height, Pixel blendColor, Surface* a_Target)
 	{
 		if ((a_Width == 0) || (a_Height == 0)) return;
-		for (int x = 0; x < a_Width; x++)
+		for (int x = 0; x < a_Width; x++) {
+			int fx = x + a_X;
+			if (fx < 0 || fx > a_Target->GetWidth())continue;
+
 			for (int y = 0; y < a_Height; y++)
 			{
+				int fy = y + a_Y;
+				if (fy < 0 || fy> a_Target->GetHeight()) continue;
+
 				int u = (int)((float)x * ((float)m_Width / (float)a_Width));
 				int v = (int)((float)y * ((float)m_Height / (float)a_Height));
 				Pixel color = GetBuffer()[u + v * m_Pitch];
-				if (a_Target->GetWidth() * a_Target->GetHeight() < a_X + x + ((a_Y + y) * a_Target->GetPitch()))
+				if (a_Target->GetWidth() * a_Target->GetHeight() < fx + (fy * a_Target->GetPitch()))
 					continue;
 
-				if (color & 0xffffff) a_Target->GetBuffer()[a_X + x + ((a_Y + y) * a_Target->GetPitch())] = AddBlend(color, blendColor);
+				if (color & 0xffffff) a_Target->GetBuffer()[fx + (fy * a_Target->GetPitch())] = AddBlend(color, blendColor);
 			}
+		}
+	}
+
+
+	//Matrix math : https://www.youtube.com/watch?v=46ZzawP5gvs
+	// Moving element: ME
+	void Sprite::DrawScaled(int a_X, int a_Y, int a_Width, int a_Height, Surface* a_Target, int rotation)
+	{
+		int yRotation = rotation / 180 % 1 == 0 ? 1 : 0;
+		int xRotation = rotation / 90 % 1 == 1 ? 1 : 0;
+		//a_Width = (a_Width*-1+a_Height*0);
+		//a_Height = (a_Width*0+a_Height*-1);
+
+		//float xWidth = (float)m_Width / (float)a_Width;
+		//float yWidth = (float)m_Height / (float)a_Height;
+
+		int x1 = 0, x2 = 1;
+		int y1 = 1, y2 = 0;
+		if (yRotation == 1)
+		{
+			//	x1 = 0; x2 = -1;
+			//	y1 = -1;	 y2 = 0;
+		}
+
+		if ((a_Width == 0) || (a_Height == 0)) return;
+		for (int x = 0; x < abs(a_Width * x1 + a_Height * x2); x++) {
+			int fx = x + a_X;
+			if (fx < 0 || fx > a_Target->GetWidth())continue;
+
+			for (int y = 0; y < abs(a_Width * y1 + a_Height * y2); y++)
+			{
+				int fy = y + a_Y;
+				if (fy < 0 || fy> a_Target->GetHeight()) continue;
+
+				float t1 = (float)(x * x1 + y * x2);
+				float t2 = (float)(x * y1 + y * y2);
+
+				int u = (int)std::floor(t1 * ((float)(m_Width * x1 + m_Height * x2) / (float)abs(a_Width * x1 + a_Height * x2)));
+				int v = (int)std::floor(t2 * ((float)(m_Width * y1 + m_Height * y2) / (float)abs(a_Width * y1 + a_Height * y2)));
+
+				//int u = (int)((float)x * ((float)m_Width / (float)a_Width));
+				//int v = (int)((float)y * ((float)m_Height / (float)a_Height));
+
+
+				//int u = (int)(abs(xRotation - ((float)(x + 0.5f) / (float)a_Width)) * (float)a_Width * xWidth);
+				//int v = (int)(abs(yRotation - ((float)(y + 0.5f) / (float)a_Height)) * (float)a_Height * yWidth);
+				Pixel color;
+				//if (xRotation == 0)
+				color = GetBuffer()[u + v * m_Pitch];
+				//else
+				//	color = GetBuffer()[v + u * m_Pitch];
+
+				if (a_Target->GetWidth() * a_Target->GetHeight() < fx + (fy * a_Target->GetPitch()))
+					continue;
+
+				if (color & 0xffffff) a_Target->GetBuffer()[fx + (fy * a_Target->GetPitch())] = color;
+			}
+		}
 	}
 
 	void Sprite::InitializeStartData()

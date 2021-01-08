@@ -11,14 +11,14 @@
 			activeState->NAME(PARAM_NAME);				\
 	}
 
-#define GuardCastCheck(Type,Name)				\
-	Type* Name = reinterpret_cast<Type*>(event);\
-		if (Name == nullptr) return false;		\
+#define GuardCastCheck(Type,Name)						\
+	Type* Name = dynamic_cast<Type*>(event);		\
+		if (Name == nullptr) return false;				\
 
 #define DefaultGuardCastCheck(Type)						\
 	[](Event* event)									\
 	{													\
-		GuardCastCheck(StartBuildEvent, castedEvent);	\
+		GuardCastCheck(Type, castedEvent);				\
 														\
 		return true;									\
 	}													\
@@ -28,7 +28,7 @@ namespace Tmpl8 {
 }
 
 template<typename Transition, typename Event, typename State>
-class FSM
+class FSM : IRenderable, ITickable
 {
 protected:
 	std::vector<std::unique_ptr<Transition>> transitions;
@@ -97,8 +97,8 @@ private:
 		OnStateRegister(state);
 	}
 public:
-	StateCallWrapper(Update, float, deltaTime);
-	StateCallWrapper(Draw, Tmpl8::Surface*, surface);
+	StateCallWrapper(Tick, float, deltaTime);
+	StateCallWrapper(Render, Tmpl8::Surface*, surface);
 	StateCallWrapper(OnMouseMove, Tmpl8::vec2, pos);
 	StateCallWrapper(OnMouseDown, Tmpl8::vec2, pos);
 };

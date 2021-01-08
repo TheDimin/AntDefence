@@ -15,6 +15,11 @@ void Level::OnLevelLoaded()
 	}
 }
 
+Level::Level()
+{
+	uiContainer = std::make_unique<UiContainer>(nullptr, 0, (int)ceil(EngineGlobal::GetHeight() * 0.8f));
+}
+
 std::string Level::GetLevelName() const
 {
 	return name;
@@ -43,6 +48,35 @@ MapSprite* Level::GetMapSprite(int width, int height)
 void Level::RegisterObject(GameObject* obj)
 {
 	objects.insert(end(objects), std::unique_ptr<GameObject>(obj));
+	obj->SetLvl(this);
+}
+
+void Level::DeleteObject(GameObject* obj)
+{
+	auto it = remove_if(begin(objects), end(objects),
+		[obj](std::unique_ptr<GameObject>& sObj)
+		{
+			return sObj.get() == obj;
+		});
+	obj = nullptr;
+}
+
+void Level::Render(Surface* surface)
+{
+	for (auto& element : objects)
+	{
+		if (element != nullptr)
+			element->Render(surface);
+	}
+}
+
+void Level::Tick(float deltaTime)
+{
+	for (auto& obj : objects)
+	{
+		if (obj != nullptr)
+			obj->Tick(deltaTime);
+	}
 }
 
 void from_json(const nlohmann::json& nlohmann_json_j, Level& lvl)

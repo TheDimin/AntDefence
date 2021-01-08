@@ -2,8 +2,8 @@
 #include <iostream>
 #include <SDL_mouse.h>
 
-#include "LevelHelper.h"
 #include "surface.h"
+#include "Engine/LevelHelper.h"
 #include "Game/GameLevel.h"
 
 using namespace Tmpl8;
@@ -45,13 +45,11 @@ void Game::Tick(float deltaTime)
 {
 	// clear the graphics window
 	screen->Clear(0);
-	LoadedLevel->Update(deltaTime);
+	LoadedLevel->Tick(deltaTime);
 
 	LoadedLevel->surface->CopyTo(screen, 0, 0);
-	LoadedLevel->Draw(screen);
-	LoadedLevel->uiContainer->Tick(); // we could do some tricks to only update ui x times a second
-
-	LoadedLevel->uiContainer->surface->CopyTo(screen, 0, (int)ceil(EngineGlobal::GetHeight() * 0.8f));
+	LoadedLevel->Render(screen);
+	LoadedLevel->uiContainer->Render(screen); // we could do some tricks to only update ui x times a second
 
 	for (IRenderable* IRender : Renderables)
 	{

@@ -3,5 +3,5 @@
 
 class Component
 {
-	REFLECT_CLASS(Component)
+	//REFLECT_CLASS(Component)
 };

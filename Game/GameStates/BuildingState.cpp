@@ -13,6 +13,16 @@
 #include "../Events/StartBuildEvent.h"
 
 
+BuildingState::BuildingState()
+{
+	circleSprite = new Tmpl8::Sprite(new Tmpl8::Surface("assets/Circle.png"), 1);
+}
+
+BuildingState::~BuildingState()
+{
+	delete circleSprite;
+}
+
 void BuildingState::OnStateEnter(Event* e)
 {
 	int x, y = 0;
@@ -29,7 +39,7 @@ void BuildingState::OnStateExit(Event* newEvent)
 	std::cout << "[BuildingState]: OnStateExit" << std::endl;
 }
 
-void BuildingState::Update(float deltaTime)
+void BuildingState::Tick(float deltaTime)
 {
 
 }
@@ -42,14 +52,26 @@ void BuildingState::OnMouseDown(Tmpl8::vec2& mousePos)
 	level->gameState->InvokeEvent(new PlaceBuildingEvent(vec2(w, h), vec2(((float)level->CalculateTileWidth() * w), level->CalculateTileHeight() * h), vec2(level->CalculateTileWidth(), level->CalculateTileHeight()), SelectedBuildTower));
 }
 
-void BuildingState::Draw(Tmpl8::Surface* surface)
+void BuildingState::Render(Tmpl8::Surface* surface)
 {
 	float drawX = floor((mousePos.x) / level->CalculateTileWidth());
 	float drawY = floor((mousePos.y) / level->CalculateTileHeight());
-	if (!level->CanPlaceTower(drawX, drawY, SelectedBuildTower))
-		SelectedBuildTower->asset->DrawScaled((int)level->CalculateTileWidth() * drawX, (int)level->CalculateTileHeight() * drawY, (int)level->CalculateTileWidth(), (int)level->CalculateTileHeight(), 0xb30000, surface);
+	bool canPlaceTower = level->CanPlaceTower(drawX, drawY, SelectedBuildTower);
+	drawX = level->CalculateTileWidth() * drawX;
+	drawY = level->CalculateTileHeight() * drawY;
+
+	float w = level->CalculateTileWidth() * (SelectedBuildTower->range + 2);
+	float h = level->CalculateTileHeight() * (SelectedBuildTower->range + 2);
+
+	circleSprite->BlendScaled(
+		(int)(drawX - (w * 0.5f - level->CalculateTileWidth() * .5f)),
+		(int)(drawY - (h * 0.5f - level->CalculateTileHeight() * .5f)),
+		(int)w, (int)h, 0x383838, surface);
+
+	if (!canPlaceTower)
+		SelectedBuildTower->asset->DrawScaled((int)drawX, (int)drawY, (int)level->CalculateTileWidth(), (int)level->CalculateTileHeight(), 0xb30000, surface);
 	else
-		SelectedBuildTower->asset->DrawScaled((int)level->CalculateTileWidth() * drawX, (int)level->CalculateTileHeight() * drawY, (int)floor(level->CalculateTileWidth()), (int)floor(level->CalculateTileHeight()), surface);
+		SelectedBuildTower->asset->DrawScaled((int)drawX, (int)drawY, (int)floor(level->CalculateTileWidth()), (int)floor(level->CalculateTileHeight()), surface);
 }
 
 void BuildingState::OnMouseMove(Tmpl8::vec2& mousePos)

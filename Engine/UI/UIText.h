@@ -8,8 +8,8 @@ class UIText :public UIElement
 public:
 	UIText* SetText(std::string* text);
 	UIText* SetText(std::string& text);
-protected:
 	void Render(class Tmpl8::Surface* surface) override;
+protected:
 	void OnBeginHover() override;
 	void OnClick() override;
 	void OnEndHover() override;
