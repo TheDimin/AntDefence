@@ -1,0 +1,352 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{D8FE2186-4BF0-4B89-913F-6C26818E5AC5}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>NotSet</CharacterSet>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>NotSet</CharacterSet>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>NotSet</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>NotSet</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <OutDir>$(SolutionDir)</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+    <TargetName>$(ProjectName)_x64</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <OutDir>$(SolutionDir)</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+    <TargetName>$(ProjectName)_x64_debug</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <TargetName>$(ProjectName)_x86_debug</TargetName>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <TargetName>$(ProjectName)_x86</TargetName>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>E:\OneDrive - ROC van Twente\HBO\Intake;lib;lib\OpenGL;lib\SDL2-2.0.3\include;lib\freeimage\inc;lib\nlohmann</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <StructMemberAlignment>Default</StructMemberAlignment>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>winmm.lib;advapi32.lib;user32.lib;sdl2.lib;sdl2main.lib;opengl32.lib;freeimage.lib</AdditionalDependencies>
+      <OutputFile>$(TargetPath)</OutputFile>
+      <AdditionalLibraryDirectories>lib\SDL2-2.0.3\lib\x86;lib\freeimage\lib32</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>msvcrt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>E:\OneDrive - ROC van Twente\HBO\Intake;lib;lib\OpenGL;lib\SDL2-2.0.3\include;lib\freeimage\inc;lib\nlohmann</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <StructMemberAlignment>Default</StructMemberAlignment>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>winmm.lib;advapi32.lib;user32.lib;sdl2.lib;sdl2main.lib;opengl32.lib;freeimage.lib</AdditionalDependencies>
+      <OutputFile>$(TargetPath)</OutputFile>
+      <AdditionalLibraryDirectories>lib\SDL2-2.0.3\lib\x64;lib\freeimage\lib64</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>msvcrt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>Full</Optimization>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <AdditionalIncludeDirectories>E:\OneDrive - ROC van Twente\HBO\Intake;lib;lib\OpenGL;lib\SDL2-2.0.3\include;lib\freeimage\inc;lib\nlohmann</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <BrowseInformation>
+      </BrowseInformation>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>winmm.lib;advapi32.lib;user32.lib;sdl2.lib;sdl2main.lib;opengl32.lib;freeimage.lib</AdditionalDependencies>
+      <OutputFile>$(TargetPath)</OutputFile>
+      <AdditionalLibraryDirectories>lib\SDL2-2.0.3\lib\x86;lib\freeimage\lib32</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>LIBCMT;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <LinkTimeCodeGeneration>
+      </LinkTimeCodeGeneration>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <Optimization>Full</Optimization>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <AdditionalIncludeDirectories>E:\OneDrive - ROC van Twente\HBO\Intake;lib;lib\OpenGL;lib\SDL2-2.0.3\include;lib\freeimage\inc;lib\nlohmann</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN64;NDEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <BrowseInformation>
+      </BrowseInformation>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>winmm.lib;advapi32.lib;user32.lib;sdl2.lib;sdl2main.lib;opengl32.lib;freeimage.lib</AdditionalDependencies>
+      <OutputFile>$(TargetPath)</OutputFile>
+      <AdditionalLibraryDirectories>lib\SDL2-2.0.3\lib\x64;lib\freeimage\lib64</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>LIBCMT;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <LinkTimeCodeGeneration>
+      </LinkTimeCodeGeneration>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Game\gamestates\GameState.cpp" />
+    <ClCompile Include="Game\Events\PlaceBuildingEvent.cpp" />
+    <ClCompile Include="Game\Events\StartBuildEvent.cpp" />
+    <ClCompile Include="Game\Events\TargetFoundEvent.cpp" />
+    <ClCompile Include="Game\GameStates\BuildingState.cpp" />
+    <ClCompile Include="Engine\AssetManager.cpp" />
+    <ClCompile Include="Engine\EngineGlobal.cpp" />
+    <ClCompile Include="Engine\Component.cpp" />
+    <ClCompile Include="Engine\TypeInfo\Type.cpp" />
+    <ClCompile Include="Engine\FSM\FSM.cpp" />
+    <ClCompile Include="Engine\FSM\State.cpp" />
+    <ClCompile Include="Engine\FSM\TransitionBase.cpp" />
+    <ClCompile Include="Engine\MissionBase.cpp" />
+    <ClCompile Include="Engine\FSM\Event.cpp" />
+    <ClCompile Include="Engine\TypeInfo\TypeConverters.cpp" />
+    <ClCompile Include="game.cpp" />
+    <ClCompile Include="Engine\GameObject.cpp" />
+    <ClCompile Include="Engine\Level.cpp" />
+    <ClCompile Include="Engine\TypeInfo\PropInfo.cpp" />
+    <ClCompile Include="Engine\TypeInfo\Reflections.cpp" />
+    <ClCompile Include="Game\GameLevel.cpp" />
+    <ClCompile Include="Game\Mob.cpp" />
+    <ClCompile Include="Game\Style.cpp" />
+    <ClCompile Include="Game\TowerStates\TowerIdleState.cpp" />
+    <ClCompile Include="Engine\LevelHelper.cpp" />
+    <ClCompile Include="Game\gamestates\GameFSM.cpp" />
+    <ClCompile Include="Game\GameStates\PlayingState.cpp" />
+    <ClCompile Include="surface.cpp" />
+    <ClCompile Include="Game\Events\TargetLostEvent.cpp" />
+    <ClCompile Include="template.cpp" />
+    <ClCompile Include="Engine\UI\UIButton.cpp" />
+    <ClCompile Include="Engine\UI\UIContainer.cpp" />
+    <ClCompile Include="Engine\UI\UIElement.cpp" />
+    <ClCompile Include="Engine\UI\UIHelpers.cpp" />
+    <ClCompile Include="Engine\UI\UIText.cpp" />
+    <ClCompile Include="Game\Tower.cpp" />
+    <ClCompile Include="Game\TowerStates\TowerAtackingState.cpp" />
+    <ClCompile Include="Game\TowerStates\TowerFSM.cpp" />
+    <ClCompile Include="Game\TowerStates\TowerState.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Engine\AssetManager.h" />
+    <ClInclude Include="Engine\EngineGlobal.h" />
+    <ClInclude Include="Engine\Component.h" />
+    <ClInclude Include="Engine\FSM\Event.h" />
+    <ClInclude Include="Engine\FSM\FSM.h" />
+    <ClInclude Include="Engine\FSM\State.h" />
+    <ClInclude Include="Engine\Level.h" />
+    <ClInclude Include="Engine\MissionBase.h" />
+    <ClInclude Include="Engine\TypeInfo\Type.h" />
+    <ClInclude Include="Engine\TypeInfo\PropInfo.h" />
+    <ClInclude Include="Engine\TypeInfo\TypeConverters.h" />
+    <ClInclude Include="game.h" />
+    <ClInclude Include="Engine\GameObject.h" />
+    <ClInclude Include="Engine\TypeInfo\Reflections.h">
+      <DeploymentContent>false</DeploymentContent>
+    </ClInclude>
+    <ClInclude Include="Game\GameStates\GameState.h" />
+    <ClInclude Include="Game\Events\PlaceBuildingEvent.h" />
+    <ClInclude Include="Game\Events\StartBuildEvent.h" />
+    <ClInclude Include="Game\Events\TargetFoundEvent.h" />
+    <ClInclude Include="Game\Events\TargetLostEvent.h" />
+    <ClInclude Include="Game\GameLevel.h" />
+    <ClInclude Include="Game\GameStates\BuildingState.h" />
+    <ClInclude Include="Game\gamestates\GameFSM.h" />
+    <ClInclude Include="Game\Mob.h" />
+    <ClInclude Include="Game\Style.h" />
+    <ClInclude Include="Game\TowerStates\TowerAtackingState.h" />
+    <ClInclude Include="Game\TowerStates\TowerIdleState.h" />
+    <ClInclude Include="Game\TowerStates\TowerState.h" />
+    <ClInclude Include="Engine\LevelHelper.h" />
+    <ClInclude Include="lib\nlohmann\adl_serializer.hpp" />
+    <ClInclude Include="lib\nlohmann\byte_container_with_subtype.hpp" />
+    <ClInclude Include="lib\nlohmann\detail\conversions\from_json.hpp" />
+    <ClInclude Include="lib\nlohmann\detail\conversions\to_chars.hpp" />
+    <ClInclude Include="lib\nlohmann\detail\conversions\to_json.hpp" />
+    <ClInclude Include="lib\nlohmann\detail\exceptions.hpp" />
+    <ClInclude Include="lib\nlohmann\detail\hash.hpp" />
+    <ClInclude Include="lib\nlohmann\detail\input\binary_reader.hpp" />
+    <ClInclude Include="lib\nlohmann\detail\input\input_adapters.hpp" />
+    <ClInclude Include="lib\nlohmann\detail\input\json_sax.hpp" />
+    <ClInclude Include="lib\nlohmann\detail\input\lexer.hpp" />
+    <ClInclude Include="lib\nlohmann\detail\input\parser.hpp" />
+    <ClInclude Include="lib\nlohmann\detail\input\position_t.hpp" />
+    <ClInclude Include="lib\nlohmann\detail\iterators\internal_iterator.hpp" />
+    <ClInclude Include="lib\nlohmann\detail\iterators\iteration_proxy.hpp" />
+    <ClInclude Include="lib\nlohmann\detail\iterators\iterator_traits.hpp" />
+    <ClInclude Include="lib\nlohmann\detail\iterators\iter_impl.hpp" />
+    <ClInclude Include="lib\nlohmann\detail\iterators\json_reverse_iterator.hpp" />
+    <ClInclude Include="lib\nlohmann\detail\iterators\primitive_iterator.hpp" />
+    <ClInclude Include="lib\nlohmann\detail\json_pointer.hpp" />
+    <ClInclude Include="lib\nlohmann\detail\json_ref.hpp" />
+    <ClInclude Include="lib\nlohmann\detail\macro_scope.hpp" />
+    <ClInclude Include="lib\nlohmann\detail\macro_unscope.hpp" />
+    <ClInclude Include="lib\nlohmann\detail\meta\cpp_future.hpp" />
+    <ClInclude Include="lib\nlohmann\detail\meta\detected.hpp" />
+    <ClInclude Include="lib\nlohmann\detail\meta\is_sax.hpp" />
+    <ClInclude Include="lib\nlohmann\detail\meta\type_traits.hpp" />
+    <ClInclude Include="lib\nlohmann\detail\meta\void_t.hpp" />
+    <ClInclude Include="lib\nlohmann\detail\output\binary_writer.hpp" />
+    <ClInclude Include="lib\nlohmann\detail\output\output_adapters.hpp" />
+    <ClInclude Include="lib\nlohmann\detail\output\serializer.hpp" />
+    <ClInclude Include="lib\nlohmann\detail\value_t.hpp" />
+    <ClInclude Include="lib\nlohmann\json.hpp" />
+    <ClInclude Include="lib\nlohmann\json_fwd.hpp" />
+    <ClInclude Include="lib\nlohmann\ordered_map.hpp" />
+    <ClInclude Include="lib\nlohmann\thirdparty\hedley\hedley.hpp" />
+    <ClInclude Include="lib\nlohmann\thirdparty\hedley\hedley_undef.hpp" />
+    <ClInclude Include="Game\GameStates\PlayingState.h" />
+    <ClInclude Include="surface.h" />
+    <ClInclude Include="template.h" />
+    <ClInclude Include="Engine\FSM\Transition.h" />
+    <ClInclude Include="Engine\UI\UiButton.h" />
+    <ClInclude Include="Engine\UI\UIContainer.h" />
+    <ClInclude Include="Engine\UI\UIHelpers.h" />
+    <ClInclude Include="Engine\UI\UIElement.h" />
+    <ClInclude Include="Engine\UI\UIText.h" />
+    <ClInclude Include="Game\Tower.h" />
+    <ClInclude Include="Game\TowerStates\TowerFSM.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="_readme.txt" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+</Project>
