@@ -5,13 +5,14 @@
 #include "surface.h"
 #include "Engine/LevelHelper.h"
 #include "Game/GameLevel.h"
+#include "Game/MainMenu.h"
 
 using namespace Tmpl8;
 
 
 Game::~Game()
 {
-	delete LoadedLevel;
+	delete NewLevel;
 }
 
 // -----------------------------------------------------------
@@ -20,7 +21,10 @@ Game::~Game()
 void Game::Init()
 {
 	//Load default level
-	LoadedLevel = LevelHelper::Load<GameLevel>("Test");
+	MainMenu* mmLvl = LevelHelper::Load<MainMenu>("MainMenu");
+	mmLvl->game = this;
+	Game::LoadedLevel = std::unique_ptr<Level>(mmLvl);
+
 	//
 	//LoadedLevel->objects.insert(LoadedLevel->objects.begin(), std::make_unique<GameObject>());
 	//std::cout << LoadedLevel->mapStyle->sprites[0]->asset << std::endl;
@@ -55,7 +59,10 @@ void Game::Tick(float deltaTime)
 	{
 		IRender->Render(screen);
 	}
-
+	if (NewLevel != nullptr) {
+		LoadedLevel = std::unique_ptr<Level>(NewLevel);
+		NewLevel = nullptr;
+	}
 
 }
 
@@ -67,19 +74,9 @@ void Game::MouseDown(int button)
 	SDL_GetMouseState(&x, &y);
 
 	LoadedLevel->OnMouseDown(Tmpl8::vec2((float)x, (float)y));
-
-	for (auto& element : LoadedLevel->uiContainer->Elements)
-	{
-		element->OnMouseDown();
-	}
 }
 
 void Game::MouseMove(int x, int y, int Ax, int Ay)
 {
 	LoadedLevel->OnMouseMove(vec2((float)x, (float)y));
-
-	for (auto& element : LoadedLevel->uiContainer->Elements)
-	{
-		element->OnMouseMove(x, y);
-	}
 }

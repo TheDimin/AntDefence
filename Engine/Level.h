@@ -7,7 +7,7 @@
 
 class Level :ITickable, IRenderable
 {
-public:
+private:
 	void OnLevelLoaded();
 
 public:
@@ -31,8 +31,15 @@ public:
 	virtual void Render(Tmpl8::Surface* surface) override;
 	void Tick(float deltaTime) override;
 
-	virtual void OnMouseMove(vec2 pos) {};
-	virtual void OnMouseDown(vec2 pos) {};
+
+	virtual void OnMouseMove(vec2 mousePos)
+	{
+		uiContainer->OnMouseMove(mousePos);
+	};
+	virtual void OnMouseDown(vec2 mousePos)
+	{
+		uiContainer->OnMouseDown();
+	};
 
 protected:
 	friend class LevelHelper; friend class Game;
@@ -40,9 +47,13 @@ protected:
 	std::unique_ptr<Tmpl8::Surface> surface;
 	std::vector<std::unique_ptr<GameObject>> objects;
 	std::vector<std::vector<int>> maptiles;
+	std::vector<GameObject*> ToDeleteObjects = std::vector<GameObject*>();
+
 protected:
+	virtual void OnLoad() {};
 	virtual void CreateUI(UiContainer* UI) = 0;
 	std::unique_ptr<UiContainer> uiContainer;
+
 };
 
 

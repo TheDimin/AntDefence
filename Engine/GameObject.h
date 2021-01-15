@@ -10,7 +10,7 @@ public:
 		centerLocation = Tmpl8::vec2(location.x + size.x * 0.5f, location.y + size.y * 0.5f);
 	};
 
-	~GameObject()
+	virtual ~GameObject()
 	{
 		printf("Deconsturctor called \n");
 	}
@@ -21,10 +21,6 @@ public:
 	void Render(Tmpl8::Surface* surface) override
 	{
 		sprite->DrawScaled((int)drawLocation.x, (int)drawLocation.y, (int)size.x, (int)size.y, surface);
-#if _DEBUG
-		surface->Line(drawLocation.x, drawLocation.y, centerLocation.x, centerLocation.y, 0xff00000);
-#endif
-
 	}
 	void Destroy();
 private:

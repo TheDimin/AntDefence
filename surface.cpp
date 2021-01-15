@@ -6,6 +6,8 @@
 #include <cassert>
 #include <cmath>
 #include <cstring>
+#include <iostream>
+
 #include "FreeImage.h"
 
 namespace Tmpl8 {
@@ -105,17 +107,12 @@ namespace Tmpl8 {
 
 	void Surface::Centre(char* a_String, int x, int y1, int Scale, Pixel color)
 	{
-		x -= (int)strlen(a_String) * 6 / 2;
+		x -= (int)strlen(a_String) * (6 * Scale) / 2;
 		Print(a_String, x, y1 - 4, Scale, color);
 	}
 
 	void Surface::Print(char* a_String, int x1, int y1, Pixel color)
 	{
-		if (!fontInitialized)
-		{
-			InitCharset();
-			fontInitialized = true;
-		}
 		Pixel* t = m_Buffer + x1 + y1 * m_Pitch;
 		for (int i = 0; i < (int)(strlen(a_String)); i++, t += 6)
 		{
@@ -137,13 +134,8 @@ namespace Tmpl8 {
 
 	void Surface::Print(char* a_String, int x1, int y1, int scale, Pixel color)
 	{
-		if (!fontInitialized)
-		{
-			InitCharset();
-			fontInitialized = true;
-		}
 		Pixel* t = m_Buffer + x1 + y1 * m_Pitch;
-		for (int i = 0; i < (int)(strlen(a_String)); i++, t += 6)
+		for (int i = 0; i < (int)(strlen(a_String)); i++, t += 6 * scale)
 		{
 			long pos = 0;
 			if ((a_String[i] >= 'A') && (a_String[i] <= 'Z'))
@@ -154,10 +146,12 @@ namespace Tmpl8 {
 			Pixel* a = t;
 			char* c = (char*)s_Font[pos];
 
-			for (int v = 0; v < 5; v++, c++, a += m_Pitch * scale)
+			for (int v = 0; v < 5; v++, c++, a += scale * m_Pitch)
 				for (int h = 0; h < 5; h++)
 					if (*c++ == 'o')
-						*(a + h) = color, * (a + h + m_Pitch) = 0;
+						for (int hs = 0; hs < scale; ++hs)
+							for (int ws = h * scale; ws < h * scale + scale; ++ws)
+								*(a + ws + m_Pitch * hs) = color, * (a + ws + (hs + 1) * m_Pitch) = 0;
 		}
 	}
 
@@ -247,7 +241,8 @@ namespace Tmpl8 {
 		Pixel* a = x1 + y1 * m_Pitch + m_Buffer;
 		for (int y = y1; y <= y2; y++)
 		{
-			for (int x = 0; x <= (x2 - x1); x++) a[x] = c;
+			for (int x = 0; x <= (x2 - x1); x++)
+				a[x] = c;
 			a += m_Pitch;
 		}
 	}

@@ -14,12 +14,15 @@ public:
 	{
 
 	}
+
+	void Render(Tmpl8::Surface* surface);
 protected:
 	void OnStateRegister(TowerState* state) override
 	{
 		state->tower = tower;
 		state->gLVL = gLVL;
 	}
+
 	Tower* tower;
 	GameLevel* gLVL;
 };

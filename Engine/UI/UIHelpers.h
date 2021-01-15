@@ -1,6 +1,10 @@
 #pragma once
 #include <string>
 
+namespace Tmpl8 {
+	class vec2;
+}
+
 class IMouseEvent
 {
 public:
@@ -11,12 +15,12 @@ protected:
 	virtual void OnClick() = 0;
 	virtual void OnBeginHover() = 0;
 	virtual void OnEndHover() = 0;
-	virtual bool IsOverlapping(int x, int y) = 0;
+	virtual bool IsOverlapping(Tmpl8::vec2 pos) = 0;
 
-private:
 	friend class Game;
-	bool OnMouseMove(int x, int y);
-	void OnMouseDown();
+	friend class Level;
+	virtual bool OnMouseMove(Tmpl8::vec2 pos);
+	virtual void OnMouseDown();
 };
 
 class IText

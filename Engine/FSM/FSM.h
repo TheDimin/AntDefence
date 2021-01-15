@@ -36,6 +36,7 @@ protected:
 	State* activeState = nullptr;
 
 public:
+	State* GetState() const { return activeState; }
 	void InvokeEvent(Event* e)
 	{
 		for (auto& element : transitions)
@@ -47,8 +48,8 @@ public:
 			{
 				activeState->OnStateExit(e);
 				element->TransitionAction(e);
-				element.get()->TargetState->OnStateEnter(e);
-				activeState = element.get()->TargetState;
+				element->TargetState->OnStateEnter(e);
+				activeState = element->TargetState;
 				//done with the event object, destroy it
 				delete e;
 				return;

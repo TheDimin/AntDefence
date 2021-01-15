@@ -2,9 +2,9 @@
 #include "UIElement.h"
 
 
-bool IMouseEvent::OnMouseMove(int x, int y)
+bool IMouseEvent::OnMouseMove(Tmpl8::vec2 mousePos)
 {
-	bool overlaps = this->IsOverlapping(x, y);
+	bool overlaps = this->IsOverlapping(mousePos);
 	if (overlaps != this->IsHovering)
 	{
 		if (overlaps)

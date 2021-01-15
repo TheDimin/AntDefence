@@ -1,6 +1,8 @@
 #pragma once
 #include "surface.h"
 #include "Engine/EngineGlobal.h"
+#include "Engine/Level.h"
+#include "Engine/LevelHelper.h"
 
 
 class Game
@@ -19,9 +21,20 @@ public:
 	Tmpl8::Surface* GetScreen() { return screen; }
 private:
 	Tmpl8::Surface* screen;
-
+public:
+	template<class LevelType>
+	void SwitchLevel(std::string newLevel)
+	{
+		if (NewLevel != nullptr)
+		{
+			delete NewLevel;
+			NewLevel = nullptr;
+		}
+		NewLevel = LevelHelper::Load<LevelType>(newLevel);
+	}
 private:
-	class Level* LoadedLevel;
+	Level* NewLevel = nullptr;
+	class std::unique_ptr<Level> LoadedLevel;
 	std::vector<IRenderable*> Renderables = std::vector<IRenderable*>();
 };
 

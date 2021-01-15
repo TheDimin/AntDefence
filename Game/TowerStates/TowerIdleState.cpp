@@ -23,7 +23,7 @@ void TowerIdleState::Tick(float deltaTime)
 		TickCooldown -= deltaTime;
 		if (TickCooldown > 0)
 			return;
-		TickCooldown = tower->towerData->FindStat(2)->amount * 100;
+		TickCooldown = 100;
 
 
 		Mob* ClosestMob = nullptr;

@@ -1,0 +1,4 @@
+﻿  game.cpp
+H:\Studies\Intake\AntDefence\Engine\UI\UIContainer.h(59,2): warning C4003: not enough arguments for function-like macro invocation 'GenerateWrapperFunctionWithLambdaCheck'
+H:\Studies\Intake\AntDefence\Engine\UI\UIContainer.h(60,2): warning C4003: not enough arguments for function-like macro invocation 'GenerateWrapperFunction'
+  tmpl_2019-08.vcxproj -> H:\Studies\Intake\AntDefence\tmpl_2019-08_x64_debug.exe

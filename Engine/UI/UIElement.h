@@ -19,6 +19,9 @@ public:
 
 class UIElement : public IMouseEvent, public IRenderable
 {
+public:
+	vec2 getScale() const { return Scale; }
+
 protected:
 	vec2 Pos;
 	vec2 Scale;
@@ -28,10 +31,18 @@ protected:
 private:
 	friend class Level;
 	friend class UiContainer;
-	void Init(vec2 Pos, vec2 Scale, vec2 Offset);
-	bool inline Overlaps(vec2 mousePos);
-	bool IsOverlapping(int x, int y) override;
+	bool inline Overlaps(vec2& mousePos);
+
 protected:
+	bool IsOverlapping(Tmpl8::vec2 pos) override;
 	virtual bool IsActive();
+	virtual void Init(vec2 Pos, vec2 Scale, vec2 Offset);
+
+protected://Not all ui elements implement these
+	friend class Level;
+	void OnClick() override {}
+	void OnBeginHover() override {}
+	void OnEndHover() override {}
+	
 };
 

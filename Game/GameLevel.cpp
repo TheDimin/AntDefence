@@ -11,6 +11,7 @@
 #include "GameStates/PlayingState.h"
 #include "GameStates/BuildingState.h"
 #include "../Engine/FSM/FSM.h"
+#include "../Engine/UI/UIText.h"
 #include "Events/PlaceBuildingEvent.h"
 #include "Events/StartBuildEvent.h"
 
@@ -175,11 +176,10 @@ void GameLevel::Tick(float deltaTime)
 			waveStep++;
 			spawnedOfCurrentMobType = 0;
 		}
-		//if (CompletedSubWave)
 	}
-
 }
 
+Tmpl8::Sprite* dollarSign = new Tmpl8::Sprite(new Surface("assets/DollarSign.png"), 1);
 
 
 void GameLevel::CreateUI(UiContainer* UI)
@@ -191,6 +191,9 @@ void GameLevel::CreateUI(UiContainer* UI)
 	0x00FFFF
 	};
 
+	UiContainer* DefaultUI = UI->Container(0, 0, UI->getScale().x - 250, UI->getScale().y);
+
+	const int ShopItemsOffset = 100;
 	for (int i = 0; i < 4; ++i)
 	{
 		if (mapStyle->towers.size() <= static_cast<unsigned>(i))
@@ -198,26 +201,41 @@ void GameLevel::CreateUI(UiContainer* UI)
 
 		TowerData* tower = mapStyle->towers[i].get();
 
-		style.Image = tower->asset.get();
 
-		UI->Button(45 + (90 * i), 60, 40, 40)
+		DefaultUI->Text(ShopItemsOffset - 15 + (150 * i), 132, 3, std::to_string(tower->price))
+			->SetTextCentert(false);
+		style.Image = dollarSign;
+		DefaultUI->Button(ShopItemsOffset - 30 + (150 * i), 140, 12, 12)->SetStyle(style);
+
+		style.Image = tower->asset.get();
+		DefaultUI->Button(ShopItemsOffset + (150 * i), 65, 60, 60)
 			->SetStyle(style)
 			->SetOnClick([this, tower]
 				{
 					gameState->InvokeEvent(new StartBuildEvent(tower));
 				})
-			->SetIsActiveLambda([this, tower] { return Money >= static_cast<uint>(tower->price); });
+			->SetIsActiveLambda([this, tower]
+				{
+					return Money >= static_cast<uint>(tower->price);
+				});
 
-				UI->Text(45 + (90 * i), 120, tower->displayName);
-				UI->Text(45 + (90 * i), 140, "Cost: " + std::to_string(tower->price));
+				//DefaultUI->Text(ShopItemsOffset + (90 * i), 120, 2, &tower->displayName);
+
+
 	}
-	UI->Button(EngineGlobal::GetWidth() - 80, UI->GetHeight() - 40, 50, 20)
+	DefaultUI->SetIsActiveLambda([this]()
+		{
+			return dynamic_cast<BuildingState*>(gameState->GetState()) != nullptr;
+		});
+
+	// MAIN UI
+	UI->Button(UI->GetWidth() - 100, UI->GetHeight() - 50, 70, 15)
 		->SetIsHiddenLambda([this]() {return waveInstance != nullptr; })
 		->SetOnClick([this]() {StartNextWave(); })
 		->SetText(&StartNextWaveText);
 
-	UI->Text(EngineGlobal::GetWidth() - 80, 20, &MoneyText);
-	UI->Text(EngineGlobal::GetWidth() - 80, 40, &HealthText);
+	UI->Text(UI->GetWidth() - 170, 20, 2, &MoneyText)->SetTextCentert(false);
+	UI->Text(UI->GetWidth() - 170, 40, 2, &HealthText)->SetTextCentert(false);
 }
 
 void from_json(const nlohmann::json& json, GameLevel& lvl)

@@ -14,5 +14,7 @@ public:
 	void Render(Tmpl8::Surface* surface) override;
 
 	Mob* TargetMob;
+	MobData* mobData; //When the mob gets killed, we still need access to the mobData so we ref it aswell
+	bool attacked = false;
 };
 

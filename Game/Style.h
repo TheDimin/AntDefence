@@ -77,14 +77,14 @@ private:
 
 struct WaveSpawnInfo
 {
-	MobData* mob;
+	float delay = 0;
+	MobData* mob = nullptr;
 	int amount = 0;
 };
 
 struct AttackWave
 {
 	int id;
-	float delay = 0;
 	uint moneyOnComplete = 0;
 	std::vector<WaveSpawnInfo> waves;
 private:

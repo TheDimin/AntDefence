@@ -23,6 +23,7 @@ public:
 	Tmpl8::vec2 dir;
 	Tmpl8::vec2 target;
 	int health = 0;
+	int maxHealth = 0;
 	std::string healthText = "HP:";
 	int currentFrame = 0;
 	float frameTime = 0;

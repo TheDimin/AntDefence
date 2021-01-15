@@ -70,17 +70,34 @@ void from_json(const nlohmann::json& json, TowerData& towerData)
 		towerData.stats.insert(end(towerData.stats), std::unique_ptr<StatInfo>(new StatInfo{ styleInstance->FindStat(elem.value()["id"]), elem.value()["amount"] }));
 
 	//TODO UPGRADES
+	/*
+	 * "upgrades": [
+                {
+                    "ID": -1,
+                    "Price" : 10,
+                    "DisplayName" : "Undefined",
+                    "Stats":[
+                        {
+                            "id":-1,
+                            "amount": 10
+                        }
+                    ],
+                    
+                    "unLockedBy" :[],
+                    "LockedBy" : []
+                }
+            ]
+	 */
 }
 
 
 void from_json(const nlohmann::json& json, AttackWave& attackWave)
 {
-	MapJsonData(delay, attackWave);
 	MapJsonData(moneyOnComplete, attackWave);
 
 	for (auto& elem : json["mobs"].items())
 	{
-		attackWave.waves.insert(end(attackWave.waves), WaveSpawnInfo{ styleInstance->FindMob(elem.value()["id"]), elem.value()["amount"] });
+		attackWave.waves.insert(end(attackWave.waves), WaveSpawnInfo{ elem.value()["delay"], styleInstance->FindMob(elem.value()["id"]), elem.value()["amount"] });
 	}
 }
 

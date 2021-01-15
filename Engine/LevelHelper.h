@@ -1,7 +1,10 @@
 #pragma once
 #include <string>
 #include <fstream>
+#include <utility>
 
+
+#include "../Game/MainMenu.h"
 #include "UI/UIContainer.h"
 
 class LevelHelper
@@ -46,6 +49,41 @@ LevelType* LevelHelper::Load(std::string LevelName)
 
 	j.get_to(*level);
 
+	level->OnLevelLoaded();
+
+	return level;
+}
+
+template <>
+inline MainMenu* LevelHelper::Load<MainMenu>(std::string _)
+{
+	nlohmann::json j;
+	std::ifstream file;
+	MainMenu* level = new MainMenu();
+	level->name = "MainMenu";
+	level->surface = std::make_unique<Tmpl8::Surface>(EngineGlobal::GetWidth(), EngineGlobal::GetHeight());
+	level->uiContainer = std::make_unique<UiContainer>(0, 0, EngineGlobal::GetWidth(), EngineGlobal::GetHeight());
+
+	/*file.close(); j.clear();
+
+	file = std::ifstream("assets/Levels/" + LevelName + "/Style.json");
+	file >> j;
+	level->mapStyle = std::make_unique<Style>();
+	level->mapStyle->level = level;
+	j.get_to(level->mapStyle);
+
+	file = std::ifstream("assets/Levels/" + LevelName + "/Level.json");
+
+	if (!file.is_open())
+	{
+		std::cout << "Failed to load level : '" << LevelName << "'" << std::endl;
+		return level;
+	}
+
+	file >> j;
+
+	j.get_to(*level);
+*/
 	level->OnLevelLoaded();
 
 	return level;

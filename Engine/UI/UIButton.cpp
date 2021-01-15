@@ -36,7 +36,12 @@ void UIButton::Render(Tmpl8::Surface* surface)
 	if (styleInfo.Image != nullptr)
 	{
 		styleInfo.Image->SetFrame(styleInfo.SpriteIndex);
-		styleInfo.Image->DrawScaled(static_cast<int>(Pos.x - Scale.x), static_cast<int>(Pos.y - Scale.y), static_cast<int>(Scale.x * 2), static_cast<int>(Scale.y * 2), !active ? styleInfo.Disabled : IsHovering ? styleInfo.Hover : styleInfo.normal, surface);
+		styleInfo.Image->DrawScaled(
+			static_cast<int>(Pos.x - Scale.x),
+			static_cast<int>(Pos.y - Scale.y),
+			static_cast<int>(Scale.x * 2),
+			static_cast<int>(Scale.y * 2),
+			!active ? styleInfo.Disabled : IsHovering ? styleInfo.Hover : styleInfo.normal, surface);
 		//surface->
 	}
 	else
@@ -48,7 +53,8 @@ void UIButton::Render(Tmpl8::Surface* surface)
 			IsHovering ? styleInfo.Hover : styleInfo.normal);
 	if (Text != nullptr)
 	{
-		surface->Centre(const_cast<char*>(GetText()->c_str()), static_cast<int>(Pos.x), static_cast<int>(Pos.y), 2, active ? 0xfffffff : styleInfo.Disabled);
+		char* str = const_cast<char*>(GetText()->c_str());
+		surface->Centre(str, static_cast<int>(Pos.x), static_cast<int>(Pos.y), (Scale.x * 2) / (6 * (int)strlen(str)), active ? 0xfffffff : styleInfo.Disabled);
 	}
 }
 

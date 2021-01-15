@@ -8,7 +8,10 @@
 
 void Level::OnLevelLoaded()
 {
+	//uiContainer->Init(uiContainer->Pos, uiContainer->Scale, uiContainer->Offset);
+	OnLoad();
 	CreateUI(uiContainer.get());
+
 	for (auto& obj : objects)
 	{
 		obj->OnLoad();
@@ -17,7 +20,7 @@ void Level::OnLevelLoaded()
 
 Level::Level()
 {
-	uiContainer = std::make_unique<UiContainer>(nullptr, 0, (int)ceil(EngineGlobal::GetHeight() * 0.8f));
+	uiContainer = std::make_unique<UiContainer>(vec2(0, 0), 0, (int)ceil(EngineGlobal::GetHeight() * 0.8f));
 }
 
 std::string Level::GetLevelName() const
@@ -47,18 +50,16 @@ MapSprite* Level::GetMapSprite(int width, int height)
 
 void Level::RegisterObject(GameObject* obj)
 {
-	objects.insert(end(objects), std::unique_ptr<GameObject>(obj));
+	objects.insert(begin(objects), std::unique_ptr<GameObject>(obj));
 	obj->SetLvl(this);
 }
 
 void Level::DeleteObject(GameObject* obj)
 {
-	auto it = remove_if(begin(objects), end(objects),
-		[obj](std::unique_ptr<GameObject>& sObj)
-		{
-			return sObj.get() == obj;
-		});
-	obj = nullptr;
+	//https://stackoverflow.com/questions/3450860/check-if-a-stdvector-contains-a-certain-object
+
+	if (std::find(begin(ToDeleteObjects), end(ToDeleteObjects), obj) == end(ToDeleteObjects))
+		ToDeleteObjects.insert(end(ToDeleteObjects), obj);
 }
 
 void Level::Render(Surface* surface)
@@ -74,9 +75,26 @@ void Level::Tick(float deltaTime)
 {
 	for (auto& obj : objects)
 	{
-		if (obj != nullptr)
-			obj->Tick(deltaTime);
+		obj->Tick(deltaTime);
 	}
+
+	for (auto& obj : ToDeleteObjects)
+	{
+		auto toErase = std::remove_if(begin(objects), end(objects),
+			[&obj](std::unique_ptr<GameObject>& sObj)
+			{
+				return sObj.get() == obj;
+			});
+
+		if (toErase != end(objects))
+		{
+			delete toErase->get();
+			objects.erase(toErase);
+		}
+		else
+			printf("HEY FAILED TO DESTROY OBJECT REF \n");
+	}
+	ToDeleteObjects.resize(0);
 }
 
 void from_json(const nlohmann::json& nlohmann_json_j, Level& lvl)

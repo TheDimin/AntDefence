@@ -52,10 +52,11 @@ protected://text ptr's
 
 public:
 	GameStateWrapperInjection(Render, Surface*, surface);
-	GameStateWrapperInjection(OnMouseMove, vec2, pos);
+	GameStateWrapperInjection(OnMouseMove, vec2, mousePos);
 	GameStateWrapperInjection(OnMouseDown, vec2, pos);
 	void Tick(float deltaTime) override;
 
 	void CreateUI(UiContainer* UI) override;
 };
-#undef GameStateWrapperInjection;
+
+#undef GameStateWrapperInjection

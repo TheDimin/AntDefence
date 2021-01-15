@@ -14,17 +14,25 @@ Mob::Mob(MobData* mobData, std::vector<Tmpl8::vec2>* route, const Tmpl8::vec2& s
 	//uiContainer = std::make_unique<UiContainer>(&location, 50, 10);
 	healthText = "HP: " + std::to_string(health);
 	//uiContainer->Text(0, 5, &healthText);
+	maxHealth = health;
 
 }
+
 Mob::~Mob()
 {
+	printf("Dconstructor called \n");
 	GameLevel* glvl = dynamic_cast<GameLevel*>(lvl);
+	glvl->activeMobs.erase(
+		std::find_if(
+			begin(glvl->activeMobs),
+			end(glvl->activeMobs),
+			[this](Mob* mob) {return mob == this; }));
 	glvl->activeMobCount--;
-	glvl->activeMobs.erase(std::remove(begin(glvl->activeMobs), end(glvl->activeMobs), this), end(glvl->activeMobs));
 }
 
 bool Mob::TakeDamage(int& Amount)
 {
+	if (this == nullptr) return false;
 	health -= Amount;
 	if (health <= 0)
 	{
@@ -56,7 +64,7 @@ void Mob::Tick(float deltaTime)
 		currentRouteIndex++;
 		if (route->size() > currentRouteIndex) {
 			target = route->at(currentRouteIndex) * size;
-			dir = Tmpl8::vec2::normalize(target - newloc);
+			dir = Tmpl8::vec2::normalize((target - newloc) + vec2(1, 1));
 			return;
 		}
 		GameLevel* glvl = dynamic_cast<GameLevel*>(lvl);
@@ -64,15 +72,15 @@ void Mob::Tick(float deltaTime)
 		Destroy();
 	}
 
-	if ((int)dir.x == 1)
+	if (round(dir.x) == 1)
 	{
 		rotation = 1;
 	}
-	else if ((int)dir.x == -1)
+	else if (round(dir.x) == -1)
 	{
 		rotation = 3;
 	}
-	else if ((int)dir.y == 1)
+	else if (round(dir.y) == 1)
 	{
 		rotation = 2;
 	}
@@ -89,5 +97,11 @@ void Mob::Render(Tmpl8::Surface* surface)
 	sprite->SetFrame(rotation * 3 + currentFrame);
 	GameObject::Render(surface);
 
+	float hpFactor = -1*((float)health / (float)maxHealth)+1;
+	surface->Bar(GetDrawLocation().x + 10, GetDrawLocation().y - 10, GetDrawLocation().x + size.x - 10, GetDrawLocation().y - 5, 0x008000);
+
+
+	int x = ceil((size.x - 15) * hpFactor);
+	surface->Bar(GetDrawLocation().x + size.x - 9 - x, GetDrawLocation().y - 10, GetDrawLocation().x + size.x - 10, GetDrawLocation().y - 5, 0xFF0000);
 	//sprite->DrawScaled((int)drawLocation.x, (int)drawLocation.y, (int)size.x, (int)size.x, surface);
 }

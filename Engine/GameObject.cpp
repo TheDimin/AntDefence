@@ -10,5 +10,5 @@ void GameObject::OnLoad()
 
 void GameObject::Destroy()
 {
-	lvl->DeleteObject(this);
+	lvl->DeleteObject(dynamic_cast<GameObject*>(this));
 }
