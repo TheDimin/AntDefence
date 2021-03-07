@@ -68,12 +68,12 @@ void Game::Tick(float deltaTime)
 
 void Game::MouseDown(int button)
 {
-	if (button != 1)
-		return;
 	int x, y = 0;
 	SDL_GetMouseState(&x, &y);
-
-	LoadedLevel->OnMouseDown(Tmpl8::vec2((float)x, (float)y));
+	if (button == 1)
+		LoadedLevel->OnLeftClick(Tmpl8::vec2((float)x, (float)y));
+	else if (button == 3)
+		std::cout << "button: " << button << std::endl;
 }
 
 void Game::MouseMove(int x, int y, int Ax, int Ay)

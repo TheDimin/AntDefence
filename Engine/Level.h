@@ -35,18 +35,19 @@ public:
 	virtual void OnMouseMove(vec2 mousePos)
 	{
 		uiContainer->OnMouseMove(mousePos);
-	};
-	virtual void OnMouseDown(vec2 mousePos)
+	}
+	virtual void OnLeftClick(vec2 mousePos)
 	{
 		uiContainer->OnMouseDown();
-	};
+	}
+	virtual void OnRightMouseButtonDown() {}
 
 protected:
 	friend class LevelHelper; friend class Game;
 	std::string name = "UNDEFINED";
 	std::unique_ptr<Tmpl8::Surface> surface;
 	std::vector<std::unique_ptr<GameObject>> objects;
-	std::vector<std::vector<int>> maptiles;
+	std::vector<std::vector<int>> mapTiles;
 	std::vector<GameObject*> ToDeleteObjects = std::vector<GameObject*>();
 
 protected:

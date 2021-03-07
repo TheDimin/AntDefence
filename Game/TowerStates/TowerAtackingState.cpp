@@ -10,7 +10,9 @@ void TowerAtackingState::OnStateEnter(Event* e)
 	TargetFoundEvent* eTarget = dynamic_cast<TargetFoundEvent*>(e);
 	TargetMob = eTarget->mob;
 	mobData = eTarget->mob->mobData;
+#if STATE_DEBUG
 	printf("[TowerAtackingState] OnStateEnter \n");
+#endif
 	TickCooldown = tower->towerData->FindStat(2)->amount * 50;
 }
 
@@ -41,8 +43,6 @@ void TowerAtackingState::Tick(float deltaTime)
 	TickCooldown -= deltaTime;
 	if (TickCooldown > 0) return;
 
-
-	printf("Attacking closest mob\n");
 	int amount = (int)tower->towerData->FindStat(1)->amount;
 	if (TargetMob->TakeDamage(amount))
 	{
@@ -60,7 +60,7 @@ void TowerAtackingState::Tick(float deltaTime)
 	TickCooldown += tower->towerData->FindStat(2)->amount * 50;
 }
 
-void TowerAtackingState::OnMouseDown(Tmpl8::vec2& mousePos)
+void TowerAtackingState::OnLeftClick(Tmpl8::vec2& mousePos)
 {
 }
 

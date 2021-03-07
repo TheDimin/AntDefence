@@ -89,7 +89,7 @@
             "speed" :20,
             "displayName": "Ant",
             "asset": "Ant.png",
-            "damage" : 10,
+            "damage" : 1,
             "stats":[
                 {"id" :0,"amount":20}
             ]
@@ -100,7 +100,7 @@
             "speed" :10,
             "displayName": "Red Ant",
             "asset": "RedAnt.png",
-            "damage" : 4,
+            "damage" : 1,
             "stats":[
                 {"id" :0,"amount":80}
             ]

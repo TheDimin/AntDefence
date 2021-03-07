@@ -83,8 +83,9 @@ public:
 	{
 		assert(state != nullptr && "active state is a nullptr");
 		assert(activeState == nullptr && "StateMachine already activated use a event to trigger transistion");
-
+#ifdef STATE_DEBUG
 		printf("Activated StateMachine with state: %s \n", typeid(state).name());
+#endif
 		state->OnStateEnter(nullptr);
 		activeState = state;
 	}
@@ -101,7 +102,7 @@ public:
 	StateCallWrapper(Tick, float, deltaTime);
 	StateCallWrapper(Render, Tmpl8::Surface*, surface);
 	StateCallWrapper(OnMouseMove, Tmpl8::vec2, pos);
-	StateCallWrapper(OnMouseDown, Tmpl8::vec2, pos);
+	StateCallWrapper(OnLeftClick, Tmpl8::vec2, pos);
 };
 
 #undef StateCallWrapper

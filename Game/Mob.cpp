@@ -11,9 +11,7 @@ Mob::Mob(MobData* mobData, std::vector<Tmpl8::vec2>* route, const Tmpl8::vec2& s
 	dir = Tmpl8::vec2::normalize(target - GetDrawLocation());
 	health = (int)mobData->FindStat(0)->amount;
 
-	//uiContainer = std::make_unique<UiContainer>(&location, 50, 10);
-	healthText = "HP: " + std::to_string(health);
-	//uiContainer->Text(0, 5, &healthText);
+	//healthText = "HP: " + std::to_string(health);
 	maxHealth = health;
 
 }
@@ -39,7 +37,7 @@ bool Mob::TakeDamage(int& Amount)
 		this->Destroy();
 		return true;
 	}
-	healthText = "HP: " + std::to_string(health);
+	//healthText = "HP: " + std::to_string(health);
 	return false;
 }
 
@@ -72,6 +70,7 @@ void Mob::Tick(float deltaTime)
 		Destroy();
 	}
 
+	//Direction to sprite index
 	if (round(dir.x) == 1)
 	{
 		rotation = 1;
@@ -100,8 +99,6 @@ void Mob::Render(Tmpl8::Surface* surface)
 	float hpFactor = -1 * ((float)health / (float)maxHealth) + 1;
 	surface->Bar((int)GetDrawLocation().x + 10, (int)GetDrawLocation().y - 10, (int)GetDrawLocation().x + (int)size.x - 10, (int)GetDrawLocation().y - 5, 0x008000);
 
-
 	int x = (int)ceil((size.x - 15) * hpFactor);
 	surface->Bar((int)GetDrawLocation().x + (int)size.x - 9 - x, (int)GetDrawLocation().y - 10, (int)GetDrawLocation().x + (int)size.x - 10, (int)GetDrawLocation().y - 5, 0xFF0000);
-	//sprite->DrawScaled((int)drawLocation.x, (int)drawLocation.y, (int)size.x, (int)size.x, surface);
 }

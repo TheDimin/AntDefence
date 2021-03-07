@@ -53,7 +53,7 @@ void TowerIdleState::Tick(float deltaTime)
 	}
 }
 
-void TowerIdleState::OnMouseDown(Tmpl8::vec2& mousePos)
+void TowerIdleState::OnLeftClick(Tmpl8::vec2& mousePos)
 {
 }
 

@@ -3,6 +3,7 @@
 #include "../EngineGlobal.h"
 #include "../../template.h"
 
+
 class Game;
 using namespace Tmpl8;
 

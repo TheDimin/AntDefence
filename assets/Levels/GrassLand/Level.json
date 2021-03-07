@@ -11,5 +11,6 @@
     ],
     "startPos": [0,2],
     "Money" : 100,
+    "Health": 10,
     "PreviewImage" : "Preview.png"
 }

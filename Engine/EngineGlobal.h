@@ -2,22 +2,18 @@
 #include "../surface.h"
 #include "json.hpp"
 
-/*
-#define JSON_Reflected(ClassName)								\
-	void to_json(nlohmann::json& j, const ClassName& p) {		\
-		ClassName& gnc = const_cast<ClassName&>(p);				\
-		for (auto prop : ClassName::GetType()->GetProps())		\
-		{														\
-			if (prop->type == "int")							\
-			{													\
-				j[prop->name] = prop->TryGetValue<int>(&gnc);	\
-			}													\
-		}														\
-	}															\
-\
-	void from_json(const nlohmann::json& j, GameObject& p) {	}\
+#if _DEBUG
+#define PATH_DEBUG //Show debug info of path generation
+//#undef PATH_DEBUG
 
-*/
+#define STATE_DEBUG //Enable for state debug info
+#undef STATE_DEBUG
+
+
+#define UI_DEBUG //Extra debugging info for ui
+#undef UI_DEBUG
+#endif
+
 
 namespace nlohmann {
 	//https://github.com/nlohmann/json/issues/975
@@ -50,7 +46,6 @@ namespace nlohmann {
 		static void from_json(const nlohmann::json& j, Tmpl8::Sprite& value) {
 			value = Tmpl8::Sprite(new Tmpl8::Surface(const_cast<char*>(j.get<std::string>().c_str())), 1);
 		}
-
 	};
 
 }
@@ -72,7 +67,7 @@ private:
 };
 
 
-//Wish i could make these protected but cant fidn out how to make function be be caleld recursive (Friend relationship fails ?)
+//Wish i could make these protected but cant find out how to make function be be called recursive (Friend relationship fails ?)
 class IRenderable
 {
 public:

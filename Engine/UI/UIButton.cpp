@@ -60,12 +60,17 @@ void UIButton::Render(Tmpl8::Surface* surface)
 
 void UIButton::OnBeginHover()
 {
+#ifdef UI_DEBUG
 	std::cout << "HOVERING" << std::endl;
+#endif
 }
 
 void UIButton::OnEndHover()
 {
+#ifdef UI_DEBUG
 	std::cout << "END HOVERING" << std::endl;
+#endif
+
 }
 
 bool UIButton::IsActive()
@@ -78,15 +83,11 @@ bool UIButton::IsActive()
 
 void UIButton::OnClick()
 {
+#ifdef UI_DEBUG
 	std::cout << "OnClick" << std::endl;
+#endif
+
 	if (OnClickPtr != nullptr)
-		//	try
-	{
 		OnClickPtr();
-	}
-	//catch (std::exception e)
-	{
-		//	std::cout << "OnClick Failed " << e.what() << std::endl;
-	}
 }
 

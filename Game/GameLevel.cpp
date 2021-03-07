@@ -36,7 +36,6 @@ GameLevel::GameLevel()
 	auto* BuildToPlayWithSuccesfullBuild = new GameTransition(buildingState, playingState,
 		buildTestGuard, [this](Event* event)
 		{
-			printf("option a called \n");
 			GuardCastCheck(PlaceBuildingEvent, placeBuildingEvent);
 			TowerData* tData = placeBuildingEvent->towerData;
 			SpendMoney(tData->price);
@@ -240,7 +239,9 @@ void from_json(const nlohmann::json& json, GameLevel& lvl)
 {
 	json.get_to<Level>(lvl);
 	MapJsonData(Money, lvl);
+	MapJsonData(Health, lvl);
 	lvl.MoneyText = "MONEY: " + std::to_string(lvl.Money);
+	lvl.HealthText = "Health: " + std::to_string(lvl.Health);
 
 	auto startPos = json.at("startPos").get<std::vector<int>>();
 
@@ -305,15 +306,18 @@ void from_json(const nlohmann::json& json, GameLevel& lvl)
 		if (!FoundNextPos)
 		{
 			//assume we reached the end
-			printf("end?");
+#ifdef PATH_DEBUG
+			printf("Path generation reached a endpoint \n");
+#endif
+
 			break;
 		}
 
 	}
 	lvl.route = route;
 
+#ifdef PATH_DEBUG
 	//Path debug info
-		/*
 	float h = lvl.CalculateTileHeight();
 	float w = lvl.CalculateTileWidth();
 	vec2 start = route[0];
@@ -325,7 +329,7 @@ void from_json(const nlohmann::json& json, GameLevel& lvl)
 		lvl.surface->Line(start.x * w + w * 0.5f, start.y * h + h * 0.5f, end.x * w + w * 0.5f, end.y * h + h * 0.5f, 0xff00000);
 		start = end;
 	}
-	*/
+#endif
 }
 
 

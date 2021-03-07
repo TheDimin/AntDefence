@@ -29,22 +29,26 @@ void BuildingState::OnStateEnter(Event* e)
 	SDL_GetMouseState(&x, &y);
 	mousePos = Tmpl8::vec2((float)x, (float)y);//set current mouse pos
 
+#ifdef STATE_DEBUG
 	std::cout << "[BuildingState]: OnEnter" << std::endl;
+#endif
 	SelectedBuildTower = reinterpret_cast<StartBuildEvent*>(e)->towerData;
 }
 
 void BuildingState::OnStateExit(Event* newEvent)
 {
 	SelectedBuildTower = nullptr;
+#ifdef  STATE_DEBUG
 	std::cout << "[BuildingState]: OnStateExit" << std::endl;
+#endif
 }
 
 void BuildingState::Tick(float deltaTime)
 {
-	std::cout << "[BuildingState]: Tick" << std::endl;
+	//std::cout << "[BuildingState]: Tick" << std::endl;
 }
 
-void BuildingState::OnMouseDown(Tmpl8::vec2& mousePos)
+void BuildingState::OnLeftClick(Tmpl8::vec2& mousePos)
 {
 	float w = floor((mousePos.x) / level->CalculateTileWidth());
 	float h = floor((mousePos.y) / level->CalculateTileHeight());

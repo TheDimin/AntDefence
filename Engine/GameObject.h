@@ -12,7 +12,6 @@ public:
 
 	virtual ~GameObject()
 	{
-		printf("Deconsturctor called \n");
 	}
 	friend class Level;
 

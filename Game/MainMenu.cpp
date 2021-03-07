@@ -16,11 +16,13 @@ std::string CreditsText = "Credits";
 void MainMenu::CreateUI(UiContainer* UI)
 {
 
-	UIButton* SelectedLevelButton = UI->Button(100, 75 + 90, 80, 25);
-	UIButton* PageSelectButton = UI->Button(100, 75, 80, 25);
+	UIButton* SelectedLevelButton = UI->Button(100, 720-180, 80, 25);
+	UIButton* PageSelectButton = UI->Button(100, 720 -90, 80, 25);
 
 	UIButton* CreditsButton = UI->Button(100, 720, 80, 25);
 
+	UIImage* Logo = UI->Image(10,80,180	,180,new Sprite(new Surface("assets/Logo.png"),1));
+	
 	UIImage* image = UI->Image(200, 50, ScreenWidth - 250, ScreenHeight - 100, SelectedLevel.background);
 
 	PageSelectButton->SetOnClick([this, image]()

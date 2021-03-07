@@ -2,6 +2,8 @@
 #include "FSM.h"
 #include "../EngineGlobal.h"
 
+
+
 namespace Tmpl8 {
 	class Surface;
 	class vec2;
@@ -18,6 +20,6 @@ public:
 
 	virtual void Render(::Tmpl8::Surface* surface) override = 0;
 	void Tick(float deltaTime) override {};
-	virtual void OnMouseDown(Tmpl8::vec2& mousePos) = 0;
+	virtual void OnLeftClick(Tmpl8::vec2& mousePos) = 0;
 	virtual void OnMouseMove(Tmpl8::vec2& mousePos) = 0;
 };
