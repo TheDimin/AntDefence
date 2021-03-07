@@ -83,6 +83,7 @@ namespace Tmpl8 {
 		vec2() {}
 		vec2(float v) : x(v), y(v) {}
 		vec2(float x, float y) : x(x), y(y) {}
+		vec2(int x, int y) : x((float)x), y((float)y) {}
 		vec2 operator - () const { return vec2(-x, -y); }
 
 		friend bool operator==(const vec2& lhs, const vec2& rhs) { return lhs.x == rhs.x && lhs.y == rhs.y; }

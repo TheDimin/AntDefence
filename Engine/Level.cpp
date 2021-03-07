@@ -88,8 +88,8 @@ void Level::Tick(float deltaTime)
 
 		if (toErase != end(objects))
 		{
-			delete toErase->get();
 			objects.erase(toErase);
+			//delete toErase->get();
 		}
 		else
 			printf("HEY FAILED TO DESTROY OBJECT REF \n");

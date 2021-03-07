@@ -228,6 +228,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\UI\UIImage.cpp" />
     <ClCompile Include="Game\gamestates\GameState.cpp" />
     <ClCompile Include="Game\Events\PlaceBuildingEvent.cpp" />
     <ClCompile Include="Game\Events\StartBuildEvent.cpp" />
@@ -281,6 +282,7 @@
     <ClInclude Include="Engine\TypeInfo\Type.h" />
     <ClInclude Include="Engine\TypeInfo\PropInfo.h" />
     <ClInclude Include="Engine\TypeInfo\TypeConverters.h" />
+    <ClInclude Include="Engine\UI\UIImage.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="Engine\GameObject.h" />
     <ClInclude Include="Engine\TypeInfo\Reflections.h">

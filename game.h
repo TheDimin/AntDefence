@@ -30,12 +30,13 @@ public:
 			delete NewLevel;
 			NewLevel = nullptr;
 		}
+		
 		NewLevel = LevelHelper::Load<LevelType>(newLevel);
 	}
 private:
 	Level* NewLevel = nullptr;
 	class std::unique_ptr<Level> LoadedLevel;
-	std::vector<IRenderable*> Renderables = std::vector<IRenderable*>();
+	//std::vector<IRenderable*> Renderables = std::vector<IRenderable*>();
 };
 
 

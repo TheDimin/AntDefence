@@ -31,3 +31,4 @@ public:
 	std::unique_ptr<TowerFSM> towerFSM;
 };
 
+#undef GameStateWrapperInjection

@@ -41,7 +41,7 @@ void BuildingState::OnStateExit(Event* newEvent)
 
 void BuildingState::Tick(float deltaTime)
 {
-
+	std::cout << "[BuildingState]: Tick" << std::endl;
 }
 
 void BuildingState::OnMouseDown(Tmpl8::vec2& mousePos)

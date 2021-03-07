@@ -54,7 +54,7 @@ void UIButton::Render(Tmpl8::Surface* surface)
 	if (Text != nullptr)
 	{
 		char* str = const_cast<char*>(GetText()->c_str());
-		surface->Centre(str, static_cast<int>(Pos.x), static_cast<int>(Pos.y), (Scale.x * 2) / (6 * (int)strlen(str)), active ? 0xfffffff : styleInfo.Disabled);
+		surface->Centre(str, static_cast<int>(Pos.x), static_cast<int>(Pos.y), (int)floor((Scale.x * 2) / (6.0f * (float)strlen(str))), active ? 0xfffffff : styleInfo.Disabled);
 	}
 }
 
@@ -78,14 +78,15 @@ bool UIButton::IsActive()
 
 void UIButton::OnClick()
 {
+	std::cout << "OnClick" << std::endl;
 	if (OnClickPtr != nullptr)
-		try
+		//	try
 	{
 		OnClickPtr();
 	}
-	catch (std::exception e)
+	//catch (std::exception e)
 	{
-		std::cout << "OnClick Failed " << e.what() << std::endl;
+		//	std::cout << "OnClick Failed " << e.what() << std::endl;
 	}
 }
 

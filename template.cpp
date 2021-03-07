@@ -181,6 +181,10 @@ SDL_Window* window = 0;
 #ifdef _MSC_VER
 bool redirectIO()
 {
+#if  !_DEBUG
+	return true;
+#endif
+
 	CONSOLE_SCREEN_BUFFER_INFO coninfo;
 	AllocConsole();
 	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &coninfo);

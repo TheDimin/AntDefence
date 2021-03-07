@@ -97,11 +97,11 @@ void Mob::Render(Tmpl8::Surface* surface)
 	sprite->SetFrame(rotation * 3 + currentFrame);
 	GameObject::Render(surface);
 
-	float hpFactor = -1*((float)health / (float)maxHealth)+1;
-	surface->Bar(GetDrawLocation().x + 10, GetDrawLocation().y - 10, GetDrawLocation().x + size.x - 10, GetDrawLocation().y - 5, 0x008000);
+	float hpFactor = -1 * ((float)health / (float)maxHealth) + 1;
+	surface->Bar((int)GetDrawLocation().x + 10, (int)GetDrawLocation().y - 10, (int)GetDrawLocation().x + (int)size.x - 10, (int)GetDrawLocation().y - 5, 0x008000);
 
 
-	int x = ceil((size.x - 15) * hpFactor);
-	surface->Bar(GetDrawLocation().x + size.x - 9 - x, GetDrawLocation().y - 10, GetDrawLocation().x + size.x - 10, GetDrawLocation().y - 5, 0xFF0000);
+	int x = (int)ceil((size.x - 15) * hpFactor);
+	surface->Bar((int)GetDrawLocation().x + (int)size.x - 9 - x, (int)GetDrawLocation().y - 10, (int)GetDrawLocation().x + (int)size.x - 10, (int)GetDrawLocation().y - 5, 0xFF0000);
 	//sprite->DrawScaled((int)drawLocation.x, (int)drawLocation.y, (int)size.x, (int)size.x, surface);
 }

@@ -4,8 +4,9 @@
 
 #define GameStateWrapperInjection(Function,ParamType,ParamName)	\
 	void Function(ParamType ParamName) override {			\
+	gameState->Function(ParamName);\
 		Level::Function(ParamName);							\
-		gameState->Function(ParamName);}					\
+		}					\
 
 class Mob;
 

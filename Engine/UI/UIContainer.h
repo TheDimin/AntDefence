@@ -1,25 +1,40 @@
 #pragma once
 #include "UIElement.h"
 
-#define GenerateWrapperFunction(FuncName,returnType,paramType,paramName)	\
-	void FuncName(paramType paramName) override{							\
-	for (auto& element : Elements){											\
-		element->FuncName(paramName);}										\
+#define CallWrap(FuncName)								\
+	void FuncName() override{							\
+	for (auto& element : Elements){						\
+		element->FuncName();}							\
 	}
 
-#define GenerateWrapperFunctionWithLambdaCheck(FuncName,returnType,paramType,paramName)	\
-	void FuncName(paramType paramName) override{							\
-	if (IsHiddenLambda != nullptr && IsHiddenLambda())						\
-		return;																\
-	for (auto& element : Elements){											\
-		element->FuncName(paramName);}										\
+#define CallWrapP1(FuncName,paramType,paramName)		\
+	void FuncName(paramType paramName) override{		\
+	for (auto& element : Elements){						\
+		element->FuncName(paramName);}					\
+	}
+
+#define CallWrapChecked(FuncName)						\
+	void FuncName() override{							\
+	if (IsHiddenLambda != nullptr && IsHiddenLambda())	\
+		return;											\
+	for (auto& element : Elements){						\
+		element->FuncName();}							\
+	}
+
+#define CallWrapCheckedP1(FuncName,paramType,paramName)	\
+	void FuncName(paramType paramName) override{		\
+	if (IsHiddenLambda != nullptr && IsHiddenLambda())	\
+		return;											\
+	for (auto& element : Elements){						\
+		element->FuncName(paramName);}					\
 	}
 
 class UiContainer : public UIElement
 {
 public:
 	UiContainer(int xPos, int yPos, int width, int height);
-	UiContainer(vec2 pos, int width, int height);
+	UiContainer(vec2 pos, int width, int height) : UiContainer((int)pos.x, (int)pos.y, width, height) {};
+	UiContainer(vec2 pos, vec2 size) : UiContainer((int)pos.x, (int)pos.y, (int)size.x, (int)size.y) {};
 	~UiContainer()  override = default;
 
 protected:
@@ -30,6 +45,7 @@ public:
 	void Render(Tmpl8::Surface* surface) override;
 	class UIButton* Button(int xPos, int yPos, int xScale, int yScale);
 	class UIButton* Button(int xPos, int yPos, int width, int height, std::string* textPtr);
+	class UIImage* Image(int xPos, int yPos, int width, int height, Sprite* sprite);
 	class UIText* Text(int xPos, int yPos, int width, std::string* textPtr);
 	class UIText* Text(int xPos, int yPos, int size, std::string textPtr);
 	UiContainer* Container(int xPos, int yPos, int width, int height);
@@ -56,8 +72,8 @@ protected:
 	bool OnMouseMove(Tmpl8::vec2 pos) override;
 	void OnMouseDown() override;
 	//GenerateWrapperFunction(OnMouseMove,Tmpl8::vec2&, pos)
-	GenerateWrapperFunctionWithLambdaCheck(OnClick);
-	GenerateWrapperFunction(OnEndHover);
+	CallWrapChecked(OnClick);
+	CallWrap(OnEndHover);
 
 
 public:

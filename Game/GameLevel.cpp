@@ -22,7 +22,6 @@ GameLevel::GameLevel()
 {
 	gameState = std::make_unique<GameFSM>(this);
 
-
 	auto* playingState = new PlayingState();
 	auto* buildingState = new BuildingState();
 
@@ -33,6 +32,7 @@ GameLevel::GameLevel()
 
 	auto* PlayingToBuildingTransition = new GameTransition(playingState, buildingState, DefaultGuardCastCheck(StartBuildEvent));
 	auto* BuildingToBuildingTransition = new GameTransition(buildingState, buildingState, DefaultGuardCastCheck(StartBuildEvent));
+
 	auto* BuildToPlayWithSuccesfullBuild = new GameTransition(buildingState, playingState,
 		buildTestGuard, [this](Event* event)
 		{
@@ -44,6 +44,7 @@ GameLevel::GameLevel()
 			RegisterObject(reinterpret_cast<GameObject*&>(tower));
 			return true;
 		});
+
 	auto* BuildToPlayWithFailedBuild = new GameTransition(buildingState, playingState, [buildTestGuard](Event* event)
 		{
 			return !buildTestGuard(event);
@@ -191,7 +192,7 @@ void GameLevel::CreateUI(UiContainer* UI)
 	0x00FFFF
 	};
 
-	UiContainer* DefaultUI = UI->Container(0, 0, UI->getScale().x - 250, UI->getScale().y);
+	UiContainer* DefaultUI = UI->Container(0, 0, (int)UI->getScale().x - 250, (int)UI->getScale().y);
 
 	const int ShopItemsOffset = 100;
 	for (int i = 0; i < 4; ++i)
@@ -200,7 +201,6 @@ void GameLevel::CreateUI(UiContainer* UI)
 			break;
 
 		TowerData* tower = mapStyle->towers[i].get();
-
 
 		DefaultUI->Text(ShopItemsOffset - 15 + (150 * i), 132, 3, std::to_string(tower->price))
 			->SetTextCentert(false);
@@ -220,8 +220,6 @@ void GameLevel::CreateUI(UiContainer* UI)
 				});
 
 				//DefaultUI->Text(ShopItemsOffset + (90 * i), 120, 2, &tower->displayName);
-
-
 	}
 	DefaultUI->SetIsActiveLambda([this]()
 		{

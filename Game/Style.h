@@ -43,7 +43,7 @@ private:
 public:
 	int id = -1;
 	std::string displayName = "NONE";
-	float moneyOnKill = 0;
+	uint moneyOnKill = 0;
 	float speed = 1;
 	int damage = 1;
 	std::unique_ptr<Tmpl8::Sprite> asset;
@@ -78,6 +78,7 @@ private:
 struct WaveSpawnInfo
 {
 	float delay = 0;
+	float interval = 0;
 	MobData* mob = nullptr;
 	int amount = 0;
 };

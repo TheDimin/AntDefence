@@ -34,11 +34,6 @@ void from_json(const nlohmann::json& json, ObjectStat& objectStat)
 	objectStat.asset = std::make_unique<Tmpl8::Sprite>(new Tmpl8::Surface(const_cast<char*>(filepath.c_str())), 1);
 }
 
-void from_json(const nlohmann::json& json, StatInfo& mapSprite)
-{
-
-}
-
 void from_json(const nlohmann::json& json, MobData& mapSprite)
 {
 	MapJsonData(id, mapSprite);
@@ -72,21 +67,21 @@ void from_json(const nlohmann::json& json, TowerData& towerData)
 	//TODO UPGRADES
 	/*
 	 * "upgrades": [
-                {
-                    "ID": -1,
-                    "Price" : 10,
-                    "DisplayName" : "Undefined",
-                    "Stats":[
-                        {
-                            "id":-1,
-                            "amount": 10
-                        }
-                    ],
-                    
-                    "unLockedBy" :[],
-                    "LockedBy" : []
-                }
-            ]
+				{
+					"ID": -1,
+					"Price" : 10,
+					"DisplayName" : "Undefined",
+					"Stats":[
+						{
+							"id":-1,
+							"amount": 10
+						}
+					],
+
+					"unLockedBy" :[],
+					"LockedBy" : []
+				}
+			]
 	 */
 }
 
@@ -97,7 +92,9 @@ void from_json(const nlohmann::json& json, AttackWave& attackWave)
 
 	for (auto& elem : json["mobs"].items())
 	{
-		attackWave.waves.insert(end(attackWave.waves), WaveSpawnInfo{ elem.value()["delay"], styleInstance->FindMob(elem.value()["id"]), elem.value()["amount"] });
+		float delay = (elem.value().contains("delay") ? elem.value()["delay"] : 0);
+		float interval = elem.value().contains("interval") ? elem.value()["interval"] : -1;
+		attackWave.waves.insert(end(attackWave.waves), WaveSpawnInfo{ delay, interval,styleInstance->FindMob(elem.value()["id"]), elem.value()["amount"] });
 	}
 }
 
@@ -115,8 +112,6 @@ void from_json(const nlohmann::json& cjson, Style& style)
 	MapJsonData(mobs, style);
 
 	MapJsonData(waves, style);
-
-	printf("Mob TEST: %u", style.mobs[0].get()->stats[0]->amount);
 }
 
 StatInfo* MobData::FindStat(int statID)
@@ -141,7 +136,6 @@ MobData* Style::FindMob(int id)
 	{
 		throw std::logic_error("Failed to find mobID: " + std::to_string(id));
 	}
-
 
 	return it->get();
 }

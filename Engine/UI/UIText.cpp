@@ -34,7 +34,7 @@ void UIText::Render(Tmpl8::Surface* surface)
 		else
 			surface->Centre(const_cast<char*>("Unknown text"), static_cast<int>(Pos.x), static_cast<int>(Pos.y), (int)Scale.x, Color);
 	else
-		surface->Print(const_cast<char*>(text->c_str()), (int)Pos.x, (int)Pos.y, Scale.x, Color);
+		surface->Print(const_cast<char*>(text->c_str()), (int)Pos.x, (int)Pos.y, (int)Scale.x, Color);
 }
 
 void UIText::OnBeginHover()

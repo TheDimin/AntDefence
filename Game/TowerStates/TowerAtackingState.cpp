@@ -11,7 +11,7 @@ void TowerAtackingState::OnStateEnter(Event* e)
 	TargetMob = eTarget->mob;
 	mobData = eTarget->mob->mobData;
 	printf("[TowerAtackingState] OnStateEnter \n");
-	TickCooldown = tower->towerData->FindStat(2)->amount*50;
+	TickCooldown = tower->towerData->FindStat(2)->amount * 50;
 }
 
 void TowerAtackingState::OnStateExit(Event* newEvent)
@@ -57,7 +57,7 @@ void TowerAtackingState::Tick(float deltaTime)
 		//rotation = 0;
 
 	//printf("Apply dammage %d \n", rotation);
-	TickCooldown += tower->towerData->FindStat(2)->amount*50;
+	TickCooldown += tower->towerData->FindStat(2)->amount * 50;
 }
 
 void TowerAtackingState::OnMouseDown(Tmpl8::vec2& mousePos)
@@ -73,7 +73,6 @@ void TowerAtackingState::Render(Tmpl8::Surface* surface)
 #if _DEBUG
 	surface->Line(tower->GetLocation().x, tower->GetLocation().y, TargetMob->GetLocation().x, TargetMob->GetLocation().y, 0xff0000);
 	if (attacked)
-		surface->Print("ATTACKING", tower->GetLocation().x, tower->GetLocation().y + 10, 0xfffffff);
-
+		surface->Print("ATTACKING", (int)tower->GetLocation().x, (int)tower->GetLocation().y + 10, 0xfffffff);
 #endif
 }

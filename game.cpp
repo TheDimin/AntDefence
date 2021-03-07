@@ -39,9 +39,6 @@ void Game::Shutdown()
 {
 }
 
-static Sprite oof(new Tmpl8::Surface("assets/Levels/Test/test.png"), 1);
-static int frame = 0;
-
 // -----------------------------------------------------------
 // Main application tick function
 // -----------------------------------------------------------
@@ -55,10 +52,13 @@ void Game::Tick(float deltaTime)
 	LoadedLevel->Render(screen);
 	LoadedLevel->uiContainer->Render(screen); // we could do some tricks to only update ui x times a second
 
-	for (IRenderable* IRender : Renderables)
-	{
-		IRender->Render(screen);
-	}
+//	for (IRenderable* IRender : Renderables)
+	//{
+	//	IRender->Render(screen);
+	//}
+
+
+	//Can only save switch lvl at end of the frame
 	if (NewLevel != nullptr) {
 		LoadedLevel = std::unique_ptr<Level>(NewLevel);
 		NewLevel = nullptr;

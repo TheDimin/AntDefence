@@ -5,6 +5,7 @@
 struct LevelInfo
 {
 	std::string name;
+	Sprite* background;
 };
 
 class MainMenu :
