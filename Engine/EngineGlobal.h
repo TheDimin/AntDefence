@@ -4,7 +4,7 @@
 
 #if _DEBUG
 #define PATH_DEBUG //Show debug info of path generation
-//#undef PATH_DEBUG
+#undef PATH_DEBUG
 
 #define STATE_DEBUG //Enable for state debug info
 #undef STATE_DEBUG
@@ -12,6 +12,9 @@
 
 #define UI_DEBUG //Extra debugging info for ui
 #undef UI_DEBUG
+
+#define UI_COLLISION_DEBUG //Collision debugging for ui
+#undef UI_COLLISION_DEBUG
 #endif
 
 
@@ -57,13 +60,11 @@ class EngineGlobal
 public:
 	static int GetWidth();
 	static int GetHeight();
-	static void RegisterObject(void* newObject)
-	{
-		managedObjects.insert(managedObjects.begin(), std::unique_ptr<void*>(&newObject));
-	}
 
+	static Tmpl8::Surface* GetDebugScreen();
+	static void SetDebugScreen(Tmpl8::Surface* screen);
 private:
-	static std::vector<std::unique_ptr<void*>> managedObjects;
+	static Tmpl8::Surface* debugScreen;
 };
 
 

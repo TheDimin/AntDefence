@@ -4,6 +4,7 @@
 
 bool IMouseEvent::OnMouseMove(Tmpl8::vec2 mousePos)
 {
+
 	bool overlaps = this->IsOverlapping(mousePos);
 	if (overlaps != this->IsHovering)
 	{
@@ -17,10 +18,14 @@ bool IMouseEvent::OnMouseMove(Tmpl8::vec2 mousePos)
 	return overlaps;
 }
 
-void IMouseEvent::OnMouseDown()
+bool IMouseEvent::OnMouseDown()
 {
 	if (this->IsHovering)
+	{
 		OnClick();
+		return true;
+	}
+	return false;
 }
 
 void IText::SetText(std::string* textPTR)

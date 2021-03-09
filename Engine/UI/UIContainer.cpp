@@ -1,12 +1,12 @@
 #include "UIContainer.h"
 #include "UiButton.h"
 #include "UIImage.h"
+#include "UIModal.h"
 #include "UIText.h"
 
 UiContainer::UiContainer(int xPos, int yPos, int width, int height)
 {
 	Elements = std::vector<std::unique_ptr<UIElement>>();
-	surface = std::make_unique< Tmpl8::Surface >(width, height);
 	UiContainer::Init(vec2(xPos, yPos), vec2(width, height), vec2(0, 0));
 }
 
@@ -32,10 +32,10 @@ UIButton* UiContainer::Button(int xPos, int yPos, int xScale, int yScale)
 	uiElement->Init(
 		Tmpl8::vec2(static_cast<float>(xPos), static_cast<float>(yPos)),
 		Tmpl8::vec2(static_cast<float>(xScale), static_cast<float>(yScale)),
-		Tmpl8::vec2((float)(0), (float)(EngineGlobal::GetHeight() - surface->GetHeight()))
+		Tmpl8::vec2(static_cast<float>(this->Pos.x), static_cast<float>(this->Pos.y))
 	);
 
-	Elements.insert(Elements.begin(), std::unique_ptr<UIElement>(uiElement));
+	Elements.insert(end(Elements), std::unique_ptr<UIElement>(uiElement));
 	return uiElement;
 }
 
@@ -88,6 +88,16 @@ UIText* UiContainer::Text(int xPos, int yPos, int size, std::string textPtr)
 	return uiElement;
 }
 
+UIModal* UiContainer::Modal(std::string message)
+{
+	UIModal* modal = new UIModal(surface.get());
+	modal->SetMessage(message);
+
+
+	Elements.insert(end(Elements), std::unique_ptr<UIElement>(modal));
+	return modal;
+}
+
 UiContainer* UiContainer::Container(int xPos, int yPos, int width, int height)
 {
 	return Container(vec2(xPos, yPos), vec2(width, height));
@@ -112,21 +122,24 @@ bool UiContainer::OnMouseMove(Tmpl8::vec2 mousePos)
 {
 	for (auto& element : Elements)
 	{
+		UIElement* elem = element.get();
 		if (element->OnMouseMove(mousePos))
 			return true;
 	}
 	return false;
 }
 
-void UiContainer::OnMouseDown()
+bool UiContainer::OnMouseDown()
 {
 	if (IsHiddenLambda != nullptr && IsHiddenLambda() || !IsActive())
-		return;
+		return false;
 
 	for (auto& element : Elements)
 	{
-		element->OnMouseDown();
+		if (element->OnMouseDown())
+			return true;
 	}
+	return false;
 }
 
 int UiContainer::GetWidth() const

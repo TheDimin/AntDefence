@@ -62,13 +62,16 @@ void Level::DeleteObject(GameObject* obj)
 		ToDeleteObjects.insert(end(ToDeleteObjects), obj);
 }
 
-void Level::Render(Surface* surface)
+void Level::Render(Surface* Surface)
 {
+	this->surface->CopyTo(Surface, 0, 0); //Actual map only renderd once
+	uiContainer->Render(Surface);
 	for (auto& element : objects)
 	{
 		if (element != nullptr)
-			element->Render(surface);
+			element->Render(Surface);
 	}
+
 }
 
 void Level::Tick(float deltaTime)

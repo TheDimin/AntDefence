@@ -20,7 +20,7 @@ protected:
 	friend class Game;
 	friend class Level;
 	virtual bool OnMouseMove(Tmpl8::vec2 pos);
-	virtual void OnMouseDown();
+	virtual bool OnMouseDown();
 };
 
 class IText

@@ -237,18 +237,14 @@
     <ClCompile Include="Engine\AssetManager.cpp" />
     <ClCompile Include="Engine\EngineGlobal.cpp" />
     <ClCompile Include="Engine\Component.cpp" />
-    <ClCompile Include="Engine\TypeInfo\Type.cpp" />
     <ClCompile Include="Engine\FSM\FSM.cpp" />
     <ClCompile Include="Engine\FSM\State.cpp" />
     <ClCompile Include="Engine\FSM\TransitionBase.cpp" />
     <ClCompile Include="Engine\MissionBase.cpp" />
     <ClCompile Include="Engine\FSM\Event.cpp" />
-    <ClCompile Include="Engine\TypeInfo\TypeConverters.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="Engine\GameObject.cpp" />
     <ClCompile Include="Engine\Level.cpp" />
-    <ClCompile Include="Engine\TypeInfo\PropInfo.cpp" />
-    <ClCompile Include="Engine\TypeInfo\Reflections.cpp" />
     <ClCompile Include="Game\GameLevel.cpp" />
     <ClCompile Include="Game\MainMenu.cpp" />
     <ClCompile Include="Game\Mob.cpp" />
@@ -269,6 +265,7 @@
     <ClCompile Include="Game\TowerStates\TowerAtackingState.cpp" />
     <ClCompile Include="Game\TowerStates\TowerFSM.cpp" />
     <ClCompile Include="Game\TowerStates\TowerState.cpp" />
+    <ClCompile Include="UIModal.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\AssetManager.h" />
@@ -279,15 +276,10 @@
     <ClInclude Include="Engine\FSM\State.h" />
     <ClInclude Include="Engine\Level.h" />
     <ClInclude Include="Engine\MissionBase.h" />
-    <ClInclude Include="Engine\TypeInfo\Type.h" />
-    <ClInclude Include="Engine\TypeInfo\PropInfo.h" />
-    <ClInclude Include="Engine\TypeInfo\TypeConverters.h" />
     <ClInclude Include="Engine\UI\UIImage.h" />
+    <ClInclude Include="Engine\UI\UIModal.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="Engine\GameObject.h" />
-    <ClInclude Include="Engine\TypeInfo\Reflections.h">
-      <DeploymentContent>false</DeploymentContent>
-    </ClInclude>
     <ClInclude Include="Game\GameStates\GameState.h" />
     <ClInclude Include="Game\Events\PlaceBuildingEvent.h" />
     <ClInclude Include="Game\Events\StartBuildEvent.h" />

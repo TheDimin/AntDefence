@@ -1,6 +1,10 @@
 #include "game.h"
+
+#include <chrono>
 #include <iostream>
 #include <SDL_mouse.h>
+#include <thread>
+
 
 #include "surface.h"
 #include "Engine/LevelHelper.h"
@@ -25,6 +29,7 @@ void Game::Init()
 	mmLvl->game = this;
 	Game::LoadedLevel = std::unique_ptr<Level>(mmLvl);
 
+	EngineGlobal::SetDebugScreen(DebugSurface.get());
 	//
 	//LoadedLevel->objects.insert(LoadedLevel->objects.begin(), std::make_unique<GameObject>());
 	//std::cout << LoadedLevel->mapStyle->sprites[0]->asset << std::endl;
@@ -46,17 +51,21 @@ void Game::Tick(float deltaTime)
 {
 	// clear the graphics window
 	screen->Clear(0);
+
 	LoadedLevel->Tick(deltaTime);
 
-	LoadedLevel->surface->CopyTo(screen, 0, 0);
+#ifdef  UI_COLLISION_DEBUG
+	DebugSurface->Clear(0);
+
+	Surface gameSurface = Surface(screen->GetWidth(), screen->GetHeight());
+	LoadedLevel->Render(&gameSurface);
+//	screen->Clear(0);
+
+	DebugSurface->BlendCopyTo(&gameSurface, 0, 0);
+	gameSurface.CopyTo(screen, 0, 0);
+#else
 	LoadedLevel->Render(screen);
-	LoadedLevel->uiContainer->Render(screen); // we could do some tricks to only update ui x times a second
-
-//	for (IRenderable* IRender : Renderables)
-	//{
-	//	IRender->Render(screen);
-	//}
-
+#endif
 
 	//Can only save switch lvl at end of the frame
 	if (NewLevel != nullptr) {

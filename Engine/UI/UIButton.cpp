@@ -30,8 +30,12 @@ UIButton* UIButton::SetIsActiveLambda(std::function<bool()> function)
 void UIButton::Render(Tmpl8::Surface* surface)
 {
 	if (IsHiddenLambda != nullptr && IsHiddenLambda())
+	{
+#ifdef UI_DEBUG
+		std::cout << "IS Hidden lambda returned true" << std::endl;
+#endif
 		return;
-
+	}
 	bool active = IsActive();
 	if (styleInfo.Image != nullptr)
 	{
@@ -56,6 +60,11 @@ void UIButton::Render(Tmpl8::Surface* surface)
 		char* str = const_cast<char*>(GetText()->c_str());
 		surface->Centre(str, static_cast<int>(Pos.x), static_cast<int>(Pos.y), (int)floor((Scale.x * 2) / (6.0f * (float)strlen(str))), active ? 0xfffffff : styleInfo.Disabled);
 	}
+
+#ifdef UI_COLLISION_DEBUG
+	//Draw on top
+	EngineGlobal::GetDebugScreen()->Bar(BoundingBox.x, BoundingBox.z, BoundingBox.y, BoundingBox.w, 0xFF0000);
+#endif
 }
 
 void UIButton::OnBeginHover()

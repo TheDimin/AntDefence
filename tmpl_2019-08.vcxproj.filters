@@ -23,18 +23,6 @@
     <ClCompile Include="Engine\Level.cpp">
       <Filter>Private\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\TypeInfo\PropInfo.cpp">
-      <Filter>Private\Engine\TypeInfo</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\TypeInfo\Type.cpp">
-      <Filter>Private\Engine\TypeInfo</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\TypeInfo\Reflections.cpp">
-      <Filter>Private\Engine\TypeInfo</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\TypeInfo\TypeConverters.cpp">
-      <Filter>Private\Engine\TypeInfo</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Component.cpp">
       <Filter>Private\Engine</Filter>
     </ClCompile>
@@ -122,6 +110,7 @@
     <ClCompile Include="Game\MainMenu.cpp">
       <Filter>Private\Game</Filter>
     </ClCompile>
+    <ClCompile Include="UIModal.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -139,15 +128,6 @@
     </ClInclude>
     <ClInclude Include="Engine\Level.h">
       <Filter>Public\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\TypeInfo\Type.h">
-      <Filter>Public\Engine\TypeInfo</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\TypeInfo\PropInfo.h">
-      <Filter>Public\Engine\TypeInfo</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\TypeInfo\Reflections.h">
-      <Filter>Public\Engine\TypeInfo</Filter>
     </ClInclude>
     <ClInclude Include="Engine\GameObject.h">
       <Filter>Public\Engine</Filter>
@@ -263,9 +243,6 @@
     <ClInclude Include="lib\nlohmann\detail\meta\void_t.hpp">
       <Filter>Libs\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\TypeInfo\TypeConverters.h">
-      <Filter>Public\Engine\TypeInfo</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Component.h">
       <Filter>Public\Engine</Filter>
     </ClInclude>
@@ -356,6 +333,7 @@
     <ClInclude Include="Game\MainMenu.h">
       <Filter>Public\Game</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\UI\UIModal.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="template code">
@@ -381,12 +359,6 @@
     </Filter>
     <Filter Include="Public\Game">
       <UniqueIdentifier>{84b84ffa-fa20-4c77-aac6-f213ea7ef61f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Private\Engine\TypeInfo">
-      <UniqueIdentifier>{119da204-f7c0-46c2-b30f-aa255f52befc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Public\Engine\TypeInfo">
-      <UniqueIdentifier>{dc198ac6-d029-4b35-865a-6992c56e3125}</UniqueIdentifier>
     </Filter>
     <Filter Include="Private\Game">
       <UniqueIdentifier>{0ff0010b-e6ab-4ff7-a8ae-2180285a2556}</UniqueIdentifier>

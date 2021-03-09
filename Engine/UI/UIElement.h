@@ -32,7 +32,6 @@ protected:
 private:
 	friend class Level;
 	friend class UiContainer;
-	bool inline Overlaps(vec2& mousePos);
 
 protected:
 	bool IsOverlapping(Tmpl8::vec2 pos) override;

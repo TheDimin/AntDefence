@@ -51,7 +51,10 @@ protected:
 	std::vector<GameObject*> ToDeleteObjects = std::vector<GameObject*>();
 
 protected:
-	virtual void OnLoad() {};
+	virtual void OnLoad()
+	{
+		EngineGlobal::SetDebugScreen(surface.get());
+	};
 	virtual void CreateUI(UiContainer* UI) = 0;
 	std::unique_ptr<UiContainer> uiContainer;
 

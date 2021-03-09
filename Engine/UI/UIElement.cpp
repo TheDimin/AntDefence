@@ -21,14 +21,14 @@ void UIElement::Init(vec2 Pos, vec2 Scale, vec2 Offset)
 	);
 }
 
-bool UIElement::Overlaps(vec2& mousePos)
-{
-	return IsActive() ? BoundingBox.x <= mousePos.x && BoundingBox.y >= mousePos.x && BoundingBox.z <= mousePos.y && BoundingBox.w >= mousePos.y : false;
-}
-
 bool UIElement::IsOverlapping(Tmpl8::vec2 mousePos)
 {
-	return IsActive() ? Overlaps(mousePos) : false;
+	return IsActive() ?
+		BoundingBox.x <= mousePos.x &&
+		BoundingBox.y >= mousePos.x &&
+		BoundingBox.z <= mousePos.y &&
+		BoundingBox.w >= mousePos.y :
+		false;
 }
 
 

@@ -273,6 +273,8 @@ namespace Tmpl8 {
 					src += srcpitch;
 				}
 			}
+			else
+				std::cout << "CopyTo invalid size" << std::endl;
 		}
 	}
 

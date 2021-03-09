@@ -8,6 +8,7 @@
 #include "../Engine/LevelHelper.h"
 #include "../Engine/UI/UiButton.h"
 #include "../Engine/UI/UIImage.h"
+#include "../Engine/UI/UIModal.h"
 
 namespace fs = std::filesystem;
 std::string NextLvlText = "Next level";
@@ -16,13 +17,13 @@ std::string CreditsText = "Credits";
 void MainMenu::CreateUI(UiContainer* UI)
 {
 
-	UIButton* SelectedLevelButton = UI->Button(100, 720-180, 80, 25);
-	UIButton* PageSelectButton = UI->Button(100, 720 -90, 80, 25);
+	UIButton* SelectedLevelButton = UI->Button(100, 720 - 180, 80, 25);
+	UIButton* PageSelectButton = UI->Button(100, 720 - 90, 80, 25);
 
 	UIButton* CreditsButton = UI->Button(100, 720, 80, 25);
 
-	UIImage* Logo = UI->Image(10,80,180	,180,new Sprite(new Surface("assets/Logo.png"),1));
-	
+	UIImage* Logo = UI->Image(10, 80, 180, 180, new Sprite(new Surface("assets/Logo.png"), 1));
+
 	UIImage* image = UI->Image(200, 50, ScreenWidth - 250, ScreenHeight - 100, SelectedLevel.background);
 
 	PageSelectButton->SetOnClick([this, image]()
@@ -44,14 +45,18 @@ void MainMenu::CreateUI(UiContainer* UI)
 
 
 	CreditsButton->SetText(&CreditsText);
-	CreditsButton->SetOnClick([this]()
+	CreditsButton->SetOnClick([UI]()
 		{
-
+			UI->Modal("test \n test")->SetOnCancel([]()
+				{
+					printf("test \n");
+				})->SetOnAccept([]() {printf("OnAccept \n"); });
 		});
 }
 
 void MainMenu::OnLoad()
 {
+	Level::OnLoad();
 	for (auto& file : fs::directory_iterator("assets/levels"))
 	{
 		if (fs::exists(file.path().string() + "/Level.json") && fs::exists(file.path().string() + "/Style.json"))

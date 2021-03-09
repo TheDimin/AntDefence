@@ -9,7 +9,11 @@ class Game
 {
 public:
 	~Game();
-	void SetTarget(Tmpl8::Surface* surface) { screen = surface; }
+	void SetTarget(Tmpl8::Surface* surface)
+	{
+		screen = surface;
+		DebugSurface = std::unique_ptr<Surface>(surface);
+	}
 	void Init();
 	void Shutdown();
 	void Tick(float deltaTime);
@@ -30,12 +34,13 @@ public:
 			delete NewLevel;
 			NewLevel = nullptr;
 		}
-		
+
 		NewLevel = LevelHelper::Load<LevelType>(newLevel);
 	}
 private:
 	Level* NewLevel = nullptr;
 	class std::unique_ptr<Level> LoadedLevel;
+	std::unique_ptr<Tmpl8::Surface> DebugSurface;
 	//std::vector<IRenderable*> Renderables = std::vector<IRenderable*>();
 };
 
