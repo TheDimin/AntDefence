@@ -18,11 +18,11 @@ bool IMouseEvent::OnMouseMove(Tmpl8::vec2 mousePos)
 	return overlaps;
 }
 
-bool IMouseEvent::OnMouseDown()
+bool IMouseEvent::OnLeftClick()
 {
 	if (this->IsHovering)
 	{
-		OnClick();
+		OnLeftMouseDown();
 		return true;
 	}
 	return false;

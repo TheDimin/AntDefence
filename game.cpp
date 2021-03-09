@@ -29,7 +29,7 @@ void Game::Init()
 	mmLvl->game = this;
 	Game::LoadedLevel = std::unique_ptr<Level>(mmLvl);
 
-	EngineGlobal::SetDebugScreen(DebugSurface.get());
+
 	//
 	//LoadedLevel->objects.insert(LoadedLevel->objects.begin(), std::make_unique<GameObject>());
 	//std::cout << LoadedLevel->mapStyle->sprites[0]->asset << std::endl;
@@ -51,25 +51,26 @@ void Game::Tick(float deltaTime)
 {
 	// clear the graphics window
 	screen->Clear(0);
-
-	LoadedLevel->Tick(deltaTime);
-
 #ifdef  UI_COLLISION_DEBUG
 	DebugSurface->Clear(0);
+#endif
 
-	Surface gameSurface = Surface(screen->GetWidth(), screen->GetHeight());
-	LoadedLevel->Render(&gameSurface);
-//	screen->Clear(0);
+	if (!LoadedLevel->IsPaused())
+		LoadedLevel->Tick(deltaTime);
 
-	DebugSurface->BlendCopyTo(&gameSurface, 0, 0);
-	gameSurface.CopyTo(screen, 0, 0);
+#ifdef  UI_COLLISION_DEBUG
+	//Surface gameSurface = Surface(ScreenWidth, ScreenHeight);
+	LoadedLevel->Render(screen);
+	DebugSurface->BlendCopyTo(screen, 0, 0);//Copy debug info on top of everything
 #else
 	LoadedLevel->Render(screen);
 #endif
 
 	//Can only save switch lvl at end of the frame
 	if (NewLevel != nullptr) {
+		LoadedLevel.reset();
 		LoadedLevel = std::unique_ptr<Level>(NewLevel);
+		LoadedLevel->game = this;
 		NewLevel = nullptr;
 	}
 
@@ -88,4 +89,9 @@ void Game::MouseDown(int button)
 void Game::MouseMove(int x, int y, int Ax, int Ay)
 {
 	LoadedLevel->OnMouseMove(vec2((float)x, (float)y));
+}
+
+void Game::KeyDown(int key)
+{
+	LoadedLevel->OnKeyDown(key);
 }

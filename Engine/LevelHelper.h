@@ -27,7 +27,7 @@ LevelType* LevelHelper::Load(std::string LevelName)
 	LevelType* level = new LevelType();
 	level->name = LevelName;
 	level->surface = std::make_unique<Tmpl8::Surface>(EngineGlobal::GetWidth(), static_cast<int>(0.8f * EngineGlobal::GetHeight()));
-	level->uiContainer = std::make_unique<UiContainer>(0, (int)ceil(EngineGlobal::GetHeight() * 0.8f), EngineGlobal::GetWidth(), static_cast<int>(0.2f * EngineGlobal::GetHeight()));
+	level->uiContainer = std::make_unique<UiContainer>(vec2(0, (int)ceil(EngineGlobal::GetHeight() * 0.8f)), EngineGlobal::GetWidth(), static_cast<int>(0.2f * EngineGlobal::GetHeight()));
 
 	file.close(); j.clear();
 
@@ -62,7 +62,7 @@ inline MainMenu* LevelHelper::Load<MainMenu>(std::string _)
 	MainMenu* level = new MainMenu();
 	level->name = "MainMenu";
 	level->surface = std::make_unique<Tmpl8::Surface>(EngineGlobal::GetWidth(), EngineGlobal::GetHeight());
-	level->uiContainer = std::make_unique<UiContainer>(0, 0, EngineGlobal::GetWidth(), EngineGlobal::GetHeight());
+	level->uiContainer = std::make_unique<UiContainer>(vec2(0, 0), EngineGlobal::GetWidth(), EngineGlobal::GetHeight());
 
 	/*file.close(); j.clear();
 

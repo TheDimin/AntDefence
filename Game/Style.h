@@ -6,8 +6,6 @@
 struct  MapSprite
 {
 public:
-	MapSprite() = default;
-
 private:
 	friend void from_json(const nlohmann::json& json, MapSprite& mapSprite);
 public:
@@ -20,8 +18,6 @@ public:
 struct ObjectStat
 {
 public:
-	ObjectStat() = default;
-
 private:
 	friend void from_json(const nlohmann::json& json, ObjectStat& mapSprite);
 public:

@@ -2,11 +2,7 @@
 #include "../Engine/Level.h"
 #include "GameStates/GameFSM.h"
 
-#define GameStateWrapperInjection(Function,ParamType,ParamName)	\
-	void Function(ParamType ParamName) override {			\
-	gameState->Function(ParamName);\
-		Level::Function(ParamName);							\
-		}					\
+
 
 class Mob;
 
@@ -14,7 +10,7 @@ class GameLevel :public Level
 {
 public:
 	GameLevel();
-	~GameLevel() = default;
+	virtual ~GameLevel();
 
 public:
 	friend void from_json(const nlohmann::json& nlohmann_json_j, GameLevel& lvl);
@@ -45,6 +41,7 @@ public:
 protected:
 	uint Money = 100;
 	int Health = 100;
+	UIModal* activeModal = nullptr;
 
 protected://text ptr's 
 	std::string MoneyText = "Money: 100";
@@ -52,12 +49,18 @@ protected://text ptr's
 	std::string StartNextWaveText = "Start wave";
 
 public:
-	GameStateWrapperInjection(Render, Surface*, surface);
-	GameStateWrapperInjection(OnMouseMove, vec2, mousePos);
-	GameStateWrapperInjection(OnLeftClick, vec2, pos);
+
+	void Render(Tmpl8::Surface* surface) override;
+	void OnMouseMove(vec2 mousePos) override;
+	void OnLeftClick(vec2 mousePos) override;
+	//	GameStateWrapperInjection(Render, Surface*, surface);
+	//GameStateWrapperInjection(OnMouseMove, vec2, mousePos);
+	//GameStateWrapperInjection(OnLeftClick, vec2, pos);
 	void Tick(float deltaTime) override;
 
-	void CreateUI(UiContainer* UI) override;
-};
 
-#undef GameStateWrapperInjection
+	void CreateUI(UiContainer* UI) override;
+
+	void OnKeyDown(int key) override;
+
+};

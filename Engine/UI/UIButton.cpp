@@ -58,12 +58,12 @@ void UIButton::Render(Tmpl8::Surface* surface)
 	if (Text != nullptr)
 	{
 		char* str = const_cast<char*>(GetText()->c_str());
-		surface->Centre(str, static_cast<int>(Pos.x), static_cast<int>(Pos.y), (int)floor((Scale.x * 2) / (6.0f * (float)strlen(str))), active ? 0xfffffff : styleInfo.Disabled);
+		surface->Centre(str, static_cast<int>(Pos.x), static_cast<int>(Pos.y), (int)floor((Scale.x * 2) / (6.0f * (int)strlen(str))), active ? 0xfffffff : styleInfo.Disabled);
 	}
 
 #ifdef UI_COLLISION_DEBUG
 	//Draw on top
-	EngineGlobal::GetDebugScreen()->Bar(BoundingBox.x, BoundingBox.z, BoundingBox.y, BoundingBox.w, 0xFF0000);
+	EngineGlobal::GetDebugScreen()->Bar((int)BoundingBox.x, (int)BoundingBox.z, (int)BoundingBox.y, (int)BoundingBox.w, 0xFF0000);
 #endif
 }
 
@@ -90,10 +90,10 @@ bool UIButton::IsActive()
 	return IsActiveLambda();
 }
 
-void UIButton::OnClick()
+void UIButton::OnLeftMouseDown()
 {
 #ifdef UI_DEBUG
-	std::cout << "OnClick" << std::endl;
+	std::cout << "OnLeftMouseDown" << std::endl;
 #endif
 
 	if (OnClickPtr != nullptr)

@@ -241,8 +241,13 @@ namespace Tmpl8 {
 		Pixel* a = x1 + y1 * m_Pitch + m_Buffer;
 		for (int y = y1; y <= y2; y++)
 		{
+			if (y > m_Height)
+				continue;
 			for (int x = 0; x <= (x2 - x1); x++)
-				a[x] = c;
+			{
+				if (x < m_Width && x >0)
+					a[x] = c;
+			}
 			a += m_Pitch;
 		}
 	}

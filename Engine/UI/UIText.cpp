@@ -41,7 +41,7 @@ void UIText::OnBeginHover()
 {
 }
 
-void UIText::OnClick()
+void UIText::OnLeftMouseDown()
 {
 }
 

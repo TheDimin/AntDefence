@@ -26,6 +26,7 @@ public:
 
 	virtual void RegisterObject(class GameObject* obj);
 	virtual void DeleteObject(class GameObject* obj);
+	bool IsPaused() const;
 
 public:
 	virtual void Render(Tmpl8::Surface* surface) override;
@@ -38,9 +39,10 @@ public:
 	}
 	virtual void OnLeftClick(vec2 mousePos)
 	{
-		uiContainer->OnMouseDown();
+		uiContainer->OnLeftClick();
 	}
 	virtual void OnRightMouseButtonDown() {}
+	virtual void OnKeyDown(int key) {}
 
 protected:
 	friend class LevelHelper; friend class Game;
@@ -49,7 +51,8 @@ protected:
 	std::vector<std::unique_ptr<GameObject>> objects;
 	std::vector<std::vector<int>> mapTiles;
 	std::vector<GameObject*> ToDeleteObjects = std::vector<GameObject*>();
-
+	bool Paused = false;
+	Game* game;
 protected:
 	virtual void OnLoad()
 	{

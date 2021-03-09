@@ -11,7 +11,7 @@
 
 
 #define UI_DEBUG //Extra debugging info for ui
-#undef UI_DEBUG
+//#undef UI_DEBUG
 
 #define UI_COLLISION_DEBUG //Collision debugging for ui
 #undef UI_COLLISION_DEBUG

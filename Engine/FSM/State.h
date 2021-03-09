@@ -14,6 +14,8 @@ class Event;
 class State : ITickable, IRenderable
 {
 public:
+	virtual ~State() = default;
+
 	virtual void OnStateEnter(Event* e) = 0;
 	virtual void OnStateExit(Event* newEvent) = 0;
 

@@ -40,7 +40,7 @@ protected:
 
 protected://Not all ui elements implement these
 	friend class Level;
-	void OnClick() override {}
+	void OnLeftMouseDown() override {}
 	void OnBeginHover() override {}
 	void OnEndHover() override {}
 	

@@ -30,7 +30,14 @@ namespace Tmpl8 {
 template<typename Transition, typename Event, typename State>
 class FSM : IRenderable, ITickable
 {
-protected:
+public:
+	virtual ~FSM()
+	{
+		transitions.clear();
+		states.clear();
+	}
+
+public:
 	std::vector<std::unique_ptr<Transition>> transitions;
 	std::vector<std::unique_ptr<State>> states;
 	State* activeState = nullptr;

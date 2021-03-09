@@ -18,7 +18,7 @@ public:
 	void Render(class Tmpl8::Surface* surface) override;
 protected:
 	void OnBeginHover() override;
-	void OnClick() override;
+	void OnLeftMouseDown() override;
 	void OnEndHover() override;
 	virtual bool IsActive() override;
 };

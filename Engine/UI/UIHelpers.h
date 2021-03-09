@@ -12,7 +12,7 @@ public:
 	virtual ~IMouseEvent() = default;
 protected:
 	bool IsHovering;
-	virtual void OnClick() = 0;
+	virtual void OnLeftMouseDown() = 0; //check if left mouse hits this object
 	virtual void OnBeginHover() = 0;
 	virtual void OnEndHover() = 0;
 	virtual bool IsOverlapping(Tmpl8::vec2 pos) = 0;
@@ -20,7 +20,7 @@ protected:
 	friend class Game;
 	friend class Level;
 	virtual bool OnMouseMove(Tmpl8::vec2 pos);
-	virtual bool OnMouseDown();
+	virtual bool OnLeftClick();
 };
 
 class IText

@@ -381,11 +381,8 @@ int main(int argc, char** argv)
 				exitapp = 1;
 				break;
 			case SDL_KEYDOWN:
-				if (event.key.keysym.sym == SDLK_ESCAPE)
-				{
-					exitapp = 1;
-					// find other keys here: http://sdl.beuc.net/sdl.wiki/SDLKey
-				}
+				
+				
 				game->KeyDown(event.key.keysym.scancode);
 				break;
 			case SDL_KEYUP:

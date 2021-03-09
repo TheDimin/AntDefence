@@ -12,7 +12,8 @@ public:
 	void SetTarget(Tmpl8::Surface* surface)
 	{
 		screen = surface;
-		DebugSurface = std::unique_ptr<Surface>(surface);
+		DebugSurface = std::make_unique<Surface>(surface->GetWidth(), surface->GetHeight());
+		EngineGlobal::SetDebugScreen(DebugSurface.get());
 	}
 	void Init();
 	void Shutdown();
@@ -21,10 +22,10 @@ public:
 	void MouseDown(int button);
 	void MouseMove(int x, int y, int Ax, int Ay);
 	void KeyUp(int key) { /* implement if you want to handle keys */ }
-	void KeyDown(int key) { /* implement if you want to handle keys */ }
+	void KeyDown(int key);
 	Tmpl8::Surface* GetScreen() { return screen; }
 private:
-	Tmpl8::Surface* screen;
+
 public:
 	template<class LevelType>
 	void SwitchLevel(std::string newLevel)
@@ -39,9 +40,9 @@ public:
 	}
 private:
 	Level* NewLevel = nullptr;
-	class std::unique_ptr<Level> LoadedLevel;
-	std::unique_ptr<Tmpl8::Surface> DebugSurface;
-	//std::vector<IRenderable*> Renderables = std::vector<IRenderable*>();
+	std::unique_ptr<Level> LoadedLevel = nullptr;
+	std::unique_ptr<Tmpl8::Surface> DebugSurface = nullptr;
+	Tmpl8::Surface* screen = nullptr;
 };
 
 

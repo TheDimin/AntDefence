@@ -21,8 +21,5 @@ protected:
 	std::vector<LevelInfo> AllLevelsInfo;
 	LevelInfo SelectedLevel;
 	int SelectedLevelIndex = 0;
-
-	Game* game;//Warning this is not available onload/creatUI , but will be in in lambda's 
-
 };
 

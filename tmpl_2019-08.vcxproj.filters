@@ -110,7 +110,9 @@
     <ClCompile Include="Game\MainMenu.cpp">
       <Filter>Private\Game</Filter>
     </ClCompile>
-    <ClCompile Include="UIModal.cpp" />
+    <ClCompile Include="Engine\UI\UIModal.cpp">
+      <Filter>Private\Engine\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -333,7 +335,9 @@
     <ClInclude Include="Game\MainMenu.h">
       <Filter>Public\Game</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\UI\UIModal.h" />
+    <ClInclude Include="Engine\UI\UIModal.h">
+      <Filter>Public\Engine\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="template code">

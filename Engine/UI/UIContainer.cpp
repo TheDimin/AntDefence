@@ -4,12 +4,26 @@
 #include "UIModal.h"
 #include "UIText.h"
 
-UiContainer::UiContainer(int xPos, int yPos, int width, int height)
+UiContainer::UiContainer(int xPos, int yPos, int width, int height, int xOffset, int yOffset)
 {
 	Elements = std::vector<std::unique_ptr<UIElement>>();
-	UiContainer::Init(vec2(xPos, yPos), vec2(width, height), vec2(0, 0));
+	UiContainer::Init(vec2(xPos, yPos), vec2(width, height), vec2(xOffset, yOffset));
 }
 
+void UiContainer::Init(vec2 pos, vec2 scale, vec2 offset)
+{
+	IsHovering = true;
+	UIElement::Init(pos, scale, offset);
+	surface = std::make_unique< Tmpl8::Surface >((int)scale.x, (int)scale.y);
+	surface->InitCharset();
+}
+
+UiContainer::~UiContainer()
+{
+	surface.reset();
+	Elements.clear();
+	delete modalInstance;
+}
 
 
 void UiContainer::Render(Tmpl8::Surface* screen)
@@ -32,7 +46,7 @@ UIButton* UiContainer::Button(int xPos, int yPos, int xScale, int yScale)
 	uiElement->Init(
 		Tmpl8::vec2(static_cast<float>(xPos), static_cast<float>(yPos)),
 		Tmpl8::vec2(static_cast<float>(xScale), static_cast<float>(yScale)),
-		Tmpl8::vec2(static_cast<float>(this->Pos.x), static_cast<float>(this->Pos.y))
+		Pos + Offset
 	);
 
 	Elements.insert(end(Elements), std::unique_ptr<UIElement>(uiElement));
@@ -53,7 +67,7 @@ UIImage* UiContainer::Image(int xPos, int yPos, int width, int height, Sprite* s
 	image->Init(
 		Tmpl8::vec2((float)xPos, static_cast<float>(yPos)),
 		Tmpl8::vec2(static_cast<float>(width), static_cast<float>(height)),
-		Tmpl8::vec2((float)EngineGlobal::GetWidth() - surface->GetWidth(), (float)EngineGlobal::GetHeight() - surface->GetHeight())
+		Pos
 	);
 	image->SetSprite(sprite);
 	Elements.insert(Elements.begin(), std::unique_ptr<UIElement>(image));
@@ -67,7 +81,7 @@ UIText* UiContainer::Text(int xPos, int yPos, int width, std::string* textPtr)
 	uiElement->Init(
 		Tmpl8::vec2((float)xPos, static_cast<float>(yPos)),
 		Tmpl8::vec2(static_cast<float>(width), static_cast<float>(1)),
-		Tmpl8::vec2((float)EngineGlobal::GetWidth() - surface->GetWidth(), (float)EngineGlobal::GetHeight() - surface->GetHeight())
+		Pos
 	);
 
 	Elements.insert(Elements.begin(), std::unique_ptr<UIElement>(uiElement));
@@ -81,7 +95,7 @@ UIText* UiContainer::Text(int xPos, int yPos, int size, std::string textPtr)
 	uiElement->Init(
 		Tmpl8::vec2((float)xPos, static_cast<float>(yPos)),
 		Tmpl8::vec2(static_cast<float>(size), static_cast<float>(1)),
-		Tmpl8::vec2((float)EngineGlobal::GetWidth() - surface->GetWidth(), (float)EngineGlobal::GetHeight() - surface->GetHeight())
+		Pos
 	);
 
 	Elements.insert(Elements.begin(), std::unique_ptr<UIElement>(uiElement));
@@ -90,12 +104,14 @@ UIText* UiContainer::Text(int xPos, int yPos, int size, std::string textPtr)
 
 UIModal* UiContainer::Modal(std::string message)
 {
-	UIModal* modal = new UIModal(surface.get());
-	modal->SetMessage(message);
+	if (modalInstance == nullptr) {
+		UIModal* modal = new UIModal(surface.get());
+		Elements.insert(end(Elements), std::unique_ptr<UIElement>(modal));
+		modalInstance = modal;
+	}
 
-
-	Elements.insert(end(Elements), std::unique_ptr<UIElement>(modal));
-	return modal;
+	modalInstance->SetMessage(message);
+	return modalInstance;
 }
 
 UiContainer* UiContainer::Container(int xPos, int yPos, int width, int height)
@@ -105,38 +121,32 @@ UiContainer* UiContainer::Container(int xPos, int yPos, int width, int height)
 
 UiContainer* UiContainer::Container(vec2 pos, vec2 size)
 {
-	UiContainer* uiElement = new UiContainer(pos, size);
+	UiContainer* uiElement = new UiContainer(pos, size, this->Pos);
 	Elements.insert(Elements.begin(), std::unique_ptr<UIElement>(uiElement));
 	return uiElement;
 }
 
-void UiContainer::Init(vec2 pos, vec2 scale, vec2 offset)
-{
-	IsHovering = true;
-	UIElement::Init(pos, scale, offset);
-	surface = std::make_unique< Tmpl8::Surface >((int)scale.x, (int)scale.y);
-	surface->InitCharset();
-}
+
 
 bool UiContainer::OnMouseMove(Tmpl8::vec2 mousePos)
 {
 	for (auto& element : Elements)
 	{
 		UIElement* elem = element.get();
-		if (element->OnMouseMove(mousePos))
+		if (elem->OnMouseMove(mousePos))
 			return true;
 	}
 	return false;
 }
 
-bool UiContainer::OnMouseDown()
+bool UiContainer::OnLeftClick()
 {
 	if (IsHiddenLambda != nullptr && IsHiddenLambda() || !IsActive())
 		return false;
 
 	for (auto& element : Elements)
 	{
-		if (element->OnMouseDown())
+		if (element->OnLeftClick())
 			return true;
 	}
 	return false;

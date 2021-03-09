@@ -20,12 +20,15 @@ Mob::~Mob()
 {
 	printf("Dconstructor called \n");
 	GameLevel* glvl = dynamic_cast<GameLevel*>(lvl);
-	glvl->activeMobs.erase(
-		std::find_if(
-			begin(glvl->activeMobs),
-			end(glvl->activeMobs),
-			[this](Mob* mob) {return mob == this; }));
-	glvl->activeMobCount--;
+	auto element = std::find_if(
+		begin(glvl->activeMobs),
+		end(glvl->activeMobs),
+		[this](Mob* mob) {return mob == this; });
+	if (element != end(glvl->activeMobs))
+	{
+		glvl->activeMobs.erase(element);
+		glvl->activeMobCount--;
+	}
 }
 
 bool Mob::TakeDamage(int& Amount)

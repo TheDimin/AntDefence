@@ -265,7 +265,7 @@
     <ClCompile Include="Game\TowerStates\TowerAtackingState.cpp" />
     <ClCompile Include="Game\TowerStates\TowerFSM.cpp" />
     <ClCompile Include="Game\TowerStates\TowerState.cpp" />
-    <ClCompile Include="UIModal.cpp" />
+    <ClCompile Include="Engine\UI\UIModal.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\AssetManager.h" />

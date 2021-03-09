@@ -62,6 +62,11 @@ void Level::DeleteObject(GameObject* obj)
 		ToDeleteObjects.insert(end(ToDeleteObjects), obj);
 }
 
+bool Level::IsPaused() const
+{
+	return Paused;
+}
+
 void Level::Render(Surface* Surface)
 {
 	this->surface->CopyTo(Surface, 0, 0); //Actual map only renderd once
@@ -71,7 +76,6 @@ void Level::Render(Surface* Surface)
 		if (element != nullptr)
 			element->Render(Surface);
 	}
-
 }
 
 void Level::Tick(float deltaTime)

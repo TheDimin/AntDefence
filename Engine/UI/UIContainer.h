@@ -19,14 +19,16 @@
 class UiContainer : public UIElement
 {
 public:
-	UiContainer(int xPos, int yPos, int width, int height);
-	UiContainer(vec2 pos, int width, int height) : UiContainer((int)pos.x, (int)pos.y, width, height) {};
-	UiContainer(vec2 pos, vec2 size) : UiContainer((int)pos.x, (int)pos.y, (int)size.x, (int)size.y) {};
+	UiContainer(int xPos, int yPos, int width, int height, int xOffset, int yOffset);
+	UiContainer(vec2 pos, int width, int height) : UiContainer((int)pos.x, (int)pos.y, width, height, 0, 0) {};
+	UiContainer(vec2 pos, vec2 size) : UiContainer((int)pos.x, (int)pos.y, (int)size.x, (int)size.y, 0, 0) {};
+	UiContainer(vec2 pos, vec2 size, vec2 offset) : UiContainer((int)pos.x, (int)pos.y, (int)size.x, (int)size.y, (int)offset.x, (int)offset.y) {};
 	UiContainer() = default;
-	~UiContainer()  override = default;
+	~UiContainer();
 
 protected:
 	friend class Game;
+	friend class GameLevel;
 	friend class Mob;
 	std::function<bool()> IsHiddenLambda = nullptr;
 public:
@@ -37,6 +39,7 @@ public:
 	class UIText* Text(int xPos, int yPos, int width, std::string* textPtr);
 	class UIText* Text(int xPos, int yPos, int size, std::string textPtr);
 	class UIModal* Modal(std::string message);
+
 
 public:
 	UiContainer* Container(int xPos, int yPos, int width, int height);
@@ -61,9 +64,9 @@ protected:
 
 
 	bool OnMouseMove(Tmpl8::vec2 pos) override;
-	bool OnMouseDown() override;
+	bool OnLeftClick() override;
 	//GenerateWrapperFunction(OnMouseMove,Tmpl8::vec2&, pos)
-	CallWrapChecked(OnClick);
+	CallWrapChecked(OnLeftMouseDown);
 	CallWrap(OnEndHover);
 
 
@@ -73,7 +76,8 @@ public:
 protected:
 	Pixel backgroundColor = 0x00000;
 	friend class Level;
-	std::vector<std::unique_ptr<UIElement>> Elements;
+	std::vector<std::unique_ptr<UIElement>> Elements = std::vector<std::unique_ptr<UIElement>>();
 	//std::vector<IRenderable*> ActiveRenders;//TODO: use this to allow elements to be deactivated
 	std::unique_ptr<Tmpl8::Surface> surface;
+	class UIModal* modalInstance = nullptr;
 };

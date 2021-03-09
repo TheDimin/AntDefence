@@ -1,22 +1,36 @@
 #include "GameLevel.h"
 
 #include <iostream>
-
-
 #include "Mob.h"
 #include "Tower.h"
+#include "../game.h"
+#include "../Engine/LevelHelper.h"
 #include "../Engine/FSM/Transition.h"
 #include "../Engine/UI/UIButton.h"
 #include "GameStates/GameFSM.h"
 #include "GameStates/PlayingState.h"
 #include "GameStates/BuildingState.h"
 #include "../Engine/FSM/FSM.h"
+#include "../Engine/UI/UIModal.h"
 #include "../Engine/UI/UIText.h"
 #include "Events/PlaceBuildingEvent.h"
 #include "Events/StartBuildEvent.h"
 
 
 #define MapJsonData(valueName,source) json.at(#valueName).get_to(source.valueName);
+
+#define GameStateWrapperInjection(Function,ParamType,ParamName)	\
+	void GameLevel::Function(ParamType ParamName) {				\
+		gameState->Function(ParamName);							\
+		if(activeModal == nullptr)								\
+		activeModal->Function(ParamName)						\
+		Level::Function(ParamName);								\
+	}															\
+
+
+
+
+const Tmpl8::Sprite* dollarSign = new Tmpl8::Sprite(new Surface("assets/DollarSign.png"), 1);
 
 GameLevel::GameLevel()
 {
@@ -54,6 +68,29 @@ GameLevel::GameLevel()
 	gameState->RegisterTransition(BuildToPlayWithSuccesfullBuild);
 	gameState->RegisterTransition(BuildToPlayWithFailedBuild);
 	gameState->ActivateFsm(playingState);
+	std::cout << gameState->states.size() << std::endl;
+}
+
+GameLevel::~GameLevel()
+{
+	std::cout << "GameLevel Deconstructor called" << std::endl;
+	placedTowers.clear();
+	activeMobs.clear();
+	route.clear();
+	//delete waveInstance;
+	mapStyle.reset();
+	surface.reset();
+	objects.clear();
+	mapTiles.clear();
+	ToDeleteObjects.clear();
+	uiContainer.reset();
+	gameState.reset();
+	if (activeModal != nullptr) // justs to be sure we destroy it, should be handeld when we press a button
+	{
+		//	delete activeModal;
+		activeModal = nullptr;
+	}
+
 }
 
 void GameLevel::RegisterObject(GameObject* obj)
@@ -120,8 +157,6 @@ bool GameLevel::CanPlaceTower(float x, float y, TowerData* tower)
 	{
 		if (element.first == tVec2) return false;
 	}
-	//if (p->PlacedTowerAtLocation)
-	//	return false;
 
 	return true;
 }
@@ -179,8 +214,29 @@ void GameLevel::Tick(float deltaTime)
 	}
 }
 
-Tmpl8::Sprite* dollarSign = new Tmpl8::Sprite(new Surface("assets/DollarSign.png"), 1);
+void GameLevel::Render(Surface* Surface)
+{
+	Level::Render(Surface);
+	gameState->Render(Surface);
+	if (activeModal != nullptr)
+		activeModal->Render(Surface);
+}
 
+void GameLevel::OnMouseMove(vec2 mousePos)
+{
+	gameState->OnMouseMove(mousePos);
+	if (activeModal != nullptr)
+		activeModal->OnMouseMove(mousePos);
+	Level::OnMouseMove(mousePos);
+}
+
+void GameLevel::OnLeftClick(vec2 mousePos)
+{
+	gameState->OnLeftClick(mousePos);
+	if (activeModal != nullptr)
+		activeModal->OnLeftClick();
+	Level::OnLeftClick(mousePos);
+}
 
 void GameLevel::CreateUI(UiContainer* UI)
 {
@@ -190,6 +246,7 @@ void GameLevel::CreateUI(UiContainer* UI)
 	0x11111,
 	0x00FFFF
 	};
+
 
 	UiContainer* DefaultUI = UI->Container(0, 0, (int)UI->getScale().x - 250, (int)UI->getScale().y);
 
@@ -203,7 +260,7 @@ void GameLevel::CreateUI(UiContainer* UI)
 
 		DefaultUI->Text(ShopItemsOffset - 15 + (150 * i), 132, 3, std::to_string(tower->price))
 			->SetTextCentert(false);
-		style.Image = dollarSign;
+		style.Image = const_cast<Sprite*>(dollarSign);
 		DefaultUI->Button(ShopItemsOffset - 30 + (150 * i), 140, 12, 12)->SetStyle(style);
 
 		style.Image = tower->asset.get();
@@ -233,6 +290,43 @@ void GameLevel::CreateUI(UiContainer* UI)
 
 	UI->Text(UI->GetWidth() - 170, 20, 2, &MoneyText)->SetTextCentert(false);
 	UI->Text(UI->GetWidth() - 170, 40, 2, &HealthText)->SetTextCentert(false);
+}
+
+void GameLevel::OnKeyDown(int key)
+{
+	if (key == 41)
+	{
+		if (activeModal != nullptr)
+		{
+			Paused = false;
+			activeModal = nullptr;
+			return;
+		}
+
+		Paused = true;
+		activeModal = UIModal::Get(surface.get());
+		activeModal->SetMessage("Game Paused");
+
+		activeModal->SetCancelText("   Quit   ");
+		activeModal->SetOnCancel([this]()
+			{
+				game->SwitchLevel<MainMenu>("");
+			});
+
+		activeModal->SetAcceptText(" Continue ");
+		activeModal->SetOnAccept([this]() {Paused = false; activeModal = nullptr; });
+
+		activeModal->SetOptionalText(" Restart ");
+		activeModal->SetOnOptional([this]()
+			{
+				game->SwitchLevel<GameLevel>(name);
+			});
+		// Need to reference this level
+
+		// find other keys here: http://sdl.beuc.net/sdl.wiki/SDLKey
+		return;
+	}
+	printf("Key: %d \n", key);
 }
 
 void from_json(const nlohmann::json& json, GameLevel& lvl)
@@ -273,7 +367,7 @@ void from_json(const nlohmann::json& json, GameLevel& lvl)
 				if (x == 1 && y == 1)
 					continue;
 
-				//TODO some forloop math should allow us to not even try and waste a itteration on this corner check bs
+				//TODO some forloop math should allow us to not even try and waste on this corner check 
 				if (x == -1 && y == -1)
 					continue;
 				if (x == 1 && y == -1)
@@ -333,4 +427,7 @@ void from_json(const nlohmann::json& json, GameLevel& lvl)
 }
 
 
+
+
 #undef MapJsonData
+#undef GameStateWrapperInjection

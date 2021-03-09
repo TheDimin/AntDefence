@@ -1,4 +1,6 @@
 #pragma once
+#include <iostream>
+
 #include "GameState.h"
 #include "../../Engine/FSM/Event.h"
 #include "../../Engine/FSM/FSM.h"
@@ -14,6 +16,13 @@ public:
 	GameFSM(GameLevel* level) :level(level)
 	{
 	}
+	virtual ~GameFSM()
+	{
+		transitions.clear();
+		states.clear();
+		level = nullptr;
+
+	};
 
 protected:
 	virtual void OnStateRegister(GameState* state) override
