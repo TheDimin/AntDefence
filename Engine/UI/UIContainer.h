@@ -38,7 +38,6 @@ public:
 	class UIImage* Image(int xPos, int yPos, int width, int height, Sprite* sprite);
 	class UIText* Text(int xPos, int yPos, int width, std::string* textPtr);
 	class UIText* Text(int xPos, int yPos, int size, std::string textPtr);
-	class UIModal* Modal(std::string message);
 
 
 public:
@@ -79,5 +78,4 @@ protected:
 	std::vector<std::unique_ptr<UIElement>> Elements = std::vector<std::unique_ptr<UIElement>>();
 	//std::vector<IRenderable*> ActiveRenders;//TODO: use this to allow elements to be deactivated
 	std::unique_ptr<Tmpl8::Surface> surface;
-	class UIModal* modalInstance = nullptr;
 };

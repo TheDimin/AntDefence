@@ -58,8 +58,12 @@ void BuildingState::OnLeftClick(Tmpl8::vec2& mousePos)
 
 void BuildingState::Render(Tmpl8::Surface* surface)
 {
-	float drawX = floor((mousePos.x) / level->CalculateTileWidth());
-	float drawY = floor((mousePos.y) / level->CalculateTileHeight());
+	int drawX = (int)floor((mousePos.x) / level->CalculateTileWidth());
+	int drawY = (int)floor((mousePos.y) / level->CalculateTileHeight());
+
+	int width = (int)floor(level->CalculateTileWidth());
+	int height = (int)floor(level->CalculateTileHeight());
+
 	bool canPlaceTower = level->CanPlaceTower(drawX, drawY, SelectedBuildTower);
 	drawX = level->CalculateTileWidth() * drawX;
 	drawY = level->CalculateTileHeight() * drawY;
@@ -72,10 +76,14 @@ void BuildingState::Render(Tmpl8::Surface* surface)
 		(int)(drawY - (h * 0.5f - level->CalculateTileHeight() * .5f)),
 		(int)w, (int)h, 0x383838, surface);
 
-	if (!canPlaceTower)
-		SelectedBuildTower->asset->DrawScaled((int)drawX, (int)drawY, (int)level->CalculateTileWidth(), (int)level->CalculateTileHeight(), 0xb30000, surface);
-	else
-		SelectedBuildTower->asset->DrawScaled((int)drawX, (int)drawY, (int)floor(level->CalculateTileWidth()), (int)floor(level->CalculateTileHeight()), surface);
+	for (int i = 0; i < 2; ++i)
+	{
+		SelectedBuildTower->asset->SetFrame(i);
+
+		canPlaceTower ?
+			SelectedBuildTower->asset->DrawScaled(drawX, drawY, width, height, surface) :
+			SelectedBuildTower->asset->DrawScaled(drawX, drawY, width, height, 0xff0000, surface);
+	}
 }
 
 void BuildingState::OnMouseMove(Tmpl8::vec2& mousePos)

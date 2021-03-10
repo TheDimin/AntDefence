@@ -22,7 +22,6 @@ private:
 	friend void from_json(const nlohmann::json& json, ObjectStat& mapSprite);
 public:
 	int id = -1;
-	std::string displayName = "NONE";
 	std::unique_ptr<Tmpl8::Sprite> asset;
 };
 
@@ -35,10 +34,9 @@ struct StatInfo
 struct MobData
 {
 private:
-	friend void from_json(const nlohmann::json& json, MobData& mapSprite);
+	friend void from_json(const nlohmann::json& json, MobData& mopData);
 public:
 	int id = -1;
-	std::string displayName = "NONE";
 	uint moneyOnKill = 0;
 	float speed = 1;
 	int damage = 1;
@@ -52,7 +50,6 @@ struct TowerUpgrade
 {
 	int id = -1;
 	int price = 0;
-	std::string displayName;
 	std::vector<std::unique_ptr<StatInfo>> stats;
 	std::vector<int> unLockedBy;
 	std::vector<int> LockedBy;
@@ -61,7 +58,6 @@ struct TowerUpgrade
 struct TowerData
 {
 	int id = -1;
-	std::string displayName = "Undefined";
 	int price = 0;
 	std::unique_ptr<Tmpl8::Sprite> asset;
 	std::vector<std::unique_ptr<StatInfo>> stats;

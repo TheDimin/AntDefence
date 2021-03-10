@@ -26,7 +26,7 @@ public:
 
 	virtual void RegisterObject(class GameObject* obj);
 	virtual void DeleteObject(class GameObject* obj);
-	bool IsPaused() const;
+	virtual bool IsPaused() const;
 
 public:
 	virtual void Render(Tmpl8::Surface* surface) override;

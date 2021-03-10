@@ -11,13 +11,23 @@ std::string filePath = "NULL";
 
 #define MapJsonData(valueName,source) json.at(#valueName).get_to(source.valueName);
 
+Sprite* LoadSprite(const nlohmann::json& json,int frames)
+{
+	const std::string filepath = json.at("asset").get<std::string>();
+	if (filepath.rfind("GLOBAL:") == 0)
+	{
+		return new Sprite(new Tmpl8::Surface(const_cast<char*>(("assets/Global/" + filepath.substr(7)).c_str())), frames);
+	}
+
+	return  new Sprite(new Tmpl8::Surface(const_cast<char*>((filePath + filepath).c_str())), frames);
+}
+
 void from_json(const nlohmann::json& json, MapSprite& mapSprite)
 {
 	MapJsonData(scale, mapSprite);
 
-	const std::string filepath = filePath + json.at("asset").get<std::string>();
-	mapSprite.asset = std::make_unique<Tmpl8::Sprite>(new Tmpl8::Surface(const_cast<char*>(filepath.c_str())), 1);
 
+	mapSprite.asset = std::unique_ptr<Sprite>(LoadSprite(json,1));
 
 	if (json.contains("canBuild"))
 		json.at("canBuild").get_to(mapSprite.canBuild);
@@ -27,26 +37,23 @@ void from_json(const nlohmann::json& json, MapSprite& mapSprite)
 
 void from_json(const nlohmann::json& json, ObjectStat& objectStat)
 {
-	MapJsonData(displayName, objectStat);
 	MapJsonData(id, objectStat);
 
-	const std::string filepath = filePath + json.at("asset").get<std::string>();
-	objectStat.asset = std::make_unique<Tmpl8::Sprite>(new Tmpl8::Surface(const_cast<char*>(filepath.c_str())), 1);
+	//const std::string filepath = filePath + json.at("asset").get<std::string>();
+	//objectStat.asset = std::make_unique<Tmpl8::Sprite>(new Tmpl8::Surface(const_cast<char*>(filepath.c_str())), 1);
 }
 
-void from_json(const nlohmann::json& json, MobData& mapSprite)
+void from_json(const nlohmann::json& json, MobData& mopData)
 {
-	MapJsonData(id, mapSprite);
-	MapJsonData(displayName, mapSprite);
-	MapJsonData(speed, mapSprite);
-	MapJsonData(moneyOnKill, mapSprite);
-	MapJsonData(damage, mapSprite);
+	MapJsonData(id, mopData);
+	MapJsonData(speed, mopData);
+	MapJsonData(moneyOnKill, mopData);
+	MapJsonData(damage, mopData);
 
-	const std::string filepath = filePath + json.at("asset").get<std::string>();
-	mapSprite.asset = std::make_unique<Tmpl8::Sprite>(new Tmpl8::Surface(const_cast<char*>(filepath.c_str())), 12);
+	mopData.asset = std::unique_ptr<Sprite>(LoadSprite(json,12));
 
 	for (auto& elem : json["stats"].items())
-		mapSprite.stats.insert(end(mapSprite.stats), std::unique_ptr<StatInfo>(new StatInfo{ styleInstance->FindStat(elem.value()["id"]), elem.value()["amount"] }));
+		mopData.stats.insert(end(mopData.stats), std::unique_ptr<StatInfo>(new StatInfo{ styleInstance->FindStat(elem.value()["id"]), elem.value()["amount"] }));
 
 }
 
@@ -54,12 +61,10 @@ void from_json(const nlohmann::json& json, MobData& mapSprite)
 void from_json(const nlohmann::json& json, TowerData& towerData)
 {
 	MapJsonData(id, towerData);
-	MapJsonData(displayName, towerData);
 	MapJsonData(price, towerData);
 	MapJsonData(range, towerData);
 
-	const std::string filepath = filePath + json.at("asset").get<std::string>();
-	towerData.asset = std::make_unique<Tmpl8::Sprite>(new Tmpl8::Surface(const_cast<char*>(filepath.c_str())), 1);
+	towerData.asset = std::unique_ptr<Sprite>(LoadSprite(json,5));
 
 	for (auto& elem : json["stats"].items())
 		towerData.stats.insert(end(towerData.stats), std::unique_ptr<StatInfo>(new StatInfo{ styleInstance->FindStat(elem.value()["id"]), elem.value()["amount"] }));

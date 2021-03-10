@@ -5,6 +5,7 @@
 
 
 const std::function<bool()> UnHide = []() {return false; };
+const std::function<bool()> Hide = []() {return true; };
 
 UIModal::UIModal(Surface* TSurface)
 {
@@ -16,23 +17,21 @@ UIModal::UIModal(Surface* TSurface)
 	uiText = Text((int)(surface->GetWidth() * 0.5f), 35, 4, "Modal Text");
 	uiText->SetTextCentert(true);
 
-	const std::function<bool()> Hidden = []() {return true; };
-
 	CancelButton = Button(surface->GetWidth() - 90, surface->GetHeight() - 40, 75, 25);
-	CancelButton->SetIsHiddenLambda(Hidden);
+	CancelButton->SetIsHiddenLambda(Hide);
 	CancelButton->SetText(&CancelText);
 
 	AcceptButton = Button(surface->GetWidth() - (180 + 80), surface->GetHeight() - 40, 75, 25);
-	AcceptButton->SetIsHiddenLambda(Hidden);
+	AcceptButton->SetIsHiddenLambda(Hide);
 	AcceptButton->SetText(&AcceptText);
 
 	OptionalButton = Button(surface->GetWidth() - (180 + 180 + 70), surface->GetHeight() - 40, 75, 25);
-	OptionalButton->SetIsHiddenLambda(Hidden);
+	OptionalButton->SetIsHiddenLambda(Hide);
 }
 
 UIModal* UIModal::Get(Surface* screen)
 {
-	if (instance == NULL)
+	if (instance == nullptr)
 	{
 		instance = new UIModal(screen);
 	}
@@ -73,7 +72,7 @@ UIModal* UIModal::SetOnCancel(std::function<void()> function)
 	//Resharper hinted me to use std::move
 	// I know we can't pass the value by reference because it would make the api weird
 	OnCancel = function;
-	CancelButton->SetIsHiddenLambda(UnHide);
+	CancelButton->SetIsHiddenLambda(OnCancel == nullptr ? Hide : UnHide);
 	CancelButton->SetOnClick(OnCancel);
 	return this;
 }
@@ -81,7 +80,7 @@ UIModal* UIModal::SetOnCancel(std::function<void()> function)
 UIModal* UIModal::SetOnAccept(std::function<void()> function)
 {
 	OnAccept = function;
-	AcceptButton->SetIsHiddenLambda(UnHide);
+	AcceptButton->SetIsHiddenLambda(OnAccept == nullptr ? Hide : UnHide);
 	AcceptButton->SetOnClick(OnAccept);
 	return this;
 }
@@ -89,7 +88,7 @@ UIModal* UIModal::SetOnAccept(std::function<void()> function)
 UIModal* UIModal::SetOnOptional(std::function<void()> function)
 {
 	OnOptional = std::move(function);
-	OptionalButton->SetIsHiddenLambda(UnHide);
+	OptionalButton->SetIsHiddenLambda(OnOptional == nullptr ? Hide : UnHide);
 	OptionalButton->SetOnClick(OnOptional);
 	return this;
 }

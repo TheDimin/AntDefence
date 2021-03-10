@@ -15,7 +15,7 @@ public:
 	Pixel Click = 0x11111111;
 	Pixel Disabled = 0x0000000;
 	Sprite* Image = nullptr;
-	int SpriteIndex = 0;
+	int SpriteIndex = 1;
 };
 
 class UIElement : public IMouseEvent, public IRenderable

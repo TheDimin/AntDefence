@@ -40,7 +40,7 @@ void UIButton::Render(Tmpl8::Surface* surface)
 	if (styleInfo.Image != nullptr)
 	{
 		styleInfo.Image->SetFrame(styleInfo.SpriteIndex);
-		styleInfo.Image->DrawScaled(
+		styleInfo.Image->DrawScaledSub(
 			static_cast<int>(Pos.x - Scale.x),
 			static_cast<int>(Pos.y - Scale.y),
 			static_cast<int>(Scale.x * 2),

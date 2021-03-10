@@ -107,6 +107,7 @@ namespace Tmpl8 {
 		void DrawScaled(int a_X, int a_Y, int a_Width, int a_Height, Pixel blendColor, Surface* a_Target);
 		void DrawScaled(int a_X, int a_Y, int a_Width, int a_Height, Surface* a_Target, int rotation);
 		void BlendScaled(int a_X, int a_Y, int a_Width, int a_Height, Pixel Color, Surface* a_Target);
+		void DrawScaledSub(int a_X, int a_Y, int a_Width, int a_Height, Pixel blendColor, Surface* a_Target);
 		void SetFlags(unsigned int a_Flags) { m_Flags = a_Flags; }
 		void SetFrame(unsigned int a_Index) { m_CurrentFrame = a_Index; }
 		unsigned int GetFlags() const { return m_Flags; }

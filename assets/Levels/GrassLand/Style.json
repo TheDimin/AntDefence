@@ -62,9 +62,8 @@
     "towers": [
         {
             "id": 1,
-            "displayName": "Slime",
             "price": 100,
-            "asset" : "test.png",
+            "asset" : "PoisenTower.png",
             "range" : 3,
             "stats": [  
                 {"id" :1,"amount":6},
@@ -72,12 +71,11 @@
             ]
         },{
             "id": 2,
-            "displayName": "Poggers",
-            "price": 50,
+            "price": 250,
             "asset" : "Tiles/tile_0243.png",
             "range" : 8,
             "stats": [ 
-                {"id" :1,"amount":5},
+                {"id" :1,"amount":15},
                 {"id" :2,"amount":20}
             ]
         }
@@ -87,8 +85,7 @@
             "id": 0,
             "moneyOnKill" : 10,
             "speed" :20,
-            "displayName": "Ant",
-            "asset": "Ant.png",
+            "asset": "GLOBAL:Ant.png",
             "damage" : 1,
             "stats":[
                 {"id" :0,"amount":20}
@@ -98,51 +95,65 @@
             "id": 1,
             "moneyOnKill" : 10,
             "speed" :10,
-            "displayName": "Red Ant",
-            "asset": "RedAnt.png",
+            "asset": "GLOBAL:RedAnt.png",
             "damage" : 1,
             "stats":[
                 {"id" :0,"amount":80}
             ]
+        },
+        {
+            "id": 2,
+            "moneyOnKill" : 10,
+            "speed" :8,
+            "asset": "GLOBAL:RedAnt.png",
+            "damage" : 1,
+            "stats":[
+                {"id" :0,"amount":140}
+            ]
         }
+        
     ],
     "waves": [
         {
             "mobs":[
-                { "delay":0,"id": 0, "amount" : 5 }
+                { "delay":0,"interval": 7,"id": 0, "amount" : 10 }
             ],
             "moneyOnComplete": 10    
         },
         {
             "mobs":[
-                { "delay":0,"id": 0, "amount" : 15 }
+                { "delay":0,"interval": 6,"id": 0, "amount" : 15 }
             ],
             "moneyOnComplete": 10    
         },
         {
             "mobs":[
-                { "id": 0, "amount" : 5 },
-                { "id": 1, "amount" : 5 },
-                { "id": 0, "amount" : 3 }
+                { "id": 0,"interval": 5, "amount" : 5 },
+                { "id": 1,"interval": 5, "amount" : 5 },
+                { "id": 0,"interval": 5, "amount" : 3 }
 
             ],
-            "moneyOnComplete": 10    
+            "moneyOnComplete": 5    
         },{
             "mobs":[
-                { "id": 0, "amount" : 5 },
-                { "id": 1, "amount" : 5 },
-                { "id": 0, "amount" : 25 }
+                { "id": 0,"interval": 5, "amount" : 5 },
+                { "id": 1,"interval": 3, "amount" : 15 },
+                { "id": 0,"interval": 5, "amount" : 5 }
             ],
-            "moneyOnComplete": 10    
+            "moneyOnComplete": 5    
         },{
             "mobs":[
-                { "id": 0, "amount" : 5 },
-                { "id": 1, "amount" : 10 },
-                { "id": 0, "amount" : 5 },
-                { "id": 1, "amount" : 10 },
-                { "id": 0, "amount" : 15 }
+                { "id": 2,"interval": 5, "amount" : 1 },
+                { "id": 1,"interval": 5, "amount" : 10 }
             ],
-            "moneyOnComplete": 10    
+            "moneyOnComplete": 0    
+        },{
+            "mobs":[
+                { "id": 2,"interval": 2, "amount" : 10 },
+                { "id": 1,"interval": 4, "amount" : 20 }
+            ],
+            "moneyOnComplete": 0    
         }
+        
     ]
 }

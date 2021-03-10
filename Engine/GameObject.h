@@ -17,10 +17,7 @@ public:
 
 	virtual void OnLoad();
 public:
-	void Render(Tmpl8::Surface* surface) override
-	{
-		sprite->DrawScaled((int)drawLocation.x, (int)drawLocation.y, (int)size.x, (int)size.y, surface);
-	}
+	void Render(Tmpl8::Surface* surface) override;
 	void Destroy();
 private:
 	virtual void SetLvl(Level* lvl)

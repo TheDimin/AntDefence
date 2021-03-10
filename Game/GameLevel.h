@@ -3,7 +3,7 @@
 #include "GameStates/GameFSM.h"
 
 
-
+class UIModal;
 class Mob;
 
 class GameLevel :public Level
@@ -38,6 +38,7 @@ public:
 	void AddMoney(uint amount);
 	bool TakeDamage(int amount);
 
+	bool IsPaused() const override;
 protected:
 	uint Money = 100;
 	int Health = 100;
@@ -46,6 +47,7 @@ protected:
 protected://text ptr's 
 	std::string MoneyText = "Money: 100";
 	std::string HealthText = "Health: 100";
+	std::string CurrentWaveText = "Wave: 0";
 	std::string StartNextWaveText = "Start wave";
 
 public:

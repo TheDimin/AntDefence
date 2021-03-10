@@ -22,9 +22,7 @@ UiContainer::~UiContainer()
 {
 	surface.reset();
 	Elements.clear();
-	delete modalInstance;
 }
-
 
 void UiContainer::Render(Tmpl8::Surface* screen)
 {
@@ -102,18 +100,6 @@ UIText* UiContainer::Text(int xPos, int yPos, int size, std::string textPtr)
 	return uiElement;
 }
 
-UIModal* UiContainer::Modal(std::string message)
-{
-	if (modalInstance == nullptr) {
-		UIModal* modal = new UIModal(surface.get());
-		Elements.insert(end(Elements), std::unique_ptr<UIElement>(modal));
-		modalInstance = modal;
-	}
-
-	modalInstance->SetMessage(message);
-	return modalInstance;
-}
-
 UiContainer* UiContainer::Container(int xPos, int yPos, int width, int height)
 {
 	return Container(vec2(xPos, yPos), vec2(width, height));
@@ -125,7 +111,6 @@ UiContainer* UiContainer::Container(vec2 pos, vec2 size)
 	Elements.insert(Elements.begin(), std::unique_ptr<UIElement>(uiElement));
 	return uiElement;
 }
-
 
 
 bool UiContainer::OnMouseMove(Tmpl8::vec2 mousePos)

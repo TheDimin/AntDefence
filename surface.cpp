@@ -496,6 +496,7 @@ namespace Tmpl8 {
 	void Sprite::BlendScaled(int a_X, int a_Y, int a_Width, int a_Height, Pixel bColor, Surface* a_Target)
 	{
 		if ((a_Width == 0) || (a_Height == 0)) return;
+		Pixel* src = GetBuffer() + m_CurrentFrame * m_Width;
 		for (int x = 0; x < a_Width; x++) {
 			int fx = x + a_X;
 			if (fx < 0 || fx > a_Target->GetWidth())continue;
@@ -507,7 +508,7 @@ namespace Tmpl8 {
 
 				int u = (int)((float)x * ((float)m_Width / (float)a_Width)) + (m_CurrentFrame * m_Width);
 				int v = (int)((float)y * ((float)m_Height / (float)a_Height));
-				Pixel color = GetBuffer()[u + v * m_Pitch];
+				Pixel color = src[u + v * m_Pitch];
 				if (a_Target->GetWidth() * a_Target->GetHeight() < fx + (fy * a_Target->GetPitch()))
 					continue;
 
@@ -518,9 +519,10 @@ namespace Tmpl8 {
 		}
 	}
 
-	void Sprite::DrawScaled(int a_X, int a_Y, int a_Width, int a_Height, Pixel blendColor, Surface* a_Target)
+	void Sprite::DrawScaledSub(int a_X, int a_Y, int a_Width, int a_Height, Pixel blendColor, Surface* a_Target)
 	{
 		if ((a_Width == 0) || (a_Height == 0)) return;
+		Pixel* src = GetBuffer() + m_CurrentFrame * m_Width;
 		for (int x = 0; x < a_Width; x++) {
 			int fx = x + a_X;
 			if (fx < 0 || fx > a_Target->GetWidth())continue;
@@ -532,7 +534,32 @@ namespace Tmpl8 {
 
 				int u = (int)((float)x * ((float)m_Width / (float)a_Width));
 				int v = (int)((float)y * ((float)m_Height / (float)a_Height));
-				Pixel color = GetBuffer()[u + v * m_Pitch];
+				Pixel color = src[u + v * m_Pitch];
+				if (a_Target->GetWidth() * a_Target->GetHeight() < fx + (fy * a_Target->GetPitch()))
+					continue;
+
+				if (color & 0xffffff) a_Target->GetBuffer()[fx + (fy * a_Target->GetPitch())] = SubBlend(color, blendColor);
+			}
+		}
+	}
+
+
+	void Sprite::DrawScaled(int a_X, int a_Y, int a_Width, int a_Height, Pixel blendColor, Surface* a_Target)
+	{
+		if ((a_Width == 0) || (a_Height == 0)) return;
+		Pixel* src = GetBuffer() + m_CurrentFrame * m_Width;
+		for (int x = 0; x < a_Width; x++) {
+			int fx = x + a_X;
+			if (fx < 0 || fx > a_Target->GetWidth())continue;
+
+			for (int y = 0; y < a_Height; y++)
+			{
+				int fy = y + a_Y;
+				if (fy < 0 || fy> a_Target->GetHeight()) continue;
+
+				int u = (int)((float)x * ((float)m_Width / (float)a_Width));
+				int v = (int)((float)y * ((float)m_Height / (float)a_Height));
+				Pixel color = src[u + v * m_Pitch];
 				if (a_Target->GetWidth() * a_Target->GetHeight() < fx + (fy * a_Target->GetPitch()))
 					continue;
 
@@ -546,21 +573,41 @@ namespace Tmpl8 {
 	// Moving element: ME
 	void Sprite::DrawScaled(int a_X, int a_Y, int a_Width, int a_Height, Surface* a_Target, int rotation)
 	{
-		int yRotation = rotation / 180 % 1 == 0 ? 1 : 0;
-		int xRotation = rotation / 90 % 1 == 1 ? 1 : 0;
+		float tRotation = 1.0f / 61.0f * rotation;
 		//a_Width = (a_Width*-1+a_Height*0);
 		//a_Height = (a_Width*0+a_Height*-1);
 
 		//float xWidth = (float)m_Width / (float)a_Width;
 		//float yWidth = (float)m_Height / (float)a_Height;
 
-		int x1 = 0, x2 = 1;
-		int y1 = 1, y2 = 0;
-		if (yRotation == 1)
-		{
-			//	x1 = 0; x2 = -1;
-			//	y1 = -1;	 y2 = 0;
+		Pixel* src = GetBuffer() + m_CurrentFrame * m_Width;
+
+		for (int x = 0; x < a_Width; x++) {
+			int fx = x + a_X;
+			if (fx < 0 || fx > a_Target->GetWidth())continue;
+
+			for (int y = 0; y < a_Height; y++)
+			{
+				int fy = y + a_Y;
+				if (fy < 0 || fy> a_Target->GetHeight()) continue;
+
+				int u = (int)((float)x * ((float)m_Width / (float)a_Width));
+				int v = (int)((float)y * ((float)m_Height / (float)a_Height));
+
+				float cx = ceil(x * cos(tRotation) - (y * sin(tRotation)));
+
+				float cy = ceil(x * sin(tRotation) + (y * cos(tRotation)));
+				Pixel color = src[u + v * m_Pitch];
+				//if (a_Target->GetWidth() * a_Target->GetHeight() < fx + (fy * a_Target->GetPitch()))
+					//continue;
+
+				//a_Target->GetBuffer()[fx + (fy * a_Target->GetPitch())]
+				if (color & 0xffffff) a_Target->GetBuffer()[(int)((cx + a_X) + ((cy + a_Y) * a_Target->GetPitch()))] = color;
+
+			}
+
 		}
+		/*
 
 		if ((a_Width == 0) || (a_Height == 0)) return;
 		for (int x = 0; x < abs(a_Width * x1 + a_Height * x2); x++) {
@@ -586,7 +633,7 @@ namespace Tmpl8 {
 				//int v = (int)(abs(yRotation - ((float)(y + 0.5f) / (float)a_Height)) * (float)a_Height * yWidth);
 				Pixel color;
 				//if (xRotation == 0)
-				color = GetBuffer()[u + v * m_Pitch];
+				color = src[u + v * m_Pitch];
 				//else
 				//	color = GetBuffer()[v + u * m_Pitch];
 
@@ -596,6 +643,7 @@ namespace Tmpl8 {
 				if (color & 0xffffff) a_Target->GetBuffer()[fx + (fy * a_Target->GetPitch())] = color;
 			}
 		}
+		*/
 	}
 
 	void Sprite::InitializeStartData()

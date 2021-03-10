@@ -30,3 +30,17 @@ void Tower::SetLvl(Level* toSetLvl)
 	towerFSM->RegisterTransition(AttackToIdleTargetLost);
 	towerFSM->ActivateFsm(towerIdle);
 }
+
+void Tower::Render(Tmpl8::Surface* surface)
+{
+	temp += 1.0f;
+	if (temp > 380)
+		temp = 0;
+	sprite->SetFrame(0);
+	sprite->DrawScaled((int)drawLocation.x, (int)drawLocation.y, (int)size.x, (int)size.y, surface);
+
+	sprite->SetFrame(1);
+	sprite->DrawScaled((int)drawLocation.x, (int)drawLocation.y, (int)size.x, (int)size.y, surface, temp);
+
+	towerFSM->Render(surface);
+}

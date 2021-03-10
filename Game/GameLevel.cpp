@@ -68,12 +68,10 @@ GameLevel::GameLevel()
 	gameState->RegisterTransition(BuildToPlayWithSuccesfullBuild);
 	gameState->RegisterTransition(BuildToPlayWithFailedBuild);
 	gameState->ActivateFsm(playingState);
-	std::cout << gameState->states.size() << std::endl;
 }
 
 GameLevel::~GameLevel()
 {
-	std::cout << "GameLevel Deconstructor called" << std::endl;
 	placedTowers.clear();
 	activeMobs.clear();
 	route.clear();
@@ -133,11 +131,28 @@ void GameLevel::AddMoney(uint amount)
 
 bool GameLevel::TakeDamage(int amount)
 {
-	if (amount > Health) return true;
+	if (amount >= Health)
+	{
+		activeModal = UIModal::Get(surface.get());
+		activeModal->SetMessage("You died!");
+		activeModal->SetAcceptText(" Restart ");
+		activeModal->SetOnAccept([this]() {game->SwitchLevel<GameLevel>(name); });
+
+		activeModal->SetCancelText("   Quit   ");
+		activeModal->SetOnCancel([this]() {game->SwitchLevel<MainMenu>(""); });
+
+		activeModal->SetOnOptional(nullptr);
+		return true;
+	}
 	Health -= amount;
 	HealthText = "Health: " + std::to_string(Health);
 
 	return false;
+}
+
+bool GameLevel::IsPaused() const
+{
+	return Paused || activeModal != nullptr;
 }
 
 bool GameLevel::CanPlaceTower(float x, float y, TowerData* tower)
@@ -171,7 +186,11 @@ void GameLevel::StartNextWave()
 
 	activeMobs.clear();
 	waveIndex++;
+
+
+
 	waveInstance = mapStyle->GetWave(waveIndex);
+	CurrentWaveText = "Wave: " + std::to_string(waveIndex + 1);
 }
 
 void GameLevel::Tick(float deltaTime)
@@ -187,6 +206,23 @@ void GameLevel::Tick(float deltaTime)
 			waveInstance = nullptr;
 			waveTimer = 0;
 			waveStep = 0;
+			if (waveIndex + 1 >= (int)mapStyle->waves.size())
+			{
+				activeModal = UIModal::Get(surface.get());
+				activeModal->SetMessage("You won!");
+				activeModal->SetCancelText("   Quit   ");
+				activeModal->SetOnCancel([this]()
+					{
+						game->SwitchLevel<MainMenu>("");
+					});
+
+				activeModal->SetAcceptText(" Restart ");
+				activeModal->SetOnAccept([this]() {
+					game->SwitchLevel<GameLevel>(name);
+					});
+
+				activeModal->SetOnOptional(nullptr);
+			}
 			return;
 		}
 
@@ -200,11 +236,11 @@ void GameLevel::Tick(float deltaTime)
 		float h = CalculateTileHeight();
 
 		spawnedOfCurrentMobType++;
-		waveTimer = w / waveInstance->waves[waveStep].mob->speed * 100;
+		waveTimer = waveInstance->waves[waveStep].interval * 100;
 
 		activeMobCount++;
 		Mob* mob = new Mob(waveInstance->waves[waveStep].mob, &route, vec2(w, h));
-		RegisterObject(reinterpret_cast<GameObject*&>(mob));
+		RegisterObject(reinterpret_cast<GameObject*>(mob));
 
 		if (waveInstance->waves[waveStep].amount == spawnedOfCurrentMobType)
 		{
@@ -218,23 +254,32 @@ void GameLevel::Render(Surface* Surface)
 {
 	Level::Render(Surface);
 	gameState->Render(Surface);
+
 	if (activeModal != nullptr)
 		activeModal->Render(Surface);
 }
 
 void GameLevel::OnMouseMove(vec2 mousePos)
 {
-	gameState->OnMouseMove(mousePos);
 	if (activeModal != nullptr)
 		activeModal->OnMouseMove(mousePos);
+
+	if (IsPaused())
+		return;
+
+	gameState->OnMouseMove(mousePos);
 	Level::OnMouseMove(mousePos);
 }
 
 void GameLevel::OnLeftClick(vec2 mousePos)
 {
-	gameState->OnLeftClick(mousePos);
 	if (activeModal != nullptr)
 		activeModal->OnLeftClick();
+
+	if (IsPaused())
+		return;
+
+	gameState->OnLeftClick(mousePos);
 	Level::OnLeftClick(mousePos);
 }
 
@@ -242,9 +287,9 @@ void GameLevel::CreateUI(UiContainer* UI)
 {
 	StyleInfo style = StyleInfo{
 	0x0000000,
-	0xFFFFFFFF,
+	0x181818,
 	0x11111,
-	0x00FFFF
+	0x383838
 	};
 
 
@@ -264,6 +309,7 @@ void GameLevel::CreateUI(UiContainer* UI)
 		DefaultUI->Button(ShopItemsOffset - 30 + (150 * i), 140, 12, 12)->SetStyle(style);
 
 		style.Image = tower->asset.get();
+		style.SpriteIndex = 4;
 		DefaultUI->Button(ShopItemsOffset + (150 * i), 65, 60, 60)
 			->SetStyle(style)
 			->SetOnClick([this, tower]
@@ -290,6 +336,7 @@ void GameLevel::CreateUI(UiContainer* UI)
 
 	UI->Text(UI->GetWidth() - 170, 20, 2, &MoneyText)->SetTextCentert(false);
 	UI->Text(UI->GetWidth() - 170, 40, 2, &HealthText)->SetTextCentert(false);
+	UI->Text(UI->GetWidth() - 170, 60, 2, &CurrentWaveText)->SetTextCentert(false);
 }
 
 void GameLevel::OnKeyDown(int key)
@@ -303,7 +350,6 @@ void GameLevel::OnKeyDown(int key)
 			return;
 		}
 
-		Paused = true;
 		activeModal = UIModal::Get(surface.get());
 		activeModal->SetMessage("Game Paused");
 
@@ -314,7 +360,7 @@ void GameLevel::OnKeyDown(int key)
 			});
 
 		activeModal->SetAcceptText(" Continue ");
-		activeModal->SetOnAccept([this]() {Paused = false; activeModal = nullptr; });
+		activeModal->SetOnAccept([this]() { activeModal = nullptr; });
 
 		activeModal->SetOptionalText(" Restart ");
 		activeModal->SetOnOptional([this]()
@@ -326,7 +372,6 @@ void GameLevel::OnKeyDown(int key)
 		// find other keys here: http://sdl.beuc.net/sdl.wiki/SDLKey
 		return;
 	}
-	printf("Key: %d \n", key);
 }
 
 void from_json(const nlohmann::json& json, GameLevel& lvl)
@@ -422,7 +467,7 @@ void from_json(const nlohmann::json& json, GameLevel& lvl)
 
 		lvl.surface->Line(start.x * w + w * 0.5f, start.y * h + h * 0.5f, end.x * w + w * 0.5f, end.y * h + h * 0.5f, 0xff00000);
 		start = end;
-	}
+}
 #endif
 }
 

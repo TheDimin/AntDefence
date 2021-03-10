@@ -25,7 +25,11 @@ Game::~Game()
 void Game::Init()
 {
 	//Load default level
-	MainMenu* mmLvl = LevelHelper::Load<MainMenu>("MainMenu");
+#ifdef SKIP_MAIN_MENU_DEBUG
+	Level* mmLvl = LevelHelper::Load<GameLevel>("GrassLand");
+#else
+	Level* mmLvl = LevelHelper::Load<MainMenu>("MainMenu");
+#endif
 	mmLvl->game = this;
 	Game::LoadedLevel = std::unique_ptr<Level>(mmLvl);
 

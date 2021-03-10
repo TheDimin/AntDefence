@@ -3470,7 +3470,7 @@ class basic_json
         {
             JSON_THROW(type_error::create(304, "cannot use at() with " + std::string(type_name())));
         }
-    }
+    } 
 
     /*!
     @brief access specified array element

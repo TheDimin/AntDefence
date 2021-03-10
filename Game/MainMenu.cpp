@@ -47,10 +47,10 @@ void MainMenu::CreateUI(UiContainer* UI)
 	CreditsButton->SetText(&CreditsText);
 	CreditsButton->SetOnClick([UI]()
 		{
-			UI->Modal("test \n test")->SetOnCancel([]()
-				{
-					printf("test \n");
-				})->SetOnAccept([]() {printf("OnAccept \n"); });
+			//UI->Modal("test \n test")->SetOnCancel([]()
+			//	{
+			//		printf("test \n");
+			//	})->SetOnAccept([]() {printf("OnAccept \n"); });
 		});
 }
 

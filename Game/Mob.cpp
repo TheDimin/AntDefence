@@ -18,7 +18,6 @@ Mob::Mob(MobData* mobData, std::vector<Tmpl8::vec2>* route, const Tmpl8::vec2& s
 
 Mob::~Mob()
 {
-	printf("Dconstructor called \n");
 	GameLevel* glvl = dynamic_cast<GameLevel*>(lvl);
 	auto element = std::find_if(
 		begin(glvl->activeMobs),
