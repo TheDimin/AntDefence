@@ -582,30 +582,29 @@ namespace Tmpl8 {
 
 		Pixel* src = GetBuffer() + m_CurrentFrame * m_Width;
 
-		for (int x = 0; x < a_Width; x++) {
+		for (int x = 0; x < a_Width * 1.5f; x++) {
 			int fx = x + a_X;
 			if (fx < 0 || fx > a_Target->GetWidth())continue;
 
-			for (int y = 0; y < a_Height; y++)
+			for (int y = 0; y < a_Height * 1.5f; y++)
 			{
 				int fy = y + a_Y;
 				if (fy < 0 || fy> a_Target->GetHeight()) continue;
 
-				int u = (int)((float)x * ((float)m_Width / (float)a_Width));
-				int v = (int)((float)y * ((float)m_Height / (float)a_Height));
+				int u = (int)((float)x * ((float)m_Width / (float)(a_Width * 1.5f)));
+				int v = (int)((float)y * ((float)m_Height / (float)(a_Height * 1.5f)));
 
-				float cx = ceil(x * cos(tRotation) - (y * sin(tRotation)));
+				float cx = ceil((x * 0.75f) * (cos(tRotation)) - ((y * 0.75f) * sin(tRotation)));
 
-				float cy = ceil(x * sin(tRotation) + (y * cos(tRotation)));
+				float cy = ceil((x * 0.75f) * sin(tRotation) + ((y * 0.75f) * cos(tRotation)));
 				Pixel color = src[u + v * m_Pitch];
 				//if (a_Target->GetWidth() * a_Target->GetHeight() < fx + (fy * a_Target->GetPitch()))
 					//continue;
 
 				//a_Target->GetBuffer()[fx + (fy * a_Target->GetPitch())]
-				if (color & 0xffffff) a_Target->GetBuffer()[(int)((cx + a_X) + ((cy + a_Y) * a_Target->GetPitch()))] = color;
-
+				if (color & 0xffffff)
+					a_Target->GetBuffer()[(int)((cx + a_X) + ((cy + a_Y) * a_Target->GetPitch()))] = color;
 			}
-
 		}
 		/*
 
