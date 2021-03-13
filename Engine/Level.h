@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "EngineGlobal.h"
+#include "GameObject.h"
 #include "../surface.h"
 #include "../Game/Style.h"
 #include "UI/UIContainer.h"
@@ -27,6 +28,9 @@ public:
 	virtual void RegisterObject(class GameObject* obj);
 	virtual void DeleteObject(class GameObject* obj);
 	virtual bool IsPaused() const;
+
+	bool IsValid(GameObject* object);
+
 
 public:
 	virtual void Render(Tmpl8::Surface* surface) override;

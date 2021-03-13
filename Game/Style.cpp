@@ -141,6 +141,7 @@ MobData* Style::FindMob(int id)
 		throw std::logic_error("Failed to find mobID: " + std::to_string(id));
 	}
 
+	
 	return it->get();
 }
 

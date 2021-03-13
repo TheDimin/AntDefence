@@ -1,46 +1,15 @@
 {
     "map": [
         {
-            "asset": "Tiles/tile_0028.png",
+            "asset": "KennyNL/tile_0028.png",
             "canBuild" : true,
             "scale" : 4
         },
         {
-            "asset": "Tiles/tile_0441.png",
-            "canWalk" : true,
-            "scale" : 4
-        },
-        {
-            "asset": "Tiles/tile_0441.png",
-            "canWalk" : true,
-            "scale" : 4
-        },
-        {
-            "asset": "Tiles/tile_0441.png",
-            "canWalk" : true,
-            "scale" : 4
-        },
-        {
-            "asset": "Tiles/tile_0441.png",
-            "canWalk" : true,
-            "scale" : 4
-        },
-        {
-            "asset": "Tiles/tile_0441.png",
-            "canWalk" : true,
-            "scale" : 4
-        },
-        {
-            "asset": "Tiles/tile_0441.png",
-            "canWalk" : true,
-            "scale" : 4
-        },
-        {
-            "asset": "Tiles/tile_0441.png",
+            "asset": "KennyNL/tile_0441.png",
             "canWalk" : true,
             "scale" : 4
         }
-
     ],
     "stats": [
         {

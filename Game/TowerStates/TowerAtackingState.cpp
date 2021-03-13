@@ -32,7 +32,7 @@ float lerp(float a, float b, float t)
 
 void TowerAtackingState::Tick(float deltaTime)
 {
-	if (TargetMob == nullptr || TargetMob->IsPendingKill())
+	if (!tower->gLVL->IsValid(TargetMob))
 	{
 		tower->towerFSM->InvokeEvent(new TargetLostEvent());
 		return;

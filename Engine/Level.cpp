@@ -67,6 +67,18 @@ bool Level::IsPaused() const
 	return Paused;
 }
 
+bool Level::IsValid(GameObject* object)
+{
+	if (object == nullptr)
+		return false;
+	if (object->IsPendingKill())
+		return false;
+	if (std::find_if(begin(objects), end(objects), [object](std::unique_ptr<GameObject>& obj) {return obj.get() == object; }) != end(objects))
+		return true;
+
+	return false;
+}
+
 void Level::Render(Surface* Surface)
 {
 	this->surface->CopyTo(Surface, 0, 0); //Actual map only renderd once
