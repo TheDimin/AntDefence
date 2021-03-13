@@ -15,5 +15,7 @@ void GameObject::Render(Tmpl8::Surface* surface)
 
 void GameObject::Destroy()
 {
+	if (pendingKill) return;
+	pendingKill = true;
 	lvl->DeleteObject(dynamic_cast<GameObject*>(this));
 }

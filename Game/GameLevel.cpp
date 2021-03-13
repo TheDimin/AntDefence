@@ -131,6 +131,9 @@ void GameLevel::AddMoney(uint amount)
 
 bool GameLevel::TakeDamage(int amount)
 {
+	Health -= amount;
+	HealthText = "Health: " + std::to_string(Health);
+
 	if (amount >= Health)
 	{
 		activeModal = UIModal::Get(surface.get());
@@ -144,8 +147,6 @@ bool GameLevel::TakeDamage(int amount)
 		activeModal->SetOnOptional(nullptr);
 		return true;
 	}
-	Health -= amount;
-	HealthText = "Health: " + std::to_string(Health);
 
 	return false;
 }
@@ -450,9 +451,9 @@ void from_json(const nlohmann::json& json, GameLevel& lvl)
 #endif
 
 			break;
-		}
-
 	}
+
+}
 	lvl.route = route;
 
 #ifdef PATH_DEBUG

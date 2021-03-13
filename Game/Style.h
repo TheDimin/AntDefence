@@ -78,7 +78,6 @@ struct WaveSpawnInfo
 struct AttackWave
 {
 	int id;
-	uint moneyOnComplete = 0;
 	std::vector<WaveSpawnInfo> waves;
 private:
 	friend void from_json(const nlohmann::json& json, AttackWave& towerData);

@@ -2,6 +2,7 @@
 // IGAD/BUAS(NHTV)/UU - Jacco Bikker - 2006-2020
 
 #pragma once
+#include "template.h"
 
 namespace Tmpl8 {
 
@@ -105,7 +106,8 @@ namespace Tmpl8 {
 		void Draw(Surface* a_Target, int a_X, int a_Y);
 		void DrawScaled(int a_X, int a_Y, int a_Width, int a_Height, Surface* a_Target);
 		void DrawScaled(int a_X, int a_Y, int a_Width, int a_Height, Pixel blendColor, Surface* a_Target);
-		void DrawScaled(int a_X, int a_Y, int a_Width, int a_Height, Surface* a_Target, int rotation);
+		void DrawScaled(int a_X, int a_Y, int a_Width, int a_Height, Surface* a_Target, int rotation, vec2 offset = vec2(0, 0));
+		void DrawScaled(int a_X, int a_Y, int a_Width, int a_Height, Pixel blendColor, Surface* a_Target, int rotation, vec2 offset = vec2(0, 0));
 		void BlendScaled(int a_X, int a_Y, int a_Width, int a_Height, Pixel Color, Surface* a_Target);
 		void DrawScaledSub(int a_X, int a_Y, int a_Width, int a_Height, Pixel blendColor, Surface* a_Target);
 		void SetFlags(unsigned int a_Flags) { m_Flags = a_Flags; }
@@ -122,7 +124,7 @@ namespace Tmpl8 {
 		// Attributes
 		int m_Width, m_Height, m_Pitch;
 		unsigned int m_NumFrames;
-		unsigned int m_CurrentFrame;
+		unsigned int m_CurrentFrame =0;
 		unsigned int m_Flags;
 		unsigned int** m_Start;
 		Surface* m_Surface;

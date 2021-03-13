@@ -93,7 +93,6 @@ void from_json(const nlohmann::json& json, TowerData& towerData)
 
 void from_json(const nlohmann::json& json, AttackWave& attackWave)
 {
-	MapJsonData(moneyOnComplete, attackWave);
 
 	for (auto& elem : json["mobs"].items())
 	{

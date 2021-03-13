@@ -34,6 +34,10 @@ void TowerIdleState::Tick(float deltaTime)
 
 		for (auto* mob : gLVL->activeMobs)
 		{
+			if (mob->IsPendingKill())
+			{
+				continue;
+			}
 			auto xDistance = abs(mob->GetLocation().x - tower->GetLocation().x);
 			auto yDistance = abs(mob->GetLocation().y - tower->GetLocation().y);
 

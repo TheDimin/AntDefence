@@ -33,6 +33,7 @@ Mob::~Mob()
 bool Mob::TakeDamage(int& Amount)
 {
 	if (this == nullptr) return false;
+	if (pendingKill) return false;
 	health -= Amount;
 	if (health <= 0)
 	{
@@ -57,7 +58,7 @@ void Mob::Tick(float deltaTime)
 	vec2 newloc = GetDrawLocation() + dir * mobData->speed * 0.01f * deltaTime;
 	SetLocation(newloc);
 
-	if ((newloc - target).length() < mobData->speed * 0.01f * deltaTime * 2)
+	if ((newloc - target).length() < mobData->speed * 0.02f * deltaTime * 2)
 	{
 		newloc = target;
 		SetLocation(target);
@@ -73,15 +74,15 @@ void Mob::Tick(float deltaTime)
 	}
 
 	//Direction to sprite index
-	if (round(dir.x) == 1)
+	if ((int)round(dir.x) == 1)
 	{
 		rotation = 1;
 	}
-	else if (round(dir.x) == -1)
+	else if ((int)round(dir.x) == -1)
 	{
 		rotation = 3;
 	}
-	else if (round(dir.y) == 1)
+	else if ((int)round(dir.y) == 1)
 	{
 		rotation = 2;
 	}

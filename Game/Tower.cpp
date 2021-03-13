@@ -31,16 +31,27 @@ void Tower::SetLvl(Level* toSetLvl)
 	towerFSM->ActivateFsm(towerIdle);
 }
 
+void Tower::Tick(float deltaTime)
+{
+	GameObject::Tick(deltaTime);
+	towerFSM->Tick(deltaTime);
+
+	if (ShotTimer > 0)
+		ShotTimer -= deltaTime;
+}
+
 void Tower::Render(Tmpl8::Surface* surface)
 {
-	temp += 1.0f;
-	if (temp > 380)
-		temp = 0;
 	sprite->SetFrame(0);
 	sprite->DrawScaled((int)drawLocation.x, (int)drawLocation.y, (int)size.x, (int)size.y, surface);
 
 	sprite->SetFrame(1);
-	sprite->DrawScaled((int)drawLocation.x, (int)drawLocation.y, (int)size.x, (int)size.y, surface, temp);
+	sprite->DrawScaled((int)drawLocation.x - 5, (int)drawLocation.y - 10, (int)size.x, (int)size.y, surface, rotation, vec2(+5, +10));
 
 	towerFSM->Render(surface);
+	if (ShotTimer > 0)
+	{
+		sprite->SetFrame(2);
+		sprite->DrawScaled((int)drawLocation.x - 5, (int)drawLocation.y - 10, (int)size.x, (int)size.y, surface, rotation, vec2(+5, +10));
+	}
 }

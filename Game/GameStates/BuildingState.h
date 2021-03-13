@@ -18,10 +18,12 @@ public:
 	void Tick(float deltaTime) override;
 	void OnLeftClick(Tmpl8::vec2& mousePos) override;
 	void Render(Tmpl8::Surface* surface) override;
-	void OnMouseMove(Tmpl8::vec2& mousePos) override;
+	void OnMouseMove(Tmpl8::vec2& MousePos) override;
 
 	TowerData* SelectedBuildTower = nullptr;
 	Tmpl8::vec2 mousePos;
+	Tmpl8::vec2 drawIndex;
+	Tmpl8::vec2 drawPos;
 	Tmpl8::Sprite* circleSprite;
 };
 

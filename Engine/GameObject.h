@@ -26,16 +26,19 @@ private:
 	}
 
 public:
+	//Centerpoint of object
 	Tmpl8::vec2 GetLocation() const { return centerLocation; }
+	//top left conrner of the object
 	Tmpl8::vec2 GetDrawLocation() const { return drawLocation; }
 	Tmpl8::vec2 GetSize() const { return size; }
 	//Set objects location from RenderLocation
+	bool IsPendingKill()const { return pendingKill; }
 	void SetLocation(Tmpl8::vec2 loc)
 	{
 		centerLocation = Tmpl8::vec2(loc.x + size.x * 0.5f, loc.y + size.y * 0.5f);
 		drawLocation = loc;
 	}
-	Tmpl8::vec2* GetSize() { return &size; }
+	Tmpl8::vec2 GetSize() { return size; }
 public:
 	void Tick(float deltaTime) override {};
 	int rotation = 0;
@@ -48,6 +51,7 @@ protected:
 	Tmpl8::vec2 size;
 	Tmpl8::vec2 centerLocation;
 	Tmpl8::vec2 drawLocation;
-
+	bool pendingKill = false;
+	
 
 };

@@ -15,6 +15,7 @@ public:
 
 	Mob* TargetMob;
 	MobData* mobData; //When the mob gets killed, we still need access to the mobData so we ref it aswell
-	bool attacked = false;
+	float attacked = 0;
+	float targetRotation = 0;
 };
 

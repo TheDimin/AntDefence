@@ -568,81 +568,90 @@ namespace Tmpl8 {
 		}
 	}
 
-
+	//To many days have been spend on getting this rotation math right
+	//Needs upscaling to prevent pixel loss (maybe switching to fixed point math work better?)
 	//Matrix math : https://www.youtube.com/watch?v=46ZzawP5gvs
-	// Moving element: ME
-	void Sprite::DrawScaled(int a_X, int a_Y, int a_Width, int a_Height, Surface* a_Target, int rotation)
-	{
-		float tRotation = 1.0f / 61.0f * rotation;
-		//a_Width = (a_Width*-1+a_Height*0);
-		//a_Height = (a_Width*0+a_Height*-1);
+	//https://en.wikipedia.org/wiki/Rotation_matrix
+	//https://www.desmos.com/calculator/kohoey3j60?lang=nl
 
-		//float xWidth = (float)m_Width / (float)a_Width;
-		//float yWidth = (float)m_Height / (float)a_Height;
+
+	void Sprite::DrawScaled(int a_X, int a_Y, int a_Width, int a_Height, Surface* a_Target, int rotation, vec2 offset)
+	{
+		// rotation * PI / 180;
+		float tRotation = 1.0f / 61.0f * rotation;
+		float s_Width = (float)a_Width * 1.5f;
+		float s_Height = (float)a_Height * 1.5f;
+
+		float xp = a_Width * 0.5f + offset.x;
+		float yp = a_Height * 0.5f + offset.y;
 
 		Pixel* src = GetBuffer() + m_CurrentFrame * m_Width;
 
-		for (int x = 0; x < a_Width * 1.5f; x++) {
+		for (int x = 0; x < s_Width; x++) {
 			int fx = x + a_X;
 			if (fx < 0 || fx > a_Target->GetWidth())continue;
 
-			for (int y = 0; y < a_Height * 1.5f; y++)
+			for (int y = 0; y < s_Height; y++)
 			{
 				int fy = y + a_Y;
 				if (fy < 0 || fy> a_Target->GetHeight()) continue;
 
-				int u = (int)((float)x * ((float)m_Width / (float)(a_Width * 1.5f)));
-				int v = (int)((float)y * ((float)m_Height / (float)(a_Height * 1.5f)));
 
-				float cx = ceil((x * 0.75f) * (cos(tRotation)) - ((y * 0.75f) * sin(tRotation)));
+				int u = (int)((float)x * ((float)m_Width / s_Width));
+				int v = (int)((float)y * ((float)m_Height / s_Height));
 
-				float cy = ceil((x * 0.75f) * sin(tRotation) + ((y * 0.75f) * cos(tRotation)));
 				Pixel color = src[u + v * m_Pitch];
-				//if (a_Target->GetWidth() * a_Target->GetHeight() < fx + (fy * a_Target->GetPitch()))
-					//continue;
+				if (!(color & 0xffffff))continue;
 
-				//a_Target->GetBuffer()[fx + (fy * a_Target->GetPitch())]
-				if (color & 0xffffff)
-					a_Target->GetBuffer()[(int)((cx + a_X) + ((cy + a_Y) * a_Target->GetPitch()))] = color;
-			}
-		}
-		/*
+				float cx = ceil((cos(tRotation) * ((float)(x * 0.75f) - xp)) + (((y * 0.75f) - yp) * sin(tRotation)) + xp);
+				float cy = ceil((-sin(tRotation) * ((float)(x * 0.75f) - xp)) + (((y * 0.75f) - yp) * cos(tRotation)) + yp);
 
-		if ((a_Width == 0) || (a_Height == 0)) return;
-		for (int x = 0; x < abs(a_Width * x1 + a_Height * x2); x++) {
-			int fx = x + a_X;
-			if (fx < 0 || fx > a_Target->GetWidth())continue;
-
-			for (int y = 0; y < abs(a_Width * y1 + a_Height * y2); y++)
-			{
-				int fy = y + a_Y;
-				if (fy < 0 || fy> a_Target->GetHeight()) continue;
-
-				float t1 = (float)(x * x1 + y * x2);
-				float t2 = (float)(x * y1 + y * y2);
-
-				int u = (int)std::floor(t1 * ((float)(m_Width * x1 + m_Height * x2) / (float)abs(a_Width * x1 + a_Height * x2)));
-				int v = (int)std::floor(t2 * ((float)(m_Width * y1 + m_Height * y2) / (float)abs(a_Width * y1 + a_Height * y2)));
-
-				//int u = (int)((float)x * ((float)m_Width / (float)a_Width));
-				//int v = (int)((float)y * ((float)m_Height / (float)a_Height));
-
-
-				//int u = (int)(abs(xRotation - ((float)(x + 0.5f) / (float)a_Width)) * (float)a_Width * xWidth);
-				//int v = (int)(abs(yRotation - ((float)(y + 0.5f) / (float)a_Height)) * (float)a_Height * yWidth);
-				Pixel color;
-				//if (xRotation == 0)
-				color = src[u + v * m_Pitch];
-				//else
-				//	color = GetBuffer()[v + u * m_Pitch];
-
-				if (a_Target->GetWidth() * a_Target->GetHeight() < fx + (fy * a_Target->GetPitch()))
+				if (cx + a_X < 0 || (cy + a_Y) * a_Target->GetPitch() < ScreenHeight)
 					continue;
 
-				if (color & 0xffffff) a_Target->GetBuffer()[fx + (fy * a_Target->GetPitch())] = color;
+				a_Target->GetBuffer()[(int)((cx + a_X) + ((cy + a_Y) * a_Target->GetPitch()))] = color;
 			}
 		}
-		*/
+	}
+
+	void Sprite::DrawScaled(int a_X, int a_Y, int a_Width, int a_Height, Pixel blendColor, Surface* a_Target, int rotation,
+		vec2 offset)
+	{
+		// rotation * PI / 180;
+		float tRotation = 1.0f / 61.0f * rotation;
+		float s_Width = (float)a_Width * 1.5f;
+		float s_Height = (float)a_Height * 1.5f;
+
+		float xp = a_Width * 0.5f + offset.x;
+		float yp = a_Height * 0.5f + offset.y;
+
+		Pixel* src = GetBuffer() + m_CurrentFrame * m_Width;
+
+		for (int x = 0; x < s_Width; x++) {
+			int fx = x + a_X;
+			if (fx < 0 || fx > a_Target->GetWidth())continue;
+
+			for (int y = 0; y < s_Height; y++)
+			{
+				int fy = y + a_Y;
+				if (fy < 0 || fy> a_Target->GetHeight()) continue;
+
+
+				int u = (int)((float)x * ((float)m_Width / s_Width));
+				int v = (int)((float)y * ((float)m_Height / s_Height));
+
+				Pixel color = src[u + v * m_Pitch];
+				if (!(color & 0xffffff))continue;
+
+				float cx = ceil((cos(tRotation) * ((float)(x * 0.75f) - xp)) + (((y * 0.75f) - yp) * sin(tRotation)) + xp);
+				float cy = ceil((-sin(tRotation) * ((float)(x * 0.75f) - xp)) + (((y * 0.75f) - yp) * cos(tRotation)) + yp);
+
+				if (cx + a_X < 0 || (cy + a_Y) * a_Target->GetPitch() < ScreenHeight)
+					continue;
+
+				a_Target->GetBuffer()[(int)((cx + a_X) + ((cy + a_Y) * a_Target->GetPitch()))] = AddBlend(color, blendColor);
+			}
+		}
 	}
 
 	void Sprite::InitializeStartData()

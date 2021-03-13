@@ -95,7 +95,9 @@ void Level::Tick(float deltaTime)
 
 		if (toErase != end(objects))
 		{
+			GameObject* obj = toErase->get();
 			objects.erase(toErase);
+			obj = nullptr;
 		}
 		else
 			printf("Object already destroyed \n");
