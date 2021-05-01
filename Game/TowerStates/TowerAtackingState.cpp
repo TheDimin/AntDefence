@@ -70,14 +70,6 @@ void TowerAtackingState::Tick(float deltaTime)
 	attacked = tower->towerData->FindStat(2)->amount * 40;
 }
 
-void TowerAtackingState::OnLeftClick(Tmpl8::vec2& mousePos)
-{
-}
-
-void TowerAtackingState::OnMouseMove(Tmpl8::vec2& mousePos)
-{
-}
-
 void TowerAtackingState::Render(Tmpl8::Surface* surface)
 {
 #if _DEBUG

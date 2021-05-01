@@ -236,12 +236,6 @@
     <ClCompile Include="Game\GameStates\BuildingState.cpp" />
     <ClCompile Include="Engine\AssetManager.cpp" />
     <ClCompile Include="Engine\EngineGlobal.cpp" />
-    <ClCompile Include="Engine\Component.cpp" />
-    <ClCompile Include="Engine\FSM\FSM.cpp" />
-    <ClCompile Include="Engine\FSM\State.cpp" />
-    <ClCompile Include="Engine\FSM\TransitionBase.cpp" />
-    <ClCompile Include="Engine\MissionBase.cpp" />
-    <ClCompile Include="Engine\FSM\Event.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="Engine\GameObject.cpp" />
     <ClCompile Include="Engine\Level.cpp" />
@@ -250,7 +244,6 @@
     <ClCompile Include="Game\Mob.cpp" />
     <ClCompile Include="Game\Style.cpp" />
     <ClCompile Include="Game\TowerStates\TowerIdleState.cpp" />
-    <ClCompile Include="Engine\LevelHelper.cpp" />
     <ClCompile Include="Game\gamestates\GameFSM.cpp" />
     <ClCompile Include="Game\GameStates\PlayingState.cpp" />
     <ClCompile Include="surface.cpp" />
@@ -270,7 +263,6 @@
   <ItemGroup>
     <ClInclude Include="Engine\AssetManager.h" />
     <ClInclude Include="Engine\EngineGlobal.h" />
-    <ClInclude Include="Engine\Component.h" />
     <ClInclude Include="Engine\FSM\Event.h" />
     <ClInclude Include="Engine\FSM\FSM.h" />
     <ClInclude Include="Engine\FSM\State.h" />

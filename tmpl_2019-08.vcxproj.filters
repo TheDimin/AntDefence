@@ -8,22 +8,10 @@
     <ClCompile Include="template.cpp">
       <Filter>template code</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\FSM\FSM.cpp">
-      <Filter>Private\Engine\FSM</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\FSM\TransitionBase.cpp">
-      <Filter>Private\Engine\FSM</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\MissionBase.cpp">
-      <Filter>Private\Engine</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\GameObject.cpp">
       <Filter>Private\Engine</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Level.cpp">
-      <Filter>Private\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Component.cpp">
       <Filter>Private\Engine</Filter>
     </ClCompile>
     <ClCompile Include="Engine\AssetManager.cpp">
@@ -49,12 +37,6 @@
     </ClCompile>
     <ClCompile Include="Game\GameLevel.cpp">
       <Filter>Private\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\FSM\Event.cpp">
-      <Filter>Private\Engine\FSM</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\FSM\State.cpp">
-      <Filter>Private\Engine\FSM</Filter>
     </ClCompile>
     <ClCompile Include="Game\GameStates\BuildingState.cpp">
       <Filter>Private\Game\GameStates</Filter>
@@ -88,9 +70,6 @@
     </ClCompile>
     <ClCompile Include="Game\gamestates\GameState.cpp">
       <Filter>Private\Game\GameStates</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\LevelHelper.cpp">
-      <Filter>Private\Engine</Filter>
     </ClCompile>
     <ClCompile Include="Game\TowerStates\TowerState.cpp">
       <Filter>Private\Game\TowerStates</Filter>
@@ -245,9 +224,6 @@
     <ClInclude Include="lib\nlohmann\detail\meta\void_t.hpp">
       <Filter>Libs\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Component.h">
-      <Filter>Public\Engine</Filter>
-    </ClInclude>
     <ClInclude Include="Game\Style.h">
       <Filter>Public\Game</Filter>
     </ClInclude>
@@ -357,9 +333,6 @@
     </Filter>
     <Filter Include="Private\Engine">
       <UniqueIdentifier>{566fb9dc-e991-4104-8414-b6cce12aff62}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Private\Engine\FSM">
-      <UniqueIdentifier>{aaacf8d1-5c12-43c8-b15d-e3170299c634}</UniqueIdentifier>
     </Filter>
     <Filter Include="Public\Game">
       <UniqueIdentifier>{84b84ffa-fa20-4c77-aac6-f213ea7ef61f}</UniqueIdentifier>

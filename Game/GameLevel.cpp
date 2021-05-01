@@ -293,19 +293,19 @@ void GameLevel::CreateUI(UiContainer* UI)
 	0x383838
 	};
 
-
+	// Container for bottom part of the screen
 	UiContainer* DefaultUI = UI->Container(0, 0, (int)UI->getScale().x - 250, (int)UI->getScale().y);
-
+	
 	const int ShopItemsOffset = 100;
-	for (int i = 0; i < 4; ++i)
+	for (int i = 0; i < 4; ++i) //Hardcoded max of 4 towers
 	{
-		if (mapStyle->towers.size() <= static_cast<unsigned>(i))
+		if (mapStyle->towers.size() <= static_cast<unsigned>(i)) //less then 4 towers ? done creating ui elements
 			break;
 
 		TowerData* tower = mapStyle->towers[i].get();
-
-		DefaultUI->Text(ShopItemsOffset - 15 + (150 * i), 132, 3, std::to_string(tower->price))
-			->SetTextCentert(false);
+		//Price text
+		DefaultUI->Text(ShopItemsOffset - 15 + (150 * i), 132, 3, std::to_string(tower->price))->SetTextCentert(false);
+		
 		style.Image = const_cast<Sprite*>(dollarSign);
 		DefaultUI->Button(ShopItemsOffset - 30 + (150 * i), 140, 12, 12)->SetStyle(style);
 
@@ -331,8 +331,14 @@ void GameLevel::CreateUI(UiContainer* UI)
 
 	// MAIN UI
 	UI->Button(UI->GetWidth() - 100, UI->GetHeight() - 50, 70, 15)
-		->SetIsHiddenLambda([this]() {return waveInstance != nullptr; })
-		->SetOnClick([this]() {StartNextWave(); })
+		->SetIsHiddenLambda([this]()
+		{
+			return waveInstance != nullptr;
+		})
+		->SetOnClick([this]()
+		{
+			StartNextWave();
+		})
 		->SetText(&StartNextWaveText);
 
 	UI->Text(UI->GetWidth() - 170, 20, 2, &MoneyText)->SetTextCentert(false);

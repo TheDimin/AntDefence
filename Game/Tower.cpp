@@ -17,14 +17,12 @@ void Tower::SetLvl(Level* toSetLvl)
 
 	towerFSM = std::make_unique<TowerFSM>(this, gLVL);
 
-	TowerIdleState* towerIdle = new TowerIdleState();
-	TowerAtackingState* towerAttack = new TowerAtackingState();
+	auto* towerIdle = new TowerIdleState();
+	auto* towerAttack = new TowerAtackingState();
 
 
-	TowerTransition* idleToAttack = new TowerTransition(towerIdle, towerAttack, DefaultGuardCastCheck(TargetFoundEvent));
-
-	TowerTransition* AttackToIdleTargetLost = new TowerTransition(towerAttack, towerIdle, DefaultGuardCastCheck(TargetLostEvent));
-	//TowerTransition* AttackToIdleTargetKilled = new TowerTransition(towerAttack, towerIdle,DefaultGuardCastCheck(TargetLostEvent),[]);
+	auto* idleToAttack = new TowerTransition(towerIdle, towerAttack, DefaultGuardCastCheck(TargetFoundEvent));
+	auto* AttackToIdleTargetLost = new TowerTransition(towerAttack, towerIdle, DefaultGuardCastCheck(TargetLostEvent));
 
 	towerFSM->RegisterTransition(idleToAttack);
 	towerFSM->RegisterTransition(AttackToIdleTargetLost);

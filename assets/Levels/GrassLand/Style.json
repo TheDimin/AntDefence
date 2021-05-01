@@ -11,23 +11,7 @@
             "scale" : 4
         }
     ],
-    "stats": [
-        {
-            "id": 0,
-            "displayName": "Health",
-            "asset": "test.png"
-        },
-        {
-            "id": 1,
-            "displayName": "Damage",
-            "asset": "test.png"
-        },
-        {
-            "id" :2,
-            "displayName" : "Cooldown",
-            "asset" : "test.png"
-        }
-    ],
+    
     "towers": [
         {
             "id": 1,
@@ -56,6 +40,22 @@
                 {"id" :1,"amount":15},
                 {"id" :2,"amount":10}
             ]
+        }
+    ],"stats": [
+        {
+            "id": 0,
+            "displayName": "Health",
+            "asset": "test.png"
+        },
+        {
+            "id": 1,
+            "displayName": "Damage",
+            "asset": "test.png"
+        },
+        {
+            "id" :2,
+            "displayName" : "Cooldown",
+            "asset" : "test.png"
         }
     ],
     "mobs": [
