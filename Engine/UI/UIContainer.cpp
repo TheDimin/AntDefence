@@ -100,15 +100,24 @@ UIText* UiContainer::Text(int xPos, int yPos, int size, std::string textPtr)
 	return uiElement;
 }
 
-UiContainer* UiContainer::Container(int xPos, int yPos, int width, int height)
+void UiContainer::RegisterElement(UIElement* element)
 {
-	return Container(vec2(xPos, yPos), vec2(width, height));
+	Elements.insert(Elements.begin(), std::unique_ptr<UIElement>(element));
 }
 
-UiContainer* UiContainer::Container(vec2 pos, vec2 size)
+
+UiContainer* UiContainer::Container(int xPos, int yPos, int width, int height, bool drawLast)
+{
+	return Container(vec2(xPos, yPos), vec2(width, height), drawLast);
+}
+
+UiContainer* UiContainer::Container(vec2 pos, vec2 size, bool drawLast)
 {
 	UiContainer* uiElement = new UiContainer(pos, size, this->Pos);
-	Elements.insert(Elements.begin(), std::unique_ptr<UIElement>(uiElement));
+	if (drawLast)
+		Elements.insert(Elements.begin(), std::unique_ptr<UIElement>(uiElement));
+	else
+		Elements.insert(Elements.end(), std::unique_ptr<UIElement>(uiElement));
 	return uiElement;
 }
 
@@ -140,6 +149,11 @@ bool UiContainer::OnLeftClick()
 int UiContainer::GetWidth() const
 {
 	return surface->GetWidth();
+}
+
+vec2 UiContainer::GetSize() const
+{
+	return vec2(surface->GetWidth(), surface->GetHeight());
 }
 
 int UiContainer::GetHeight() const

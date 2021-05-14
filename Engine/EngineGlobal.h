@@ -11,7 +11,7 @@
 
 
 #define SKIP_MAIN_MENU_DEBUG
-//#undef SKIP_MAIN_MENU_DEBUG
+#undef SKIP_MAIN_MENU_DEBUG
 
 
 #define UI_DEBUG //Extra debugging info for ui
@@ -68,6 +68,9 @@ public:
 	static Tmpl8::Surface* GetDebugScreen();
 	static void SetDebugScreen(Tmpl8::Surface* screen);
 private:
+	/// <summary>
+	/// Surface used to draw debug info on, for instance UI collision
+	/// </summary>
 	static Tmpl8::Surface* debugScreen;
 };
 

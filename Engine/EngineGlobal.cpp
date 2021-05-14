@@ -5,6 +5,7 @@
 //#include "game.h"
 
 //https://stackoverflow.com/questions/20157896/initializing-static-pointer-in-static-class
+
 Tmpl8::Surface* EngineGlobal::debugScreen;
 
 int EngineGlobal::GetWidth()

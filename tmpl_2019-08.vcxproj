@@ -259,6 +259,7 @@
     <ClCompile Include="Game\TowerStates\TowerFSM.cpp" />
     <ClCompile Include="Game\TowerStates\TowerState.cpp" />
     <ClCompile Include="Engine\UI\UIModal.cpp" />
+    <ClCompile Include="UICredits.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\AssetManager.h" />
@@ -335,6 +336,7 @@
     <ClInclude Include="Engine\UI\UIText.h" />
     <ClInclude Include="Game\Tower.h" />
     <ClInclude Include="Game\TowerStates\TowerFSM.h" />
+    <ClInclude Include="UICredits.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="_readme.txt" />

@@ -55,14 +55,8 @@ public:
 	void Render(Tmpl8::Surface* surface) override;
 	void OnMouseMove(vec2 mousePos) override;
 	void OnLeftClick(vec2 mousePos) override;
-	//	GameStateWrapperInjection(Render, Surface*, surface);
-	//GameStateWrapperInjection(OnMouseMove, vec2, mousePos);
-	//GameStateWrapperInjection(OnLeftClick, vec2, pos);
 	void Tick(float deltaTime) override;
-
-
 	void CreateUI(UiContainer* UI) override;
-
 	void OnKeyDown(int key) override;
 
 };

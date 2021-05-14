@@ -5,14 +5,18 @@
 
 #include "GameLevel.h"
 #include "../game.h"
+#include "../UICredits.h"
 #include "../Engine/LevelHelper.h"
 #include "../Engine/UI/UiButton.h"
 #include "../Engine/UI/UIImage.h"
 #include "../Engine/UI/UIModal.h"
+#include "../Engine/UI/UIText.h"
 
 namespace fs = std::filesystem;
 std::string NextLvlText = "Next level";
 std::string CreditsText = "Credits";
+std::string CloseCreditsText = "Close";
+
 
 void MainMenu::CreateUI(UiContainer* UI)
 {
@@ -45,12 +49,27 @@ void MainMenu::CreateUI(UiContainer* UI)
 
 
 	CreditsButton->SetText(&CreditsText);
-	CreditsButton->SetOnClick([UI]()
+	CreditsButton->SetOnClick([UI, this]()
 		{
-			//UI->Modal("test \n test")->SetOnCancel([]()
-			//	{
-			//		printf("test \n");
-			//	})->SetOnAccept([]() {printf("OnAccept \n"); });
+			UiContainer* CreditsPanel = UI->Container(0, 0, ScreenWidth, ScreenHeight, false);
+			CreditsPanel->SetBackGroundColor(0x808080);
+
+			int offset = 50;
+
+			CreditsPanel->Text(static_cast<int>((float)ScreenWidth * 0.5f), offset, 10, "Ant Defence")->SetTextCentert(true);
+			CreditsPanel->Text(static_cast<int>((float)ScreenWidth * 0.5f), offset += 120, 5, "Intake assignment project for BUAS")->SetTextCentert(true);
+			CreditsPanel->Text(static_cast<int>((float)ScreenWidth * 0.5f), offset += 80, 5, "Made by Damian van Hoorn")->SetTextCentert(true);
+			CreditsPanel->Text(static_cast<int>((float)ScreenWidth * 0.5f), offset += 100, 8, "Special thanks to:")->SetTextCentert(true);
+			CreditsPanel->Text(static_cast<int>((float)ScreenWidth * 0.5f), offset += 80, 4, "https://www.kenney.nl/ (Background sprites)")->SetTextCentert(true);
+			CreditsPanel->Text(static_cast<int>((float)ScreenWidth * 0.5f), offset += 80, 4, "Github.com/nlohmann/json (Json implementation)")->SetTextCentert(true);
+
+
+			UIButton* CloseButton = CreditsPanel->Button((int)((float)ScreenWidth * 0.5f), (int)((float)ScreenHeight * 0.9f), 100, 30);
+			CloseButton->SetOnClick([this]()
+				{
+					game->SwitchLevel<MainMenu>("MainMenu");
+				});
+			CloseButton->SetText(&CloseCreditsText);
 		});
 }
 
